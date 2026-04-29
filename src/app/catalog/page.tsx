@@ -1,9 +1,13 @@
 import Link from "next/link";
 import { prisma } from "@/lib/db";
 import Header from "@/components/site/Header";
+import MobileHeader from "@/components/site/MobileHeader";
 import Footer from "@/components/site/Footer";
+import MobileFooter from "@/components/site/MobileFooter";
 import { Icons } from "@/components/site/Icons";
 import { ProductCard } from "@/components/site/Blocks";
+import { getLocale } from "@/lib/locale-server";
+import { t, pickProductName, pickCategoryName } from "@/lib/i18n";
 
 export const dynamic = "force-dynamic";
 
@@ -12,6 +16,7 @@ export default async function CatalogPage({
 }: {
   searchParams: { q?: string; category?: string };
 }) {
+  const locale = getLocale();
   const q = (searchParams.q || "").trim();
   const categorySlug = (searchParams.category || "").trim();
 
@@ -21,7 +26,7 @@ export default async function CatalogPage({
       : Promise.resolve(null),
     prisma.category.findMany({
       orderBy: [{ sortOrder: "asc" }, { nameRu: "asc" }],
-      select: { id: true, slug: true, nameRu: true, _count: { select: { products: true } } },
+      select: { id: true, slug: true, nameRu: true, nameUa: true, namePl: true, _count: { select: { products: true } } },
     }),
   ]);
 
@@ -35,9 +40,7 @@ export default async function CatalogPage({
       { partNumber: { contains: q } },
     ];
   }
-  if (category) {
-    where.categories = { some: { categoryId: category.id } };
-  }
+  if (category) where.categories = { some: { categoryId: category.id } };
 
   const products = await prisma.product.findMany({
     where: Object.keys(where).length ? where : undefined,
@@ -45,154 +48,232 @@ export default async function CatalogPage({
     orderBy: { createdAt: "desc" },
   });
 
-  return (
-    <div style={{ background: "#fff", minWidth: 1440 }}>
-      <Header current="catalog" />
+  const categoryName = category ? pickCategoryName(category, locale) : null;
 
-      {/* breadcrumb + search + sort */}
-      <div style={{
-        borderBottom: "1px solid var(--hd-hairline)",
-        padding: "18px 70px",
-        display: "grid",
-        gridTemplateColumns: "331px 400px 1fr",
-        alignItems: "center", gap: 30,
-      }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 16 }}>
-          <Link href="/" style={{ opacity: 0.6 }}>Главная</Link>
-          <span style={{ opacity: 0.6 }}>/</span>
-          <span>Каталог</span>
-          {category && (
-            <>
-              <span style={{ opacity: 0.6 }}>/</span>
-              <span>{category.nameRu}</span>
-            </>
-          )}
-        </div>
-        <form action="/catalog" method="get" style={{
-          height: 38, padding: "0 15px",
-          borderRadius: 10, background: "var(--hd-panel)",
-          border: "1px solid var(--hd-border)",
-          display: "flex", alignItems: "center", gap: 10,
-        }}>
-          {category && <input type="hidden" name="category" value={category.slug} />}
-          <Icons.Search size={14} color="rgba(0,0,0,0.8)" />
-          <input
-            name="q"
-            defaultValue={q}
-            placeholder="Код деталі, назва або автомобіль"
-            style={{
-              border: 0, outline: 0, background: "transparent",
-              fontSize: 14, color: "#000", flex: 1, fontFamily: "inherit",
-            }}
-          />
-        </form>
+  return (
+    <>
+      {/* DESKTOP */}
+      <div className="hd-desktop" style={{ background: "#fff", minWidth: 1440 }}>
+        <Header current="catalog" locale={locale} />
+
         <div style={{
-          display: "flex", alignItems: "center",
-          justifyContent: "flex-end", gap: 16, fontSize: 15,
+          borderBottom: "1px solid var(--hd-hairline)",
+          padding: "18px 70px",
+          display: "grid", gridTemplateColumns: "331px 400px 1fr",
+          alignItems: "center", gap: 30,
         }}>
-          <span style={{ color: "rgba(0,0,0,0.6)" }}>Сортировка по:</span>
-          <button type="button" style={{
-            height: 38, padding: "0 14px",
-            border: "1px solid var(--hd-hairline)", borderRadius: 8, background: "#fff",
-            display: "flex", alignItems: "center", gap: 10, fontSize: 14, fontWeight: 500,
+          <div style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 16 }}>
+            <Link href="/" style={{ opacity: 0.6 }}>{t("home", locale)}</Link>
+            <span style={{ opacity: 0.6 }}>/</span>
+            <span>{t("catalog", locale)}</span>
+            {categoryName && (<>
+              <span style={{ opacity: 0.6 }}>/</span>
+              <span>{categoryName}</span>
+            </>)}
+          </div>
+          <form action="/catalog" method="get" style={{
+            height: 38, padding: "0 15px",
+            borderRadius: 10, background: "var(--hd-panel)",
+            border: "1px solid var(--hd-border)",
+            display: "flex", alignItems: "center", gap: 10,
           }}>
-            По Популярности <Icons.ChevronDown size={16} />
-          </button>
+            {category && <input type="hidden" name="category" value={category.slug} />}
+            <Icons.Search size={14} color="rgba(0,0,0,0.8)" />
+            <input
+              name="q"
+              defaultValue={q}
+              placeholder={t("searchPlaceholder", locale)}
+              style={{
+                border: 0, outline: 0, background: "transparent",
+                fontSize: 14, color: "#000", flex: 1, fontFamily: "inherit",
+              }}
+            />
+          </form>
+          <div style={{
+            display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 16, fontSize: 15,
+          }}>
+            <span style={{ color: "rgba(0,0,0,0.6)" }}>{t("sortBy", locale)}</span>
+            <button type="button" style={{
+              height: 38, padding: "0 14px",
+              border: "1px solid var(--hd-hairline)", borderRadius: 8, background: "#fff",
+              display: "flex", alignItems: "center", gap: 10, fontSize: 14, fontWeight: 500,
+            }}>
+              {t("byPopularity", locale)} <Icons.ChevronDown size={16} />
+            </button>
+          </div>
         </div>
+
+        <section style={{
+          padding: "48px 70px 80px 70px",
+          display: "grid", gridTemplateColumns: "250px 1fr", gap: 60, alignItems: "start",
+        }}>
+          <aside>
+            <h1 style={{ margin: 0, fontSize: 36, fontWeight: 500, lineHeight: "40px" }}>
+              {categoryName ?? t("catalog", locale)}
+            </h1>
+            <div style={{ marginTop: 10, fontSize: 14, color: "rgba(0,0,0,0.6)" }}>
+              {t("found", locale)}: <span style={{ color: "#000" }}>{products.length}</span>
+            </div>
+
+            <div style={{ marginTop: 28, display: "flex", flexDirection: "column", gap: 8 }}>
+              <Link href="/catalog" style={navLink(!categorySlug)}>{t("allItems", locale)}</Link>
+              {allCategories.map((c) => {
+                const active = c.slug === categorySlug;
+                return (
+                  <Link key={c.id} href={`/catalog?category=${c.slug}`} style={{
+                    ...navLink(active),
+                    display: "flex", justifyContent: "space-between", alignItems: "center",
+                  }}>
+                    <span>{pickCategoryName(c, locale)}</span>
+                    <span style={{ fontSize: 12, opacity: active ? 0.7 : 0.5 }}>{c._count.products}</span>
+                  </Link>
+                );
+              })}
+            </div>
+
+            <div style={{
+              marginTop: 40, padding: 20, borderRadius: 10,
+              border: "1px solid var(--hd-hairline)",
+            }}>
+              <div style={{ fontSize: 14, fontWeight: 600 }}>{t("cantFindPart", locale)}</div>
+              <p style={{ marginTop: 8, fontSize: 13, lineHeight: "18px", color: "rgba(0,0,0,0.6)" }}>
+                {t("cantFindBody", locale)}
+              </p>
+              <Link href="/#contacts" style={{
+                marginTop: 14, display: "inline-flex", alignItems: "center", gap: 8,
+                fontSize: 13, fontWeight: 600,
+              }}>
+                {t("contactUs", locale)} <Icons.ArrowRight size={14} />
+              </Link>
+            </div>
+          </aside>
+
+          <div>
+            {products.length === 0 ? (
+              <div style={{
+                padding: "60px 40px", borderRadius: 12, background: "var(--hd-panel)",
+                textAlign: "center", color: "rgba(0,0,0,0.6)",
+              }}>
+                {q ? `${t("notFoundQ", locale)} «${q}»` : t("noProductsYet", locale)}
+              </div>
+            ) : (
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 30, rowGap: 44 }}>
+                {products.map((p) => (
+                  <ProductCard
+                    key={p.id}
+                    href={`/catalog/${p.id}`}
+                    name={pickProductName(p, locale)}
+                    image={p.images[0]?.url ?? null}
+                    partNumber={p.partNumber}
+                    big
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+
+        <Footer />
       </div>
 
-      <section style={{
-        padding: "48px 70px 80px 70px",
-        display: "grid", gridTemplateColumns: "250px 1fr", gap: 60, alignItems: "start",
-      }}>
-        <aside>
-          <h1 style={{ margin: 0, fontSize: 36, fontWeight: 500, lineHeight: "40px" }}>
-            {category ? category.nameRu : "Каталог"}
+      {/* MOBILE */}
+      <div className="hd-mobile" style={{ background: "#fff" }}>
+        <MobileHeader locale={locale} />
+
+        <div style={{ padding: "20px 20px 8px 20px" }}>
+          <h1 style={{ margin: 0, fontSize: 18, fontWeight: 500, textAlign: "center" }}>
+            {categoryName ?? t("catalog", locale)}
           </h1>
-          <div style={{ marginTop: 10, fontSize: 14, color: "rgba(0,0,0,0.6)" }}>
-            Найдено: <span style={{ color: "#000" }}>{products.length} {pluralize(products.length)}</span>
-          </div>
-
-          <div style={{ marginTop: 28, display: "flex", flexDirection: "column", gap: 8 }}>
-            <Link href="/catalog" style={{
-              padding: "10px 14px", borderRadius: 8,
-              fontSize: 14, fontWeight: !category ? 600 : 500,
-              background: !category ? "#000" : "transparent",
-              color: !category ? "#fff" : "#000",
-            }}>
-              Все товары
-            </Link>
-            {allCategories.map((c) => {
-              const active = c.slug === categorySlug;
-              return (
-                <Link key={c.id} href={`/catalog?category=${c.slug}`} style={{
-                  display: "flex", justifyContent: "space-between", alignItems: "center",
-                  padding: "10px 14px", borderRadius: 8,
-                  fontSize: 14, fontWeight: active ? 600 : 500,
-                  background: active ? "#000" : "transparent",
-                  color: active ? "#fff" : "#000",
-                }}>
-                  <span>{c.nameRu}</span>
-                  <span style={{ fontSize: 12, opacity: active ? 0.7 : 0.5 }}>{c._count.products}</span>
-                </Link>
-              );
-            })}
-          </div>
-
           <div style={{
-            marginTop: 40, padding: 20, borderRadius: 10,
-            border: "1px solid var(--hd-hairline)",
+            marginTop: 12, display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 13,
           }}>
-            <div style={{ fontSize: 14, fontWeight: 600 }}>Не нашли деталь?</div>
-            <p style={{ marginTop: 8, fontSize: 13, lineHeight: "18px", color: "rgba(0,0,0,0.6)" }}>
-              Оставьте контакты — менеджер подберёт нужную деталь и свяжется с вами.
-            </p>
-            <Link href="/#contacts" style={{
-              marginTop: 14, display: "inline-flex", alignItems: "center", gap: 8,
-              fontSize: 13, fontWeight: 600,
-            }}>
-              Связаться <Icons.ArrowRight size={14} />
-            </Link>
+            <span style={{ color: "rgba(0,0,0,0.6)" }}>
+              {t("found", locale)}: <span style={{ color: "#000" }}>{products.length}</span>
+            </span>
           </div>
-        </aside>
+          <form action="/catalog" method="get" style={{
+            marginTop: 12,
+            height: 38, padding: "0 12px", borderRadius: 8,
+            background: "var(--hd-panel)", border: "1px solid var(--hd-border)",
+            display: "flex", alignItems: "center", gap: 8,
+          }}>
+            {category && <input type="hidden" name="category" value={category.slug} />}
+            <Icons.Search size={14} color="rgba(0,0,0,0.6)" />
+            <input
+              name="q" defaultValue={q} placeholder={t("searchPlaceholder", locale)}
+              style={{ border: 0, outline: 0, background: "transparent", fontSize: 13, flex: 1, fontFamily: "inherit" }}
+            />
+          </form>
 
-        <div>
-          {products.length === 0 ? (
-            <div style={{
-              padding: "60px 40px", borderRadius: 12, background: "var(--hd-panel)",
-              textAlign: "center", color: "rgba(0,0,0,0.6)",
-            }}>
-              {q ? `Ничего не найдено по запросу «${q}»` : "Товаров пока нет"}
-            </div>
-          ) : (
-            <div style={{
-              display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 30, rowGap: 44,
-            }}>
-              {products.map((p) => (
-                <ProductCard
-                  key={p.id}
-                  href={`/catalog/${p.id}`}
-                  name={p.nameRu}
-                  image={p.images[0]?.url ?? null}
-                  partNumber={p.partNumber}
-                  big
-                />
-              ))}
-            </div>
-          )}
+          {/* mobile category chips */}
+          <div style={{ marginTop: 12, display: "flex", gap: 8, overflowX: "auto", paddingBottom: 4 }}>
+            <Link href="/catalog" style={chip(!categorySlug)}>{t("allItems", locale)}</Link>
+            {allCategories.map((c) => (
+              <Link key={c.id} href={`/catalog?category=${c.slug}`} style={chip(c.slug === categorySlug)}>
+                {pickCategoryName(c, locale)}
+              </Link>
+            ))}
+          </div>
         </div>
-      </section>
 
-      <Footer />
-    </div>
+        {products.length === 0 ? (
+          <div style={{
+            margin: "20px", padding: "40px 20px", borderRadius: 10,
+            background: "var(--hd-panel)", textAlign: "center", color: "rgba(0,0,0,0.6)", fontSize: 13,
+          }}>
+            {q ? `${t("notFoundQ", locale)} «${q}»` : t("noProductsYet", locale)}
+          </div>
+        ) : (
+          <div style={{
+            padding: "14px 20px 28px 20px",
+            display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, rowGap: 26,
+          }}>
+            {products.map((p) => (
+              <Link key={p.id} href={`/catalog/${p.id}`} style={{
+                display: "flex", flexDirection: "column", gap: 8,
+              }}>
+                <div style={{
+                  aspectRatio: "1 / 1", borderRadius: 8,
+                  background: "var(--hd-panel)", border: "1px solid var(--hd-hairline)",
+                  backgroundImage: `url(${p.images[0]?.url ?? "/design/bumper.png"})`,
+                  backgroundSize: "contain", backgroundRepeat: "no-repeat", backgroundPosition: "center",
+                }} />
+                <div>
+                  <div style={{ fontSize: 13, fontWeight: 500 }}>{pickProductName(p, locale)}</div>
+                  {p.partNumber && (
+                    <div style={{ marginTop: 2, fontSize: 11, color: "rgba(0,0,0,0.6)" }}>№ {p.partNumber}</div>
+                  )}
+                </div>
+                <div style={{
+                  height: 32, borderRadius: 6, border: "1px solid var(--hd-border)",
+                  background: "var(--hd-panel)", fontSize: 12, fontWeight: 500,
+                  display: "flex", alignItems: "center", justifyContent: "space-between",
+                  padding: "0 10px",
+                }}>{t("view", locale)} <Icons.ChevronRight size={12} /></div>
+              </Link>
+            ))}
+          </div>
+        )}
+
+        <MobileFooter locale={locale} />
+      </div>
+    </>
   );
 }
 
-function pluralize(n: number): string {
-  const last = n % 10;
-  const tens = Math.floor((n % 100) / 10);
-  if (tens === 1) return "позиций";
-  if (last === 1) return "позиция";
-  if (last >= 2 && last <= 4) return "позиции";
-  return "позиций";
+function navLink(active: boolean): React.CSSProperties {
+  return {
+    padding: "10px 14px", borderRadius: 8,
+    fontSize: 14, fontWeight: active ? 600 : 500,
+    background: active ? "#000" : "transparent",
+    color: active ? "#fff" : "#000",
+  };
+}
+function chip(active: boolean): React.CSSProperties {
+  return {
+    padding: "6px 14px", borderRadius: 999, fontSize: 12,
+    border: `1px solid ${active ? "#000" : "var(--hd-hairline)"}`,
+    background: active ? "#000" : "#fff",
+    color: active ? "#fff" : "#000", whiteSpace: "nowrap",
+  };
 }

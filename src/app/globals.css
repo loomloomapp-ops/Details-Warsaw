@@ -27,3 +27,11 @@ html, body {
 button { font-family: inherit; cursor: pointer; }
 a { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; }
+
+/* responsive desktop / mobile switch (breakpoint 900px) */
+.hd-desktop { display: block; }
+.hd-mobile  { display: none; }
+@media (max-width: 899px) {
+  .hd-desktop { display: none !important; }
+  .hd-mobile  { display: block; }
+}

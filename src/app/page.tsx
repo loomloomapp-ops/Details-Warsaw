@@ -1,19 +1,25 @@
 import Link from "next/link";
 import { prisma } from "@/lib/db";
 import Header from "@/components/site/Header";
+import MobileHeader from "@/components/site/MobileHeader";
 import Footer from "@/components/site/Footer";
+import MobileFooter from "@/components/site/MobileFooter";
 import { Icons } from "@/components/site/Icons";
 import { PartnerCTA, FeatureStrip, ProductCard, WhatsappFab } from "@/components/site/Blocks";
+import { MobilePartnerCTA, MobileFeatureStrip } from "@/components/site/MobileBlocks";
 import HomeModelFilter from "./_home/HomeModelFilter";
+import { getLocale } from "@/lib/locale-server";
+import { t, pickProductName, pickCategoryName } from "@/lib/i18n";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
+  const locale = getLocale();
   const [categories, latestProducts] = await Promise.all([
     prisma.category.findMany({
       orderBy: [{ sortOrder: "asc" }, { nameRu: "asc" }],
-      take: 3,
-      select: { id: true, slug: true, nameRu: true },
+      take: 4,
+      select: { id: true, slug: true, nameRu: true, nameUa: true, namePl: true },
     }),
     prisma.product.findMany({
       orderBy: { createdAt: "desc" },
@@ -22,183 +28,292 @@ export default async function HomePage() {
     }),
   ]);
 
+  const heroChips = [
+    { icon: <Icons.Shield size={22} color="#fff" />, label: t("abs", locale) },
+    { icon: <Icons.Engine size={22} color="#fff" />, label: t("engine", locale) },
+    { icon: <Icons.Battery size={22} color="#fff" />, label: t("batteries", locale) },
+  ];
+
   return (
-    <div style={{ background: "#fff", minWidth: 1440 }}>
-      <Header current="home" />
+    <>
+      {/* DESKTOP */}
+      <div className="hd-desktop" style={{ background: "#fff", minWidth: 1440 }}>
+        <Header current="home" locale={locale} />
 
-      {/* HERO */}
-      <section style={{
-        position: "relative", height: 827, overflow: "hidden",
-        backgroundImage: "url(/design/hero-engine-bg.png)",
-        backgroundSize: "cover", backgroundPosition: "center",
-      }}>
-        <div style={{
-          position: "absolute", inset: 0,
-          background: "linear-gradient(180deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 60%, rgba(0,0,0,0) 100%)",
-        }} />
-
-        <div style={{
-          position: "absolute", left: 70, top: 125, width: 730, color: "#fff",
+        <section style={{
+          position: "relative", height: 827, overflow: "hidden",
+          backgroundImage: "url(/design/hero-engine-bg.png)",
+          backgroundSize: "cover", backgroundPosition: "center",
         }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 15 }}>
-            <span>Гибрид без компромиссов</span>
-            <span style={{ width: 30, height: 1, background: "#fff" }} />
-          </div>
+          <div style={{
+            position: "absolute", inset: 0,
+            background: "linear-gradient(180deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 60%, rgba(0,0,0,0) 100%)",
+          }} />
 
-          <h1 style={{
-            margin: "42px 0 0 0", fontSize: 62, lineHeight: "62px",
-            fontWeight: 700, letterSpacing: "-0.02em",
-          }}>
-            Проверенные детали<br />для вашего гибрида
-          </h1>
-
-          <p style={{ marginTop: 24, maxWidth: 620, fontSize: 16, lineHeight: "22px", color: "rgba(255,255,255,0.9)" }}>
-            Мы подбираем и проверяем ключевые узлы гибридного автомобиля
-            так, чтобы каждая деталь работала корректно и предсказуемо.
-            Без рисков, без догадок, с полной ответственностью за результат
-          </p>
-
-          <div style={{ marginTop: 38, display: "flex", alignItems: "center", gap: 30 }}>
-            <Link href="/catalog" style={{
-              display: "inline-flex", alignItems: "center", height: 52, padding: "0 30px",
-              borderRadius: 40, background: "#fff", color: "#000",
-              fontSize: 16, fontWeight: 500,
-            }}>Каталог</Link>
-            <Link href="/categories" style={{
-              display: "flex", alignItems: "center", gap: 10, color: "#fff", fontSize: 16,
-            }}>
-              Категории <Icons.ChevronRight size={16} color="#fff" />
-            </Link>
-          </div>
-        </div>
-
-        <div style={{
-          position: "absolute", left: 70, bottom: 42,
-          padding: "18px 22px", borderRadius: 20,
-          background: "rgba(255,255,255,0.14)",
-          backdropFilter: "blur(14px)",
-          WebkitBackdropFilter: "blur(14px)",
-          display: "flex", gap: 30, alignItems: "center",
-        }}>
-          {[
-            { icon: <Icons.Shield size={22} color="#fff" />, label: "ABS" },
-            { icon: <Icons.Engine size={22} color="#fff" />, label: "Двигатель" },
-            { icon: <Icons.Battery size={22} color="#fff" />, label: "Батареи" },
-          ].map((t, i) => (
-            <div key={t.label} style={{ display: "flex", alignItems: "center", gap: 30 }}>
-              {i > 0 && <span style={{ width: 1, height: 22, background: "rgba(255,255,255,0.3)" }} />}
-              <div style={{
-                display: "flex", alignItems: "center", gap: 10,
-                color: "#fff", fontSize: 14, fontWeight: 500,
-                textTransform: "uppercase", letterSpacing: 0.5,
-              }}>
-                <div style={{
-                  width: 36, height: 36, borderRadius: "50%",
-                  background: "rgba(255,255,255,0.15)",
-                  display: "grid", placeItems: "center",
-                }}>{t.icon}</div>
-                {t.label}
-              </div>
+          <div style={{ position: "absolute", left: 70, top: 125, width: 730, color: "#fff" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 15 }}>
+              <span>{t("heroTagline", locale)}</span>
+              <span style={{ width: 30, height: 1, background: "#fff" }} />
             </div>
-          ))}
-        </div>
-        <WhatsappFab />
-      </section>
+            <h1 style={{
+              margin: "42px 0 0 0", fontSize: 62, lineHeight: "62px",
+              fontWeight: 700, letterSpacing: "-0.02em",
+            }}>
+              {t("heroTitle1", locale)}<br />{t("heroTitle2", locale)}
+            </h1>
+            <p style={{ marginTop: 24, maxWidth: 620, fontSize: 16, lineHeight: "22px", color: "rgba(255,255,255,0.9)" }}>
+              {t("heroBody", locale)}
+            </p>
+            <div style={{ marginTop: 38, display: "flex", alignItems: "center", gap: 30 }}>
+              <Link href="/catalog" style={{
+                display: "inline-flex", alignItems: "center", height: 52, padding: "0 30px",
+                borderRadius: 40, background: "#fff", color: "#000", fontSize: 16, fontWeight: 500,
+              }}>{t("catalog", locale)}</Link>
+              <Link href="/categories" style={{
+                display: "flex", alignItems: "center", gap: 10, color: "#fff", fontSize: 16,
+              }}>{t("categories", locale)} <Icons.ChevronRight size={16} color="#fff" /></Link>
+            </div>
+          </div>
 
-      {/* CATEGORIES */}
-      <section style={{ padding: "80px 70px" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
-          <h2 style={{ margin: 0, fontSize: 36, lineHeight: "42px", fontWeight: 500 }}>Категории</h2>
-          <Link href="/categories" style={{
-            fontSize: 13, fontWeight: 600, letterSpacing: 1.5, textTransform: "uppercase",
-            display: "flex", alignItems: "center", gap: 8,
+          <div style={{
+            position: "absolute", left: 70, bottom: 42,
+            padding: "18px 22px", borderRadius: 20,
+            background: "rgba(255,255,255,0.14)",
+            backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)",
+            display: "flex", gap: 30, alignItems: "center",
           }}>
-            Перейти в категории <Icons.ArrowRight size={16} />
-          </Link>
-        </div>
-
-        <div style={{ marginTop: 36, display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 22 }}>
-          {categories.length === 0
-            ? [0, 1, 2].map((i) => <CategoryPlaceholder key={i} />)
-            : categories.map((c) => (
-              <Link key={c.id} href={`/catalog?category=${c.slug}`} style={{
-                height: 196, borderRadius: 10, background: "var(--hd-panel)",
-                display: "grid", gridTemplateColumns: "196px 1fr", overflow: "hidden",
-              }}>
+            {heroChips.map((c, i) => (
+              <div key={c.label} style={{ display: "flex", alignItems: "center", gap: 30 }}>
+                {i > 0 && <span style={{ width: 1, height: 22, background: "rgba(255,255,255,0.3)" }} />}
                 <div style={{
-                  backgroundImage: "url(/design/bumper.png)",
-                  backgroundSize: "contain", backgroundRepeat: "no-repeat", backgroundPosition: "center",
-                }} />
-                <div style={{
-                  padding: "28px 20px",
-                  display: "flex", flexDirection: "column", justifyContent: "space-between",
+                  display: "flex", alignItems: "center", gap: 10, color: "#fff",
+                  fontSize: 14, fontWeight: 500, textTransform: "uppercase", letterSpacing: 0.5,
                 }}>
-                  <div style={{ fontSize: 18, fontWeight: 500 }}>{c.nameRu}</div>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 14, color: "rgba(0,0,0,0.7)" }}>
-                    Посмотерть все <Icons.ChevronRight size={14} />
+                  <div style={{
+                    width: 36, height: 36, borderRadius: "50%",
+                    background: "rgba(255,255,255,0.15)",
+                    display: "grid", placeItems: "center",
+                  }}>{c.icon}</div>
+                  {c.label}
+                </div>
+              </div>
+            ))}
+          </div>
+          <WhatsappFab />
+        </section>
+
+        <section style={{ padding: "80px 70px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
+            <h2 style={{ margin: 0, fontSize: 36, lineHeight: "42px", fontWeight: 500 }}>{t("categories", locale)}</h2>
+            <Link href="/categories" style={{
+              fontSize: 13, fontWeight: 600, letterSpacing: 1.5, textTransform: "uppercase",
+              display: "flex", alignItems: "center", gap: 8,
+            }}>{t("goToCategories", locale)} <Icons.ArrowRight size={16} /></Link>
+          </div>
+
+          <div style={{ marginTop: 36, display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 22 }}>
+            {categories.length === 0
+              ? [0, 1, 2].map((i) => <div key={i} style={catEmpty} />)
+              : categories.slice(0, 3).map((c) => (
+                <Link key={c.id} href={`/catalog?category=${c.slug}`} style={{
+                  height: 196, borderRadius: 10, background: "var(--hd-panel)",
+                  display: "grid", gridTemplateColumns: "196px 1fr", overflow: "hidden",
+                }}>
+                  <div style={{
+                    backgroundImage: "url(/design/bumper.png)",
+                    backgroundSize: "contain", backgroundRepeat: "no-repeat", backgroundPosition: "center",
+                  }} />
+                  <div style={{
+                    padding: "28px 20px",
+                    display: "flex", flexDirection: "column", justifyContent: "space-between",
+                  }}>
+                    <div style={{ fontSize: 18, fontWeight: 500 }}>{pickCategoryName(c, locale)}</div>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 14, color: "rgba(0,0,0,0.7)" }}>
+                      {t("viewAll", locale)} <Icons.ChevronRight size={14} />
+                    </div>
                   </div>
+                </Link>
+              ))}
+          </div>
+        </section>
+
+        <section style={{
+          padding: "20px 70px 80px 70px",
+          display: "flex", flexDirection: "column", gap: 30, alignItems: "center",
+        }}>
+          <HomeModelFilter />
+
+          <div style={{ width: "100%", display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 24 }}>
+            {latestProducts.length === 0
+              ? Array.from({ length: 4 }).map((_, i) => <div key={i} style={cardEmpty} />)
+              : latestProducts.map((p) => (
+                <ProductCard
+                  key={p.id}
+                  href={`/catalog/${p.id}`}
+                  name={pickProductName(p, locale)}
+                  image={p.images[0]?.url ?? null}
+                  partNumber={p.partNumber}
+                />
+              ))}
+          </div>
+
+          <Link href="/catalog" style={{
+            display: "inline-flex", alignItems: "center", gap: 10,
+            height: 52, padding: "0 30px", borderRadius: 40,
+            background: "var(--hd-green)", color: "#fff",
+            fontSize: 16, fontWeight: 500, marginTop: 20,
+          }}>{t("catalog", locale)}</Link>
+        </section>
+
+        <PartnerCTA
+          heading={t("partnerHeading", locale)}
+          subheading={t("partnerSub", locale)}
+          body={t("partnerBody", locale)}
+        />
+        <FeatureStrip />
+        <Footer />
+      </div>
+
+      {/* MOBILE */}
+      <div className="hd-mobile" style={{ background: "#fff" }}>
+        <MobileHeader locale={locale} />
+
+        <section style={{ position: "relative" }}>
+          <div style={{
+            height: 240,
+            backgroundImage: "url(/design/hero-engine-bg.png)",
+            backgroundSize: "cover", backgroundPosition: "center",
+          }} />
+          <div style={{ padding: "22px 20px 0 20px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 13, color: "rgba(0,0,0,0.7)" }}>
+              {t("heroTagline", locale)}
+              <span style={{ width: 20, height: 1, background: "rgba(0,0,0,0.3)" }} />
+            </div>
+            <h1 style={{ margin: "14px 0 0 0", fontSize: 32, lineHeight: "34px", fontWeight: 700, letterSpacing: "-0.02em" }}>
+              {t("heroTitle1", locale)} {t("heroTitle2", locale)}
+            </h1>
+            <p style={{ marginTop: 14, marginBottom: 0, fontSize: 13, lineHeight: "18px", color: "rgba(0,0,0,0.7)" }}>
+              {t("heroBody", locale)}
+            </p>
+            <div style={{ marginTop: 18, display: "flex", alignItems: "center", gap: 22 }}>
+              <Link href="/catalog" style={{
+                display: "inline-flex", alignItems: "center",
+                height: 44, padding: "0 24px", borderRadius: 40,
+                background: "var(--hd-green)", color: "#fff", fontSize: 14, fontWeight: 500,
+              }}>{t("catalog", locale)}</Link>
+              <Link href="/categories" style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 14 }}>
+                {t("categories", locale)} <Icons.ChevronRight size={14} />
+              </Link>
+            </div>
+
+            <div style={{
+              marginTop: 22, padding: "12px 14px", borderRadius: 14,
+              background: "var(--hd-panel)",
+              display: "flex", justifyContent: "space-around", alignItems: "center",
+            }}>
+              {heroChips.map((c, i) => (
+                <div key={c.label} style={{ display: "flex", alignItems: "center", gap: 0 }}>
+                  {i > 0 && <div style={{ width: 1, height: 24, background: "rgba(0,0,0,0.1)", marginRight: 8 }} />}
+                  <div style={{
+                    display: "flex", flexDirection: "column", alignItems: "center", gap: 4,
+                    fontSize: 11, fontWeight: 500, textTransform: "uppercase", letterSpacing: 0.3,
+                  }}>
+                    <div style={{
+                      width: 28, height: 28, borderRadius: "50%",
+                      background: "#fff", border: "1px solid var(--hd-hairline)",
+                      display: "grid", placeItems: "center", color: "#000",
+                    }}>
+                      {/* render dark variants for mobile */}
+                      {i === 0 && <Icons.Shield size={18} color="#000" />}
+                      {i === 1 && <Icons.Engine size={18} color="#000" />}
+                      {i === 2 && <Icons.Battery size={18} color="#000" />}
+                    </div>
+                    {c.label}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section style={{ padding: "36px 20px 24px 20px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <h2 style={{ margin: 0, fontSize: 22, fontWeight: 500 }}>{t("categories", locale)}</h2>
+            <Link href="/categories" style={{
+              display: "flex", alignItems: "center", gap: 6,
+              fontSize: 11, fontWeight: 600, letterSpacing: 1, textTransform: "uppercase",
+            }}>{t("showAll", locale)} <Icons.ArrowRight size={13} /></Link>
+          </div>
+          <div style={{ marginTop: 20, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+            {(categories.length > 0 ? categories : []).slice(0, 4).map((c) => (
+              <Link key={c.id} href={`/catalog?category=${c.slug}`} style={{
+                height: 110, padding: "12px 14px", borderRadius: 10,
+                background: "var(--hd-panel)",
+                display: "flex", flexDirection: "column", justifyContent: "space-between",
+              }}>
+                <div style={{ fontSize: 14, fontWeight: 500 }}>{pickCategoryName(c, locale)}</div>
+                <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 11, color: "rgba(0,0,0,0.7)" }}>
+                  {t("viewAll", locale)} <Icons.ChevronRight size={12} />
                 </div>
               </Link>
             ))}
-        </div>
-      </section>
+            {categories.length === 0 && (
+              <div style={{ gridColumn: "1 / -1", padding: 24, color: "rgba(0,0,0,0.5)", fontSize: 13, textAlign: "center" }}>
+                —
+              </div>
+            )}
+          </div>
+        </section>
 
-      {/* MODEL FILTER + LATEST PRODUCTS */}
-      <section style={{
-        padding: "20px 70px 80px 70px",
-        display: "flex", flexDirection: "column", gap: 30, alignItems: "center",
-      }}>
-        <HomeModelFilter />
-
-        <div style={{
-          width: "100%", display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 24,
-        }}>
-          {latestProducts.length === 0
-            ? Array.from({ length: 4 }).map((_, i) => <PlaceholderCard key={i} />)
-            : latestProducts.map((p) => (
-              <ProductCard
-                key={p.id}
-                href={`/catalog/${p.id}`}
-                name={p.nameRu}
-                image={p.images[0]?.url ?? null}
-                partNumber={p.partNumber}
-              />
+        <section style={{ padding: "8px 20px 30px 20px" }}>
+          <div style={{ marginTop: 16, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+            {(latestProducts.length > 0 ? latestProducts.slice(0, 4) : []).map((p) => (
+              <Link key={p.id} href={`/catalog/${p.id}`} style={{
+                display: "flex", flexDirection: "column", gap: 8,
+              }}>
+                <div style={{
+                  aspectRatio: "1 / 1", borderRadius: 8,
+                  background: "var(--hd-panel)", border: "1px solid var(--hd-hairline)",
+                  backgroundImage: `url(${p.images[0]?.url ?? "/design/bumper.png"})`,
+                  backgroundSize: "contain", backgroundRepeat: "no-repeat", backgroundPosition: "center",
+                }} />
+                <div>
+                  <div style={{ fontSize: 14, fontWeight: 500 }}>{pickProductName(p, locale)}</div>
+                  {p.partNumber && (
+                    <div style={{ marginTop: 2, fontSize: 11, color: "rgba(0,0,0,0.6)" }}>№ {p.partNumber}</div>
+                  )}
+                </div>
+                <div style={{
+                  height: 34, borderRadius: 6, border: "1px solid var(--hd-border)",
+                  background: "var(--hd-panel)", fontSize: 12, fontWeight: 500,
+                  display: "flex", alignItems: "center", justifyContent: "space-between",
+                  padding: "0 10px",
+                }}>{t("view", locale)} <Icons.ChevronRight size={12} /></div>
+              </Link>
             ))}
-        </div>
+          </div>
+          <Link href="/catalog" style={{
+            marginTop: 18, display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
+            height: 42, width: "100%", borderRadius: 40,
+            background: "var(--hd-green)", color: "#fff", fontSize: 14, fontWeight: 500,
+          }}>{t("goToCatalog", locale)} <Icons.ArrowRight size={14} color="#fff" /></Link>
+        </section>
 
-        <Link href="/catalog" style={{
-          display: "inline-flex", alignItems: "center", gap: 10,
-          height: 52, padding: "0 30px", borderRadius: 40,
-          background: "var(--hd-green)", color: "#fff",
-          fontSize: 16, fontWeight: 500, marginTop: 20,
-        }}>Каталог</Link>
-      </section>
-
-      <PartnerCTA />
-      <FeatureStrip />
-      <Footer />
-    </div>
+        <MobilePartnerCTA locale={locale} />
+        <MobileFeatureStrip locale={locale} />
+        <MobileFooter locale={locale} />
+        <WhatsappFab />
+      </div>
+    </>
   );
 }
 
-function CategoryPlaceholder() {
-  return (
-    <div style={{
-      height: 196, borderRadius: 10, background: "var(--hd-panel)",
-      display: "grid", placeItems: "center", color: "var(--hd-subtle)", fontSize: 14,
-    }}>
-      Скоро…
-    </div>
-  );
-}
-
-function PlaceholderCard() {
-  return (
-    <div style={{
-      aspectRatio: "202 / 200", borderRadius: 8,
-      background: "var(--hd-panel)", border: "1px solid var(--hd-hairline)",
-      backgroundImage: "url(/design/bumper.png)",
-      backgroundSize: "contain", backgroundRepeat: "no-repeat", backgroundPosition: "center",
-    }} />
-  );
-}
+const catEmpty: React.CSSProperties = {
+  height: 196, borderRadius: 10, background: "var(--hd-panel)",
+};
+const cardEmpty: React.CSSProperties = {
+  aspectRatio: "202 / 200", borderRadius: 8,
+  background: "var(--hd-panel)", border: "1px solid var(--hd-hairline)",
+  backgroundImage: "url(/design/bumper.png)",
+  backgroundSize: "contain", backgroundRepeat: "no-repeat", backgroundPosition: "center",
+};
