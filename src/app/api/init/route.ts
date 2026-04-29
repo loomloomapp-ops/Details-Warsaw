@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { exec } from "child_process";
 import { promisify } from "util";
+import path from "path";
 import { prisma } from "@/lib/db";
 import bcrypt from "bcryptjs";
 
@@ -20,18 +21,19 @@ export async function GET(req: Request) {
 
   const log: string[] = [];
 
-  // 1. Создать/обновить таблицы
+  // 1. Создать/обновить таблицы — вызываем prisma CLI напрямую через node
   try {
+    const prismaCli = path.join(process.cwd(), "node_modules", "prisma", "build", "index.js");
     const { stdout, stderr } = await execAsync(
-      "npx prisma db push --skip-generate --accept-data-loss",
-      { env: process.env, cwd: process.cwd() }
+      `node "${prismaCli}" db push --skip-generate --accept-data-loss`,
+      { env: process.env, cwd: process.cwd(), maxBuffer: 10 * 1024 * 1024 }
     );
     log.push("✓ prisma db push OK");
     if (stdout) log.push(stdout.trim());
     if (stderr) log.push(stderr.trim());
   } catch (e: any) {
     return NextResponse.json(
-      { error: "db push failed", message: e?.message, log },
+      { error: "db push failed", message: e?.message, stderr: e?.stderr, stdout: e?.stdout, log },
       { status: 500 }
     );
   }
