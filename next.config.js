@@ -4,6 +4,15 @@ const path = require("path");
 const nextConfig = {
   reactStrictMode: true,
   output: "standalone",
+  // Гарантуем, что Prisma engine файлы и .prisma/client копируются в standalone
+  outputFileTracingIncludes: {
+    "*": [
+      "./node_modules/.prisma/client/**/*",
+      "./node_modules/@prisma/client/**/*",
+      "./node_modules/prisma/libquery_engine-*",
+      "./prisma/schema.prisma",
+    ],
+  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "**" },
