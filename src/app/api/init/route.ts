@@ -25,7 +25,7 @@ export async function GET(req: Request) {
   try {
     const prismaCli = path.join(process.cwd(), "node_modules", "prisma", "build", "index.js");
     const { stdout, stderr } = await execAsync(
-      `node "${prismaCli}" db push --skip-generate --accept-data-loss`,
+      `"${process.execPath}" "${prismaCli}" db push --skip-generate --accept-data-loss`,
       { env: process.env, cwd: process.cwd(), maxBuffer: 10 * 1024 * 1024 }
     );
     log.push("✓ prisma db push OK");
