@@ -8,6 +8,5 @@ export const config = {
   matcher: [
     "/admin/((?!login).*)",
     "/api/admin/:path*",
-    // /api/init НЕ защищён middleware — он защищён собственным секретом
   ],
 };
