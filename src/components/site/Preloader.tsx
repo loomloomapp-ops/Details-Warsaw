@@ -17,7 +17,6 @@ import { useEffect, useState } from "react";
 const PROGRESS_DURATION_MS = 2200;   // швидкість симуляції 0→92%
 const MIN_VISIBLE_MS = 2000;          // мінімум часу на екрані
 const FADE_OUT_MS = 500;
-const SESSION_KEY = "hd_preloader_shown_v1";
 
 export default function Preloader() {
   const [progress, setProgress] = useState(0);
@@ -27,11 +26,6 @@ export default function Preloader() {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    // Показуємо тільки раз за сесію — щоб не дратувати при кожному переході
-    if (sessionStorage.getItem(SESSION_KEY)) {
-      setRemoved(true);
-      return;
-    }
     setActive(true);
 
     const start = performance.now();
@@ -51,7 +45,6 @@ export default function Preloader() {
       setProgress((p) => (target > p ? target : p));
 
       if (target >= 100) {
-        sessionStorage.setItem(SESSION_KEY, "1");
         setHidden(true);
         setTimeout(() => setRemoved(true), FADE_OUT_MS);
         return;

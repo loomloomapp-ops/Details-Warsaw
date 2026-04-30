@@ -2,11 +2,14 @@ import Link from "next/link";
 import { prisma } from "@/lib/db";
 import Header from "@/components/site/Header";
 import MobileHeader from "@/components/site/MobileHeader";
+import HeaderWrap from "@/components/site/HeaderWrap";
 import Footer from "@/components/site/Footer";
 import MobileFooter from "@/components/site/MobileFooter";
 import { Icons } from "@/components/site/Icons";
 import { PartnerCTA, FeatureStrip, ProductCard, WhatsappFab } from "@/components/site/Blocks";
 import { MobilePartnerCTA, MobileFeatureStrip } from "@/components/site/MobileBlocks";
+import Preloader from "@/components/site/Preloader";
+import Reveal from "@/components/site/Reveal";
 import HomeModelFilter from "./_home/HomeModelFilter";
 import { getLocale } from "@/lib/locale-server";
 import { t, pickProductName, pickCategoryName } from "@/lib/i18n";
@@ -36,9 +39,10 @@ export default async function HomePage() {
 
   return (
     <>
+      <Preloader />
       {/* DESKTOP */}
       <div className="hd-desktop" style={{ background: "#fff", minWidth: 1440 }}>
-        <Header current="home" locale={locale} />
+        <HeaderWrap><Header current="home" locale={locale} /></HeaderWrap>
 
         <section style={{
           position: "relative", height: 827, overflow: "hidden",
@@ -65,11 +69,11 @@ export default async function HomePage() {
               {t("heroBody", locale)}
             </p>
             <div style={{ marginTop: 38, display: "flex", alignItems: "center", gap: 30 }}>
-              <Link href="/catalog" style={{
+              <Link href="/catalog" className="hd-cta-pill" data-variant="white" style={{
                 display: "inline-flex", alignItems: "center", height: 52, padding: "0 30px",
                 borderRadius: 40, background: "#fff", color: "#000", fontSize: 16, fontWeight: 500,
               }}>{t("catalog", locale)}</Link>
-              <Link href="/categories" style={{
+              <Link href="/categories" className="hd-cta-pill" data-variant="ghost-light" style={{
                 display: "flex", alignItems: "center", gap: 10, color: "#fff", fontSize: 16,
               }}>{t("categories", locale)} <Icons.ChevronRight size={16} color="#fff" /></Link>
             </div>
@@ -102,10 +106,10 @@ export default async function HomePage() {
           <WhatsappFab />
         </section>
 
-        <section style={{ padding: "80px 70px" }}>
+        <Reveal as="section" style={{ padding: "80px 70px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
             <h2 style={{ margin: 0, fontSize: 36, lineHeight: "42px", fontWeight: 500 }}>{t("categories", locale)}</h2>
-            <Link href="/categories" style={{
+            <Link href="/categories" className="hd-arrow-link" style={{
               fontSize: 13, fontWeight: 600, letterSpacing: 1.5, textTransform: "uppercase",
               display: "flex", alignItems: "center", gap: 8,
             }}>{t("goToCategories", locale)} <Icons.ArrowRight size={16} /></Link>
@@ -136,9 +140,9 @@ export default async function HomePage() {
                 </Link>
               ))}
           </div>
-        </section>
+        </Reveal>
 
-        <section style={{
+        <Reveal as="section" style={{
           padding: "20px 70px 80px 70px",
           display: "flex", flexDirection: "column", gap: 30, alignItems: "center",
         }}>
@@ -158,13 +162,13 @@ export default async function HomePage() {
               ))}
           </div>
 
-          <Link href="/catalog" style={{
+          <Link href="/catalog" className="hd-cta-pill" data-variant="green" style={{
             display: "inline-flex", alignItems: "center", gap: 10,
             height: 52, padding: "0 30px", borderRadius: 40,
             background: "var(--hd-green)", color: "#fff",
             fontSize: 16, fontWeight: 500, marginTop: 20,
           }}>{t("catalog", locale)}</Link>
-        </section>
+        </Reveal>
 
         <PartnerCTA
           heading={t("partnerHeading", locale)}
@@ -177,7 +181,7 @@ export default async function HomePage() {
 
       {/* MOBILE */}
       <div className="hd-mobile" style={{ background: "#fff" }}>
-        <MobileHeader locale={locale} />
+        <HeaderWrap><MobileHeader locale={locale} /></HeaderWrap>
 
         <section style={{ position: "relative" }}>
           <div style={{
@@ -197,12 +201,12 @@ export default async function HomePage() {
               {t("heroBody", locale)}
             </p>
             <div style={{ marginTop: 18, display: "flex", alignItems: "center", gap: 22 }}>
-              <Link href="/catalog" style={{
+              <Link href="/catalog" className="hd-cta-pill" data-variant="green" style={{
                 display: "inline-flex", alignItems: "center",
                 height: 44, padding: "0 24px", borderRadius: 40,
                 background: "var(--hd-green)", color: "#fff", fontSize: 14, fontWeight: 500,
               }}>{t("catalog", locale)}</Link>
-              <Link href="/categories" style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 14 }}>
+              <Link href="/categories" className="hd-arrow-link" style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 14 }}>
                 {t("categories", locale)} <Icons.ChevronRight size={14} />
               </Link>
             </div>
@@ -296,7 +300,7 @@ export default async function HomePage() {
               </Link>
             ))}
           </div>
-          <Link href="/catalog" style={{
+          <Link href="/catalog" className="hd-cta-pill" data-variant="green" style={{
             marginTop: 18, display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
             height: 42, width: "100%", borderRadius: 40,
             background: "var(--hd-green)", color: "#fff", fontSize: 14, fontWeight: 500,

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/db";
 import Header from "@/components/site/Header";
 import MobileHeader from "@/components/site/MobileHeader";
+import HeaderWrap from "@/components/site/HeaderWrap";
 import Footer from "@/components/site/Footer";
 import MobileFooter from "@/components/site/MobileFooter";
 import { Icons } from "@/components/site/Icons";
@@ -20,7 +21,7 @@ export default async function CategoriesPage() {
     <>
       {/* DESKTOP */}
       <div className="hd-desktop" style={{ background: "#fff", minWidth: 1440 }}>
-        <Header current="categories" locale={locale} />
+        <HeaderWrap><Header current="categories" locale={locale} /></HeaderWrap>
 
         <div style={{
           padding: "40px 70px 20px 70px",
@@ -70,7 +71,7 @@ export default async function CategoriesPage() {
 
       {/* MOBILE */}
       <div className="hd-mobile" style={{ background: "#fff" }}>
-        <MobileHeader locale={locale} />
+        <HeaderWrap><MobileHeader locale={locale} /></HeaderWrap>
 
         <div style={{ padding: "20px" }}>
           <h1 style={{ margin: 0, fontSize: 20, fontWeight: 500 }}>{t("categories", locale)}</h1>

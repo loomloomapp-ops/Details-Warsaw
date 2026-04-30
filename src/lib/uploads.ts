@@ -1,10 +1,23 @@
 import { promises as fs } from "fs";
+import os from "os";
 import path from "path";
 import sharp from "sharp";
 
-// Куда пишем загрузки. Используем папку вне .next/, чтобы стандалон-сборка
-// не пересоздавала её при деплое и не ломала ссылки на старые фото.
-const UPLOAD_DIR = path.join(process.cwd(), "data", "uploads");
+// Куда пишем загрузки. ПОСТОЯННАЯ папка вне application root —
+// иначе Hostinger при деплое из git стирает её вместе с файлами.
+//
+// Приоритет:
+// 1. ENV `UPLOADS_DIR` — если задана, используем её
+// 2. ~/hd-uploads — домашняя директория юзера, переживает деплой
+// 3. process.cwd()/data/uploads — fallback (локально/dev)
+function resolveUploadDir(): string {
+  if (process.env.UPLOADS_DIR) return process.env.UPLOADS_DIR;
+  const home = os.homedir();
+  if (home && home !== "/") return path.join(home, "hd-uploads");
+  return path.join(process.cwd(), "data", "uploads");
+}
+
+const UPLOAD_DIR = resolveUploadDir();
 
 export async function ensureUploadDir() {
   await fs.mkdir(UPLOAD_DIR, { recursive: true });

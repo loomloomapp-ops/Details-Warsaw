@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/db";
 import Header from "@/components/site/Header";
 import MobileHeader from "@/components/site/MobileHeader";
+import HeaderWrap from "@/components/site/HeaderWrap";
 import Footer from "@/components/site/Footer";
 import MobileFooter from "@/components/site/MobileFooter";
 import { Icons } from "@/components/site/Icons";
@@ -69,7 +70,7 @@ export default async function CatalogPage({
     <>
       {/* DESKTOP */}
       <div className="hd-desktop" style={{ background: "#fff", minWidth: 1440 }}>
-        <Header current="catalog" locale={locale} />
+        <HeaderWrap><Header current="catalog" locale={locale} /></HeaderWrap>
 
         <div style={{
           borderBottom: "1px solid var(--hd-hairline)",
@@ -201,7 +202,7 @@ export default async function CatalogPage({
 
       {/* MOBILE */}
       <div className="hd-mobile" style={{ background: "#fff" }}>
-        <MobileHeader locale={locale} />
+        <HeaderWrap><MobileHeader locale={locale} /></HeaderWrap>
 
         <div style={{ padding: "20px 20px 8px 20px" }}>
           <h1 style={{ margin: 0, fontSize: 18, fontWeight: 500, textAlign: "center" }}>

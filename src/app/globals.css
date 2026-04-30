@@ -89,10 +89,13 @@ img { display: block; max-width: 100%; }
     transition: background .2s ease, color .2s ease, border-color .2s ease;
   }
   .hd-product-card:hover .hd-view-btn {
-    background: #000;
+    background: var(--hd-green);
     color: #fff;
-    border-color: #000;
+    border-color: var(--hd-green);
+    box-shadow: 0 6px 16px rgba(68,122,68,0.25);
   }
+  .hd-product-card:hover .hd-view-btn svg { transform: translateX(3px); }
+  .hd-view-btn svg { transition: transform .25s ease; }
 
   /* category cards on home / categories */
   .hd-cat-card {
@@ -154,4 +157,82 @@ img { display: block; max-width: 100%; }
 }
 .hd-card-mobile:active {
   opacity: 0.85;
+}
+
+/* ---- premium CTA pill (hero/Каталог/etc) ---- */
+@media (prefers-reduced-motion: no-preference) {
+  .hd-cta-pill {
+    transition: transform .25s ease, box-shadow .3s ease, background .25s ease, color .25s ease, border-color .25s ease;
+    will-change: transform;
+  }
+  .hd-cta-pill:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.18);
+  }
+  .hd-cta-pill[data-variant="green"]:hover {
+    box-shadow: 0 12px 28px rgba(68,122,68,0.35);
+    filter: brightness(1.05);
+  }
+  .hd-cta-pill[data-variant="white"]:hover {
+    background: var(--hd-green);
+    color: #fff;
+  }
+  .hd-cta-pill[data-variant="ghost-light"]:hover {
+    color: #fff;
+    text-shadow: 0 0 18px rgba(255,255,255,0.4);
+  }
+  .hd-cta-pill[data-variant="ghost-light"]:hover svg {
+    transform: translateX(4px);
+  }
+  .hd-cta-pill svg {
+    transition: transform .25s ease;
+  }
+
+  /* arrow link with arrow that slides on hover */
+  .hd-arrow-link {
+    transition: color .2s ease, gap .2s ease;
+  }
+  .hd-arrow-link:hover { color: var(--hd-green); }
+  .hd-arrow-link:hover svg { transform: translateX(4px); }
+  .hd-arrow-link svg { transition: transform .25s ease; }
+
+  /* small social icon circles on product card */
+  .hd-social-icon {
+    transition: background .25s ease, color .25s ease, border-color .25s ease, transform .2s ease;
+  }
+  .hd-social-icon:hover {
+    background: var(--hd-green);
+    color: #fff;
+    border-color: var(--hd-green);
+    transform: translateY(-2px);
+  }
+}
+
+/* ---- on-scroll fade-in (uses CSS only, IntersectionObserver toggles class) ---- */
+.hd-reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity .7s cubic-bezier(.22,.61,.36,1), transform .7s cubic-bezier(.22,.61,.36,1);
+}
+.hd-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .hd-reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* ---- sticky / hide-on-scroll header wrapper ---- */
+.hd-header-wrap {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  transition: transform .35s cubic-bezier(.22,.61,.36,1), box-shadow .25s ease;
+  will-change: transform;
+}
+.hd-header-wrap[data-hidden="true"] {
+  transform: translateY(-110%);
+}
+.hd-header-wrap[data-scrolled="true"] {
+  box-shadow: 0 4px 18px rgba(0,0,0,0.06);
 }

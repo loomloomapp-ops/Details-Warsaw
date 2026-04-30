@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Providers from "./providers";
-import Preloader from "@/components/site/Preloader";
 
 export const metadata: Metadata = {
   title: "Hybrid Doktor — Toyota hybrid parts",
@@ -20,7 +19,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
-        <Preloader />
         <Providers>{children}</Providers>
       </body>
     </html>

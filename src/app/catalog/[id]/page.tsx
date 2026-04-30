@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
 import Header from "@/components/site/Header";
 import MobileHeader from "@/components/site/MobileHeader";
+import HeaderWrap from "@/components/site/HeaderWrap";
 import Footer from "@/components/site/Footer";
 import MobileFooter from "@/components/site/MobileFooter";
 import { MobilePartnerCTA } from "@/components/site/MobileBlocks";
@@ -44,7 +45,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
     <>
       {/* DESKTOP */}
       <div className="hd-desktop" style={{ background: "#fff", minWidth: 1440 }}>
-        <Header current="catalog" locale={locale} />
+        <HeaderWrap><Header current="catalog" locale={locale} /></HeaderWrap>
 
         <div style={{ padding: "18px 70px", borderBottom: "1px solid var(--hd-hairline)" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 16 }}>
@@ -119,7 +120,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
             )}
 
             <div style={{ marginTop: 40, display: "flex", alignItems: "center", gap: 18 }}>
-              <a href="https://wa.me/48578923625" target="_blank" rel="noreferrer noopener" style={{
+              <a href="https://wa.me/48578923625" target="_blank" rel="noreferrer noopener" className="hd-cta-pill" data-variant="green" style={{
                 display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 10,
                 width: 380, height: 52, borderRadius: 40,
                 background: "var(--hd-green)", color: "#fff", fontSize: 16, fontWeight: 500,
@@ -131,7 +132,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
                   <path d="M22 2 11 13" /><path d="M22 2l-7 20-4-9-9-4 20-7Z" />
                 </svg>
               </SocialIcon>
-              <a href="https://wa.me/48578923625" target="_blank" rel="noreferrer noopener" style={socialIconStyle}>
+              <a href="https://wa.me/48578923625" target="_blank" rel="noreferrer noopener" className="hd-social-icon" style={socialIconStyle}>
                 <Icons.Whatsapp size={20} color="#00BC19" />
               </a>
             </div>
@@ -180,7 +181,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
               <p style={{ marginTop: 14, fontSize: 15, lineHeight: "20px", color: "rgba(0,0,0,0.7)", maxWidth: 620 }}>
                 {t("confirmCompatBody", locale)}
               </p>
-              <Link href="/#contacts" style={{
+              <Link href="/#contacts" className="hd-cta-pill" data-variant="green" style={{
                 marginTop: 24, display: "inline-flex", alignItems: "center", gap: 10,
                 height: 52, padding: "0 30px", borderRadius: 40,
                 background: "var(--hd-green)", color: "#fff", fontSize: 16, fontWeight: 500,
@@ -196,7 +197,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
 
       {/* MOBILE */}
       <div className="hd-mobile" style={{ background: "#fff" }}>
-        <MobileHeader locale={locale} />
+        <HeaderWrap><MobileHeader locale={locale} /></HeaderWrap>
 
         <section style={{ background: "var(--hd-panel)", padding: "20px" }}>
           <div style={{
@@ -252,7 +253,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
             </ul>
           )}
 
-          <a href="https://wa.me/48578923625" target="_blank" rel="noreferrer noopener" style={{
+          <a href="https://wa.me/48578923625" target="_blank" rel="noreferrer noopener" className="hd-cta-pill" data-variant="green" style={{
             marginTop: 16, display: "flex", alignItems: "center", justifyContent: "center",
             width: "100%", height: 44, borderRadius: 40,
             background: "var(--hd-green)", color: "#fff", fontSize: 14, fontWeight: 500,
@@ -267,7 +268,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
                 <path d="M22 2 11 13" /><path d="M22 2l-7 20-4-9-9-4 20-7Z" />
               </svg>
             </SocialIconSmall>
-            <a href="https://wa.me/48578923625" target="_blank" rel="noreferrer noopener" style={socialIconSmallStyle}>
+            <a href="https://wa.me/48578923625" target="_blank" rel="noreferrer noopener" className="hd-social-icon" style={socialIconSmallStyle}>
               <Icons.Whatsapp size={18} color="#00BC19" />
             </a>
           </div>
@@ -318,10 +319,10 @@ const socialIconSmallStyle: React.CSSProperties = {
 };
 
 function SocialIcon({ children }: { children: React.ReactNode }) {
-  return <span style={socialIconStyle}>{children}</span>;
+  return <span className="hd-social-icon" style={socialIconStyle}>{children}</span>;
 }
 function SocialIconSmall({ children }: { children: React.ReactNode }) {
-  return <span style={socialIconSmallStyle}>{children}</span>;
+  return <span className="hd-social-icon" style={socialIconSmallStyle}>{children}</span>;
 }
 
 function FeatureRow({

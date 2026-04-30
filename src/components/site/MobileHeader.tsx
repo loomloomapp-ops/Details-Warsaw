@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Icons, Logo } from "./Icons";
+import HeaderSearch from "./HeaderSearch";
 import { type Locale, t } from "@/lib/i18n";
 
 export default function MobileHeader({ locale }: { locale: Locale }) {
@@ -41,34 +42,19 @@ export default function MobileHeader({ locale }: { locale: Locale }) {
       </div>
 
       {searchOpen && (
-        <form
-          action="/catalog"
-          method="get"
-          style={{
-            position: "absolute", top: 64, left: 12, right: 12,
-            background: "#fff",
-            border: "1px solid var(--hd-hairline)",
-            borderRadius: 10, padding: 12,
-            display: "flex", alignItems: "center", gap: 10,
-            boxShadow: "0 10px 30px rgba(0,0,0,0.08)",
-          }}
-        >
-          <Icons.Search size={16} color="rgba(0,0,0,0.6)" />
-          <input
-            name="q"
+        <div style={{
+          position: "absolute", top: 64, left: 12, right: 12,
+          background: "#fff",
+          border: "1px solid var(--hd-hairline)",
+          borderRadius: 10, padding: 12,
+          boxShadow: "0 10px 30px rgba(0,0,0,0.08)",
+        }}>
+          <HeaderSearch
+            locale={locale}
             placeholder={t("searchPlaceholder", locale)}
-            autoFocus
-            style={{
-              border: 0, outline: 0, background: "transparent",
-              fontSize: 14, color: "#000", flex: 1, fontFamily: "inherit",
-            }}
+            variant="mobile"
           />
-          <button type="submit" style={{
-            height: 32, padding: "0 14px", borderRadius: 999,
-            background: "var(--hd-green)", color: "#fff", border: 0,
-            fontSize: 13, fontWeight: 600,
-          }}>OK</button>
-        </form>
+        </div>
       )}
 
       {open && (
