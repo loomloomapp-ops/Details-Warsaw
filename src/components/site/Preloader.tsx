@@ -14,7 +14,8 @@ import { useEffect, useState } from "react";
  *  - вимкнути: видалити <Preloader/> з src/app/layout.tsx
  */
 
-const PROGRESS_DURATION_MS = 1600;
+const PROGRESS_DURATION_MS = 2200;   // швидкість симуляції 0→92%
+const MIN_VISIBLE_MS = 2000;          // мінімум часу на екрані
 const FADE_OUT_MS = 500;
 const SESSION_KEY = "hd_preloader_shown_v1";
 
@@ -44,8 +45,9 @@ export default function Preloader() {
       // ease-out quad
       const tProg = Math.min(elapsed / PROGRESS_DURATION_MS, 1);
       const eased = 1 - (1 - tProg) * (1 - tProg);
-      // Доходимо до 92% за час, далі чекаємо load → 100%
-      let target = pageLoaded ? 100 : Math.min(eased * 92, 92);
+      // Доходимо до 92% за час, далі чекаємо load + min час → 100%
+      const minElapsed = elapsed >= MIN_VISIBLE_MS;
+      let target = (pageLoaded && minElapsed) ? 100 : Math.min(eased * 92, 92);
       setProgress((p) => (target > p ? target : p));
 
       if (target >= 100) {
