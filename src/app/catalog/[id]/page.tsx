@@ -8,6 +8,7 @@ import Footer from "@/components/site/Footer";
 import MobileFooter from "@/components/site/MobileFooter";
 import { MobilePartnerCTA } from "@/components/site/MobileBlocks";
 import { Icons } from "@/components/site/Icons";
+import ProductGallery from "@/components/site/ProductGallery";
 import { getLocale } from "@/lib/locale-server";
 import { t, pickProductName, pickProductShort, pickProductLong, pickCategoryName } from "@/lib/i18n";
 
@@ -27,7 +28,6 @@ export default async function ProductPage({ params }: { params: { id: string } }
   });
   if (!product) notFound();
 
-  const cover = product.images[0]?.url ?? "/design/bumper.png";
   const name = pickProductName(product, locale);
   const shortDesc = pickProductShort(product, locale);
   const longDesc = pickProductLong(product, locale);
@@ -59,26 +59,11 @@ export default async function ProductPage({ params }: { params: { id: string } }
           background: "var(--hd-panel)", padding: "50px 70px 64px 70px",
           display: "grid", gridTemplateColumns: "550px 1fr", gap: 60,
         }}>
-          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-            <div style={{
-              width: 550, height: 470, borderRadius: 8,
-              background: "#fff", border: "1px solid var(--hd-hairline)",
-              backgroundImage: `url(${cover})`,
-              backgroundSize: "contain", backgroundRepeat: "no-repeat", backgroundPosition: "center",
-            }} />
-            {product.images.length > 1 && (
-              <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-                {product.images.slice(0, 6).map((img) => (
-                  <div key={img.id} style={{
-                    width: 80, height: 80, borderRadius: 8,
-                    background: "#fff", border: "1px solid var(--hd-hairline)",
-                    backgroundImage: `url(${img.url})`,
-                    backgroundSize: "contain", backgroundRepeat: "no-repeat", backgroundPosition: "center",
-                  }} />
-                ))}
-              </div>
-            )}
-          </div>
+          <ProductGallery
+            images={product.images.map((i) => ({ id: i.id, url: i.url }))}
+            alt={name}
+            variant="desktop"
+          />
 
           <div>
             <h1 style={{ margin: 0, fontSize: 40, fontWeight: 500, lineHeight: "44px" }}>{name}</h1>
@@ -200,24 +185,11 @@ export default async function ProductPage({ params }: { params: { id: string } }
         <HeaderWrap><MobileHeader locale={locale} /></HeaderWrap>
 
         <section style={{ background: "var(--hd-panel)", padding: "20px" }}>
-          <div style={{
-            width: "100%", aspectRatio: "1 / 1", borderRadius: 8,
-            background: "#fff", border: "1px solid var(--hd-hairline)",
-            backgroundImage: `url(${cover})`,
-            backgroundSize: "contain", backgroundRepeat: "no-repeat", backgroundPosition: "center",
-          }} />
-          {product.images.length > 1 && (
-            <div style={{ marginTop: 10, display: "flex", gap: 8, flexWrap: "wrap" }}>
-              {product.images.slice(0, 5).map((img) => (
-                <div key={img.id} style={{
-                  width: 56, height: 56, borderRadius: 6,
-                  background: "#fff", border: "1px solid var(--hd-hairline)",
-                  backgroundImage: `url(${img.url})`,
-                  backgroundSize: "contain", backgroundRepeat: "no-repeat", backgroundPosition: "center",
-                }} />
-              ))}
-            </div>
-          )}
+          <ProductGallery
+            images={product.images.map((i) => ({ id: i.id, url: i.url }))}
+            alt={name}
+            variant="mobile"
+          />
 
           <h1 style={{ margin: "22px 0 0 0", fontSize: 24, fontWeight: 500 }}>{name}</h1>
 
