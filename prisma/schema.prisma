@@ -20,6 +20,7 @@ model Category {
   nameRu      String
   nameUa      String?
   namePl      String?
+  imageUrl    String?
   sortOrder   Int                   @default(0)
   createdAt   DateTime              @default(now())
   products    ProductCategory[]
@@ -44,6 +45,10 @@ model Product {
   partNumber      String?
   color           String?
   material        String?
+  // Compatibility fields (для фільтрів каталогу)
+  make            String?
+  model           String?
+  year            String?
   // Media
   images          ProductImage[]
   // Categories (many-to-many)
@@ -54,6 +59,9 @@ model Product {
   @@index([nameRu])
   @@index([article])
   @@index([partNumber])
+  @@index([make])
+  @@index([model])
+  @@index([year])
 }
 
 model ProductImage {

@@ -40,6 +40,7 @@ export default async function EditCategoryPage({ params }: { params: { id: strin
           namePl: category.namePl,
           slug: category.slug,
           sortOrder: category.sortOrder,
+          imageUrl: category.imageUrl,
         }}
         action={update}
         onDelete={remove}

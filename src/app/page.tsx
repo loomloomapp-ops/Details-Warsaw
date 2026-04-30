@@ -19,7 +19,7 @@ export default async function HomePage() {
     prisma.category.findMany({
       orderBy: [{ sortOrder: "asc" }, { nameRu: "asc" }],
       take: 4,
-      select: { id: true, slug: true, nameRu: true, nameUa: true, namePl: true },
+      select: { id: true, slug: true, nameRu: true, nameUa: true, namePl: true, imageUrl: true },
     }),
     prisma.product.findMany({
       orderBy: { createdAt: "desc" },
@@ -115,13 +115,14 @@ export default async function HomePage() {
             {categories.length === 0
               ? [0, 1, 2].map((i) => <div key={i} style={catEmpty} />)
               : categories.slice(0, 3).map((c) => (
-                <Link key={c.id} href={`/catalog?category=${c.slug}`} style={{
+                <Link key={c.id} href={`/catalog?category=${c.slug}`} className="hd-cat-card" style={{
                   height: 196, borderRadius: 10, background: "var(--hd-panel)",
                   display: "grid", gridTemplateColumns: "196px 1fr", overflow: "hidden",
                 }}>
                   <div style={{
-                    backgroundImage: "url(/design/bumper.png)",
-                    backgroundSize: "contain", backgroundRepeat: "no-repeat", backgroundPosition: "center",
+                    backgroundImage: `url(${c.imageUrl || "/design/bumper.png"})`,
+                    backgroundSize: c.imageUrl ? "cover" : "contain",
+                    backgroundRepeat: "no-repeat", backgroundPosition: "center",
                   }} />
                   <div style={{
                     padding: "28px 20px",
@@ -248,7 +249,10 @@ export default async function HomePage() {
             {(categories.length > 0 ? categories : []).slice(0, 4).map((c) => (
               <Link key={c.id} href={`/catalog?category=${c.slug}`} style={{
                 height: 110, padding: "12px 14px", borderRadius: 10,
-                background: "var(--hd-panel)",
+                background: c.imageUrl
+                  ? `linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.85)), url(${c.imageUrl})`
+                  : "var(--hd-panel)",
+                backgroundSize: "cover", backgroundPosition: "center",
                 display: "flex", flexDirection: "column", justifyContent: "space-between",
               }}>
                 <div style={{ fontSize: 14, fontWeight: 500 }}>{pickCategoryName(c, locale)}</div>

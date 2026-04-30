@@ -48,11 +48,12 @@ export default async function CategoriesPage() {
                 <Link key={c.id} href={`/catalog?category=${c.slug}`} style={{
                   width: 250, display: "flex", flexDirection: "column", gap: 15,
                 }}>
-                  <div style={{
+                  <div className="hd-cat-tile" style={{
                     width: 250, height: 250, borderRadius: 10,
                     background: "var(--hd-panel)", border: "1px solid var(--hd-hairline)",
-                    backgroundImage: "url(/design/bumper.png)",
-                    backgroundSize: "contain", backgroundRepeat: "no-repeat", backgroundPosition: "center",
+                    backgroundImage: `url(${c.imageUrl || "/design/bumper.png"})`,
+                    backgroundSize: c.imageUrl ? "cover" : "contain",
+                    backgroundRepeat: "no-repeat", backgroundPosition: "center",
                   }} />
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <span style={{ fontSize: 18, fontWeight: 500 }}>{pickCategoryName(c, locale)}</span>
@@ -81,8 +82,9 @@ export default async function CategoriesPage() {
                 <div style={{
                   aspectRatio: "1 / 1", borderRadius: 8,
                   background: "var(--hd-panel)", border: "1px solid var(--hd-hairline)",
-                  backgroundImage: "url(/design/bumper.png)",
-                  backgroundSize: "contain", backgroundRepeat: "no-repeat", backgroundPosition: "center",
+                  backgroundImage: `url(${c.imageUrl || "/design/bumper.png"})`,
+                  backgroundSize: c.imageUrl ? "cover" : "contain",
+                  backgroundRepeat: "no-repeat", backgroundPosition: "center",
                 }} />
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <span style={{ fontSize: 14, fontWeight: 500 }}>{pickCategoryName(c, locale)}</span>

@@ -57,6 +57,9 @@ export default async function EditProductPage({ params }: { params: { id: string
           partNumber: product.partNumber,
           color: product.color,
           material: product.material,
+          make: product.make,
+          model: product.model,
+          year: product.year,
           images: product.images.map((i) => ({ id: i.id, url: i.url })),
           categoryIds: product.categories.map((pc) => pc.categoryId),
         }}

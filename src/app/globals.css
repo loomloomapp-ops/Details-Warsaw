@@ -35,3 +35,123 @@ img { display: block; max-width: 100%; }
   .hd-desktop { display: none !important; }
   .hd-mobile  { display: block; }
 }
+
+/* ---- premium hovers / motion ---- */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* page fade-in on first paint */
+  body {
+    animation: hd-fade-in .35s ease both;
+  }
+  @keyframes hd-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  /* generic links inside header — subtle underline grow */
+  header a {
+    position: relative;
+    transition: color .25s ease;
+  }
+  header nav a::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: -6px;
+    height: 1.5px;
+    background: var(--hd-green);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .3s cubic-bezier(.22,.61,.36,1);
+  }
+  header nav a:hover { color: var(--hd-green); }
+  header nav a:hover::after { transform: scaleX(1); }
+
+  /* primary green pill buttons */
+  a[style*="--hd-green"], button[style*="--hd-green"] {
+    transition: transform .2s ease, box-shadow .25s ease, background .2s ease;
+  }
+
+  /* product cards: hover-lift + image zoom */
+  .hd-product-card {
+    transition: transform .35s cubic-bezier(.22,.61,.36,1);
+  }
+  .hd-product-card:hover {
+    transform: translateY(-4px);
+  }
+  .hd-product-card .hd-product-image {
+    transition: transform .5s cubic-bezier(.22,.61,.36,1), border-color .25s ease;
+  }
+  .hd-product-card:hover .hd-product-image {
+    transform: scale(1.03);
+    border-color: var(--hd-green);
+  }
+  .hd-product-card .hd-view-btn {
+    transition: background .2s ease, color .2s ease, border-color .2s ease;
+  }
+  .hd-product-card:hover .hd-view-btn {
+    background: #000;
+    color: #fff;
+    border-color: #000;
+  }
+
+  /* category cards on home / categories */
+  .hd-cat-card {
+    transition: transform .35s cubic-bezier(.22,.61,.36,1), box-shadow .35s ease;
+  }
+  .hd-cat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  }
+  .hd-cat-tile {
+    transition: transform .4s cubic-bezier(.22,.61,.36,1), border-color .25s ease;
+  }
+  .hd-cat-tile:hover {
+    transform: scale(1.02);
+    border-color: var(--hd-green);
+  }
+
+  /* sidebar nav pills (catalog filter) */
+  .hd-nav-pill {
+    transition: background .25s ease, color .25s ease, padding-left .2s ease;
+  }
+  .hd-nav-pill:hover {
+    background: rgba(0,0,0,0.04);
+    padding-left: 18px;
+  }
+
+  /* breadcrumb / muted links */
+  .hd-link-hover {
+    transition: opacity .2s ease, color .2s ease;
+  }
+  .hd-link-hover:hover {
+    opacity: 1 !important;
+    color: var(--hd-green);
+  }
+
+  /* premium pill buttons (CTA) — subtle lift */
+  .hd-cta-pill {
+    transition: transform .2s ease, box-shadow .25s ease, background-color .2s ease;
+    will-change: transform;
+  }
+  .hd-cta-pill:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(68,122,68,0.25);
+  }
+
+  /* whatsapp fab pulse */
+  .hd-fab {
+    transition: transform .2s ease, box-shadow .3s ease;
+  }
+  .hd-fab:hover {
+    transform: scale(1.06);
+    box-shadow: 0 10px 30px rgba(0,188,25,0.5);
+  }
+}
+
+/* mobile cards: barely-there press effect */
+.hd-card-mobile {
+  transition: opacity .2s ease;
+}
+.hd-card-mobile:active {
+  opacity: 0.85;
+}

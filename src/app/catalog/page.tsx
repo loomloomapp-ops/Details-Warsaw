@@ -8,26 +8,31 @@ import { Icons } from "@/components/site/Icons";
 import { ProductCard } from "@/components/site/Blocks";
 import { getLocale } from "@/lib/locale-server";
 import { t, pickProductName, pickCategoryName } from "@/lib/i18n";
+import CatalogFilters from "./_filters/CatalogFilters";
 
 export const dynamic = "force-dynamic";
 
 export default async function CatalogPage({
   searchParams,
 }: {
-  searchParams: { q?: string; category?: string };
+  searchParams: { q?: string; category?: string; make?: string; model?: string; year?: string };
 }) {
   const locale = getLocale();
   const q = (searchParams.q || "").trim();
   const categorySlug = (searchParams.category || "").trim();
+  const make = (searchParams.make || "").trim();
+  const model = (searchParams.model || "").trim();
+  const year = (searchParams.year || "").trim();
 
-  const [category, allCategories] = await Promise.all([
-    categorySlug
-      ? prisma.category.findUnique({ where: { slug: categorySlug } })
-      : Promise.resolve(null),
+  const [category, allCategories, distinctMakes, distinctModels, distinctYears] = await Promise.all([
+    categorySlug ? prisma.category.findUnique({ where: { slug: categorySlug } }) : Promise.resolve(null),
     prisma.category.findMany({
       orderBy: [{ sortOrder: "asc" }, { nameRu: "asc" }],
       select: { id: true, slug: true, nameRu: true, nameUa: true, namePl: true, _count: { select: { products: true } } },
     }),
+    prisma.product.findMany({ where: { make: { not: null } }, select: { make: true }, distinct: ["make"], orderBy: { make: "asc" } }),
+    prisma.product.findMany({ where: { model: { not: null } }, select: { model: true }, distinct: ["model"], orderBy: { model: "asc" } }),
+    prisma.product.findMany({ where: { year: { not: null } }, select: { year: true }, distinct: ["year"], orderBy: { year: "desc" } }),
   ]);
 
   const where: any = {};
@@ -41,6 +46,9 @@ export default async function CatalogPage({
     ];
   }
   if (category) where.categories = { some: { categoryId: category.id } };
+  if (make) where.make = make;
+  if (model) where.model = model;
+  if (year) where.year = year;
 
   const products = await prisma.product.findMany({
     where: Object.keys(where).length ? where : undefined,
@@ -49,6 +57,13 @@ export default async function CatalogPage({
   });
 
   const categoryName = category ? pickCategoryName(category, locale) : null;
+  const filterOptions = {
+    makes:  distinctMakes.map((p) => p.make!).filter(Boolean),
+    models: distinctModels.map((p) => p.model!).filter(Boolean),
+    years:  distinctYears.map((p) => p.year!).filter(Boolean),
+  };
+  const placeholders = { make: "Марка Авто", model: "Модель", year: "Рік" };
+  const applyLabel = locale === "ua" ? "Застосувати" : locale === "pl" ? "Zastosuj" : "Применить";
 
   return (
     <>
@@ -63,7 +78,7 @@ export default async function CatalogPage({
           alignItems: "center", gap: 30,
         }}>
           <div style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 16 }}>
-            <Link href="/" style={{ opacity: 0.6 }}>{t("home", locale)}</Link>
+            <Link href="/" className="hd-link-hover" style={{ opacity: 0.6 }}>{t("home", locale)}</Link>
             <span style={{ opacity: 0.6 }}>/</span>
             <span>{t("catalog", locale)}</span>
             {categoryName && (<>
@@ -80,13 +95,8 @@ export default async function CatalogPage({
             {category && <input type="hidden" name="category" value={category.slug} />}
             <Icons.Search size={14} color="rgba(0,0,0,0.8)" />
             <input
-              name="q"
-              defaultValue={q}
-              placeholder={t("searchPlaceholder", locale)}
-              style={{
-                border: 0, outline: 0, background: "transparent",
-                fontSize: 14, color: "#000", flex: 1, fontFamily: "inherit",
-              }}
+              name="q" defaultValue={q} placeholder={t("searchPlaceholder", locale)}
+              style={{ border: 0, outline: 0, background: "transparent", fontSize: 14, color: "#000", flex: 1, fontFamily: "inherit" }}
             />
           </form>
           <div style={{
@@ -115,15 +125,29 @@ export default async function CatalogPage({
               {t("found", locale)}: <span style={{ color: "#000" }}>{products.length}</span>
             </div>
 
-            <div style={{ marginTop: 28, display: "flex", flexDirection: "column", gap: 8 }}>
-              <Link href="/catalog" style={navLink(!categorySlug)}>{t("allItems", locale)}</Link>
+            <div style={{ marginTop: 28 }}>
+              <CatalogFilters
+                options={filterOptions}
+                initial={{ make, model, year }}
+                applyLabel={applyLabel}
+                placeholders={placeholders}
+              />
+            </div>
+
+            <div style={{ marginTop: 36, display: "flex", flexDirection: "column", gap: 6 }}>
+              <div style={{ fontSize: 12, fontWeight: 700, color: "var(--hd-muted)", textTransform: "uppercase", letterSpacing: 0.6, marginBottom: 6 }}>
+                {t("categories", locale)}
+              </div>
+              <Link href="/catalog" className="hd-nav-pill" style={navLink(!categorySlug)}>{t("allItems", locale)}</Link>
               {allCategories.map((c) => {
                 const active = c.slug === categorySlug;
                 return (
-                  <Link key={c.id} href={`/catalog?category=${c.slug}`} style={{
-                    ...navLink(active),
-                    display: "flex", justifyContent: "space-between", alignItems: "center",
-                  }}>
+                  <Link
+                    key={c.id}
+                    href={`/catalog?category=${c.slug}`}
+                    className="hd-nav-pill"
+                    style={{ ...navLink(active), display: "flex", justifyContent: "space-between", alignItems: "center" }}
+                  >
                     <span>{pickCategoryName(c, locale)}</span>
                     <span style={{ fontSize: 12, opacity: active ? 0.7 : 0.5 }}>{c._count.products}</span>
                   </Link>
@@ -132,16 +156,15 @@ export default async function CatalogPage({
             </div>
 
             <div style={{
-              marginTop: 40, padding: 20, borderRadius: 10,
+              marginTop: 32, padding: 20, borderRadius: 10,
               border: "1px solid var(--hd-hairline)",
             }}>
               <div style={{ fontSize: 14, fontWeight: 600 }}>{t("cantFindPart", locale)}</div>
               <p style={{ marginTop: 8, fontSize: 13, lineHeight: "18px", color: "rgba(0,0,0,0.6)" }}>
                 {t("cantFindBody", locale)}
               </p>
-              <Link href="/#contacts" style={{
-                marginTop: 14, display: "inline-flex", alignItems: "center", gap: 8,
-                fontSize: 13, fontWeight: 600,
+              <Link href="/#contacts" className="hd-link-hover" style={{
+                marginTop: 14, display: "inline-flex", alignItems: "center", gap: 8, fontSize: 13, fontWeight: 600,
               }}>
                 {t("contactUs", locale)} <Icons.ArrowRight size={14} />
               </Link>
@@ -205,7 +228,6 @@ export default async function CatalogPage({
             />
           </form>
 
-          {/* mobile category chips */}
           <div style={{ marginTop: 12, display: "flex", gap: 8, overflowX: "auto", paddingBottom: 4 }}>
             <Link href="/catalog" style={chip(!categorySlug)}>{t("allItems", locale)}</Link>
             {allCategories.map((c) => (
@@ -213,6 +235,15 @@ export default async function CatalogPage({
                 {pickCategoryName(c, locale)}
               </Link>
             ))}
+          </div>
+
+          <div style={{ marginTop: 12 }}>
+            <CatalogFilters
+              options={filterOptions}
+              initial={{ make, model, year }}
+              applyLabel={applyLabel}
+              placeholders={placeholders}
+            />
           </div>
         </div>
 
@@ -229,7 +260,7 @@ export default async function CatalogPage({
             display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, rowGap: 26,
           }}>
             {products.map((p) => (
-              <Link key={p.id} href={`/catalog/${p.id}`} style={{
+              <Link key={p.id} href={`/catalog/${p.id}`} className="hd-card-mobile" style={{
                 display: "flex", flexDirection: "column", gap: 8,
               }}>
                 <div style={{
@@ -267,6 +298,7 @@ function navLink(active: boolean): React.CSSProperties {
     fontSize: 14, fontWeight: active ? 600 : 500,
     background: active ? "#000" : "transparent",
     color: active ? "#fff" : "#000",
+    transition: "background .25s ease, color .25s ease, transform .15s ease",
   };
 }
 function chip(active: boolean): React.CSSProperties {
@@ -275,5 +307,6 @@ function chip(active: boolean): React.CSSProperties {
     border: `1px solid ${active ? "#000" : "var(--hd-hairline)"}`,
     background: active ? "#000" : "#fff",
     color: active ? "#fff" : "#000", whiteSpace: "nowrap",
+    transition: "background .2s ease, color .2s ease, border-color .2s ease",
   };
 }

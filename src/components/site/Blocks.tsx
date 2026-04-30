@@ -98,8 +98,8 @@ export function ProductCard({
   big?: boolean;
 }) {
   return (
-    <Link href={href} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-      <div style={{
+    <Link href={href} className="hd-product-card" style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+      <div className="hd-product-image" style={{
         width: "100%",
         aspectRatio: big ? "1 / 1" : "202 / 200",
         borderRadius: 8,
@@ -114,7 +114,7 @@ export function ProductCard({
           <div style={{ marginTop: 6, fontSize: 13, color: "rgba(0,0,0,0.6)" }}>№ {partNumber}</div>
         )}
       </div>
-      <div style={{
+      <div className="hd-view-btn" style={{
         display: "flex", justifyContent: "space-between", alignItems: "center",
         height: 40, padding: "0 14px",
         borderRadius: 8, background: "var(--hd-panel)",
@@ -129,7 +129,7 @@ export function ProductCard({
 
 export function WhatsappFab() {
   return (
-    <a href="https://wa.me/48578923625" target="_blank" rel="noreferrer noopener" style={{
+    <a href="https://wa.me/48578923625" target="_blank" rel="noreferrer noopener" className="hd-fab" style={{
       position: "fixed", right: 24, bottom: 70,
       width: 56, height: 56, borderRadius: 12,
       background: "var(--hd-green-btn)",

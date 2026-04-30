@@ -20,6 +20,9 @@ type Initial = {
   partNumber?: string | null;
   color?: string | null;
   material?: string | null;
+  make?: string | null;
+  model?: string | null;
+  year?: string | null;
   images?: Image[];
   categoryIds?: number[];
 };
@@ -123,6 +126,23 @@ export default function ProductForm({
             <input name="material" defaultValue={initial.material || ""} style={inp} />
           </Field>
         </div>
+      </Card>
+
+      <Card title="Совместимость авто (для фильтров каталога)">
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16 }}>
+          <Field label="Марка авто">
+            <input name="make" defaultValue={initial.make || ""} style={inp} placeholder="Toyota" />
+          </Field>
+          <Field label="Модель">
+            <input name="model" defaultValue={initial.model || ""} style={inp} placeholder="Prius 30" />
+          </Field>
+          <Field label="Год">
+            <input name="year" defaultValue={initial.year || ""} style={inp} placeholder="2009-2015" />
+          </Field>
+        </div>
+        <p style={{ marginTop: 4, fontSize: 12, color: "var(--hd-subtle)" }}>
+          По этим полям работают выпадающие фильтры в каталоге. Если оставить пустыми — деталь не попадёт под фильтры по марке/модели/году.
+        </p>
       </Card>
 
       <Card title="Категории">

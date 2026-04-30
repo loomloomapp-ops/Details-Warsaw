@@ -46,6 +46,9 @@ export async function createProduct(form: FormData) {
     partNumber: str(form, "partNumber"),
     color: str(form, "color"),
     material: str(form, "material"),
+    make: str(form, "make"),
+    model: str(form, "model"),
+    year: str(form, "year"),
   };
 
   const cats = categoryIds(form);
@@ -86,6 +89,9 @@ export async function updateProduct(id: number, form: FormData) {
     partNumber: str(form, "partNumber"),
     color: str(form, "color"),
     material: str(form, "material"),
+    make: str(form, "make"),
+    model: str(form, "model"),
+    year: str(form, "year"),
   };
 
   const cats = categoryIds(form);
