@@ -1,18 +1,27 @@
 import Link from "next/link";
 import { Icons } from "./Icons";
+import { type Locale, t } from "@/lib/i18n";
+import { getLocale } from "@/lib/locale-server";
 
 export function PartnerCTA({
-  heading = "Партнёрство для СТО",
-  subheading = "Специальные условия поставки",
-  body = "Оставьте заявку для оптового сотрудничества. Мы свяжемся с вами, уточним формат работы и предложим индивидуальные условия поставки гибридных узлов и компонентов",
-}: { heading?: string; subheading?: string; body?: string }) {
+  heading,
+  subheading,
+  body,
+  locale: localeProp,
+}: {
+  heading?: string;
+  subheading?: string;
+  body?: string;
+  locale?: Locale;
+}) {
+  const locale = localeProp ?? getLocale();
   return (
     <section id="contacts" style={{
       padding: "100px 70px",
       display: "flex", flexDirection: "column", gap: 50,
     }}>
       <h2 style={{ margin: 0, fontSize: 48, fontWeight: 500, lineHeight: "52px", letterSpacing: "-0.01em" }}>
-        {heading}
+        {heading ?? t("partnerHeading", locale)}
       </h2>
 
       <div style={{ display: "grid", gridTemplateColumns: "623px 1fr", gap: 54, alignItems: "start" }}>
@@ -23,25 +32,25 @@ export function PartnerCTA({
         }} />
 
         <div style={{ paddingTop: 40 }}>
-          <h3 style={{ margin: 0, fontSize: 36, fontWeight: 500, lineHeight: "42px" }}>{subheading}</h3>
+          <h3 style={{ margin: 0, fontSize: 36, fontWeight: 500, lineHeight: "42px" }}>{subheading ?? t("partnerSub", locale)}</h3>
           <p style={{ marginTop: 22, fontSize: 16, lineHeight: "22px", color: "rgba(0,0,0,0.7)", maxWidth: 580 }}>
-            {body}
+            {body ?? t("partnerBody", locale)}
           </p>
 
           <form style={{ marginTop: 46, display: "flex", flexDirection: "column", gap: 28 }}>
-            <Row><Icons.User /><input placeholder="Контактное лицо" style={hdInp} /></Row>
+            <Row><Icons.User /><input placeholder={t("contactPerson", locale)} style={hdInp} /></Row>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
-              <Row><Icons.Mail /><input placeholder="Ваш email" style={hdInp} /></Row>
-              <Row><Icons.Phone /><input placeholder="Номер телефона" style={hdInp} /></Row>
+              <Row><Icons.Mail /><input placeholder={t("yourEmail", locale)} style={hdInp} /></Row>
+              <Row><Icons.Phone /><input placeholder={t("phoneNumber", locale)} style={hdInp} /></Row>
             </div>
-            <Row><Icons.MapPin /><input placeholder="Страна / город" style={hdInp} /></Row>
+            <Row><Icons.MapPin /><input placeholder={t("countryCity", locale)} style={hdInp} /></Row>
             <Row alignTop>
               <Icons.Comment />
-              <textarea rows={3} placeholder="Какие детали интересуют, комментарий" style={hdTa} />
+              <textarea rows={3} placeholder={t("partsComment", locale)} style={hdTa} />
             </Row>
             <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 10 }}>
               <button type="button" style={pillGreen}>
-                Отправить <Icons.ArrowRight size={18} color="#fff" />
+                {t("send", locale)} <Icons.ArrowRight size={18} color="#fff" />
               </button>
             </div>
           </form>
@@ -51,14 +60,12 @@ export function PartnerCTA({
   );
 }
 
-export function FeatureStrip() {
+export function FeatureStrip({ locale: localeProp }: { locale?: Locale } = {}) {
+  const locale = localeProp ?? getLocale();
   const items = [
-    { icon: <Icons.Shield size={28} color="#000" />, title: "Проверенные детали",
-      body: "Каждая деталь проходит ручную проверку и тестирование перед продажей, поэтому вы получаете стабильный рабочий компонент" },
-    { icon: <Icons.Wrench size={28} color="#000" />, title: "Готовность к установке",
-      body: "Все детали подготовлены к установке и могут быть сразу использованы при ремонте автомобиля" },
-    { icon: <Icons.Headset size={28} color="#000" />, title: "Быстрая консультация и подбор",
-      body: "Менеджер поможет подобрать нужную деталь и ответит на все вопросы перед покупкой" },
+    { icon: <Icons.Shield size={28} color="#000" />, title: t("feature1Title", locale), body: t("feature1Body", locale) },
+    { icon: <Icons.Wrench size={28} color="#000" />, title: t("feature2Title", locale), body: t("feature2Body", locale) },
+    { icon: <Icons.Headset size={28} color="#000" />, title: t("feature3Title", locale), body: t("feature3Body", locale) },
   ];
   return (
     <section style={{
@@ -90,13 +97,16 @@ export function ProductCard({
   image,
   partNumber,
   big = false,
+  viewLabel,
 }: {
   href: string;
   name: string;
   image: string | null;
   partNumber: string | null;
   big?: boolean;
+  viewLabel?: string;
 }) {
+  const label = viewLabel ?? t("view", getLocale());
   return (
     <Link href={href} className="hd-product-card" style={{ display: "flex", flexDirection: "column", gap: 14 }}>
       <div className="hd-product-image" style={{
@@ -121,7 +131,7 @@ export function ProductCard({
         border: "1px solid var(--hd-border)",
         fontSize: 14, fontWeight: 500,
       }}>
-        Переглянути <Icons.ChevronRight size={16} />
+        {label} <Icons.ChevronRight size={16} />
       </div>
     </Link>
   );

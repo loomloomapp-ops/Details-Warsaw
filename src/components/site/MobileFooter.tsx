@@ -26,11 +26,9 @@ export default function MobileFooter({ locale }: { locale: Locale }) {
         }}>
           <Logo onDark />
         </div>
-        <div style={{ marginTop: 14, fontSize: 14, fontWeight: 500 }}>Hybrid Doktor</div>
+        <div style={{ marginTop: 14, fontSize: 14, fontWeight: 500 }}>{t("brandTagline", locale)}</div>
         <p style={{ marginTop: 12, fontSize: 13, lineHeight: "18px", color: "rgba(255,255,255,0.5)" }}>
-          Мы специализируемся на гибридных автомобилях Toyota и Lexus.
-          Поставляем проверенные запчасти и помогаем сервисам решать
-          сложные задачи — от диагностики до полного восстановления систем.
+          {t("brandAboutShort", locale)}
         </p>
 
         <div style={{ marginTop: 28 }}>
@@ -91,8 +89,8 @@ export default function MobileFooter({ locale }: { locale: Locale }) {
           display: "flex", justifyContent: "space-between",
           fontSize: 12, color: "rgba(255,255,255,0.7)",
         }}>
-          <span>©Запчасти 2026</span>
-          <span style={{ textDecoration: "underline" }}>Privacy & Policy</span>
+          <span>{t("copyright", locale)}</span>
+          <span style={{ textDecoration: "underline" }}>{t("privacyPolicy", locale)}</span>
         </div>
       </div>
     </footer>

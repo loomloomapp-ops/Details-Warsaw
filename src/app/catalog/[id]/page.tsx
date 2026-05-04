@@ -139,10 +139,10 @@ export default async function ProductPage({ params }: { params: { id: string } }
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
-            <FeatureRow Icon={Icons.Box}     title="Free Shipping"    body="You will love at great low prices" />
-            <FeatureRow Icon={Icons.Card}    title="Flexible Payment" body="Pay with Multiple Credit Cards" />
-            <FeatureRow Icon={Icons.Truck}   title="Fast Delivery"    body="Experience the joy of fast shipping" />
-            <FeatureRow Icon={Icons.Headset} title="Premium Support"  body="Outstanding premium support" />
+            <FeatureRow Icon={Icons.Box}     title={t("freeShipping", locale)}    body={t("freeShippingBody", locale)} />
+            <FeatureRow Icon={Icons.Card}    title={t("flexiblePayment", locale)} body={t("flexiblePaymentBody", locale)} />
+            <FeatureRow Icon={Icons.Truck}   title={t("fastDelivery", locale)}    body={t("fastDeliveryBody", locale)} />
+            <FeatureRow Icon={Icons.Headset} title={t("premiumSupport", locale)}  body={t("premiumSupportBody", locale)} />
           </div>
         </section>
 
@@ -259,10 +259,10 @@ export default async function ProductPage({ params }: { params: { id: string } }
           )}
 
           <div style={{ marginTop: 22, display: "flex", flexDirection: "column", gap: 18 }}>
-            <FeatureRowMobile Icon={Icons.Box}     title="Free Shipping"    body="You will love at great low prices" />
-            <FeatureRowMobile Icon={Icons.Card}    title="Flexible Payment" body="Pay with Multiple Credit Cards" />
-            <FeatureRowMobile Icon={Icons.Truck}   title="Fast Delivery"    body="Experience the joy of fast shipping" />
-            <FeatureRowMobile Icon={Icons.Headset} title="Premium Support"  body="Outstanding premium support" />
+            <FeatureRowMobile Icon={Icons.Box}     title={t("freeShipping", locale)}    body={t("freeShippingBody", locale)} />
+            <FeatureRowMobile Icon={Icons.Card}    title={t("flexiblePayment", locale)} body={t("flexiblePaymentBody", locale)} />
+            <FeatureRowMobile Icon={Icons.Truck}   title={t("fastDelivery", locale)}    body={t("fastDeliveryBody", locale)} />
+            <FeatureRowMobile Icon={Icons.Headset} title={t("premiumSupport", locale)}  body={t("premiumSupportBody", locale)} />
           </div>
         </section>
 

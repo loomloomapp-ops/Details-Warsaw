@@ -1,7 +1,10 @@
 import Link from "next/link";
 import { Icons, Logo } from "./Icons";
+import { type Locale, t } from "@/lib/i18n";
+import { getLocale } from "@/lib/locale-server";
 
-export default function Footer() {
+export default function Footer({ locale: localeProp }: { locale?: Locale } = {}) {
+  const locale = localeProp ?? getLocale();
   return (
     <footer id="footer">
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
@@ -13,19 +16,17 @@ export default function Footer() {
         }}>
           <div style={{ maxWidth: 520 }}>
             <h3 style={{ margin: 0, fontSize: 22, lineHeight: "26px", fontWeight: 500, color: "#000" }}>
-              Специальные условия для СТО
+              {t("footerCTOTitle", locale)}
             </h3>
             <p style={{ marginTop: 18, marginBottom: 0, fontSize: 15, lineHeight: "22px", color: "rgba(0,0,0,0.6)" }}>
-              Если вы работаете с гибридными автомобилями или регулярно
-              заказываете детали, оставьте заявку и получите индивидуальные
-              условия для оптовых поставок и постоянного сотрудничества
+              {t("footerCTOBody", locale)}
             </p>
           </div>
           <Link href="/#contacts" className="hd-arrow-link" style={{
             display: "inline-flex", alignItems: "center", gap: 8,
             fontSize: 15, color: "#000", fontWeight: 500,
           }}>
-            Написать нам <Icons.ArrowRight size={18} />
+            {t("writeToUs", locale)} <Icons.ArrowRight size={18} />
           </Link>
         </div>
         <div style={{
@@ -48,20 +49,15 @@ export default function Footer() {
               <Logo onDark />
             </div>
             <div style={{ marginTop: 16, fontSize: 15, lineHeight: "17px", fontWeight: 500, color: "#fff" }}>
-              Hybrid Doktor
+              {t("brandTagline", locale)}
             </div>
             <p style={{ marginTop: 16, fontSize: 14, lineHeight: "20px", color: "rgba(255,255,255,0.5)" }}>
-              Мы специализируемся на гибридных автомобилях Toyota и Lexus.
-              Поставляем проверенные запчасти и помогаем сервисам решать
-              сложные задачи — от диагностики до полного восстановления
-              систем. Каждая деталь проходит проверку и отбор, чтобы вы
-              могли быть уверены в результате и не тратить время на
-              эксперименты
+              {t("brandAbout", locale)}
             </p>
           </div>
 
           <div>
-            <div style={{ fontSize: 16, color: "#fff" }}>Наши контакты</div>
+            <div style={{ fontSize: 16, color: "#fff" }}>{t("ourContacts", locale)}</div>
             <div style={{ marginTop: 30 }}>
               <a href="tel:+48578923625" className="hd-footer-link" style={{ fontSize: 18, color: "#fff", display: "inline-block" }}>+48 578 923 625</a>
               <a
@@ -86,15 +82,15 @@ export default function Footer() {
 
           <div style={{ display: "flex", gap: 60 }}>
             <div>
-              <div style={{ fontSize: 16, color: "#fff" }}>Страницы</div>
+              <div style={{ fontSize: 16, color: "#fff" }}>{t("pages", locale)}</div>
               <div style={{ marginTop: 30, display: "flex", flexDirection: "column", gap: 15 }}>
-                <Link href="/catalog"    className="hd-footer-link" style={{ fontSize: 15, color: "rgba(255,255,255,0.7)" }}>Каталог</Link>
-                <Link href="/categories" className="hd-footer-link" style={{ fontSize: 15, color: "rgba(255,255,255,0.7)" }}>Категории</Link>
-                <Link href="/#footer"    className="hd-footer-link" style={{ fontSize: 15, color: "rgba(255,255,255,0.7)" }}>Контакты</Link>
+                <Link href="/catalog"    className="hd-footer-link" style={{ fontSize: 15, color: "rgba(255,255,255,0.7)" }}>{t("catalog", locale)}</Link>
+                <Link href="/categories" className="hd-footer-link" style={{ fontSize: 15, color: "rgba(255,255,255,0.7)" }}>{t("categories", locale)}</Link>
+                <Link href="/#footer"    className="hd-footer-link" style={{ fontSize: 15, color: "rgba(255,255,255,0.7)" }}>{t("contacts", locale)}</Link>
               </div>
             </div>
             <div>
-              <div style={{ fontSize: 16, color: "#fff" }}>Социальные сети</div>
+              <div style={{ fontSize: 16, color: "#fff" }}>{t("socialNetworks", locale)}</div>
               <div style={{ marginTop: 30, display: "flex", flexDirection: "column", gap: 15 }}>
                 <a href="https://facebook.com" target="_blank" rel="noreferrer noopener" className="hd-footer-link" style={{ fontSize: 15, color: "rgba(255,255,255,0.7)" }}>Facebook</a>
                 <a href="https://instagram.com" target="_blank" rel="noreferrer noopener" className="hd-footer-link" style={{ fontSize: 15, color: "rgba(255,255,255,0.7)" }}>Instagram</a>
@@ -123,8 +119,8 @@ export default function Footer() {
           display: "flex", justifyContent: "space-between",
           fontSize: 14, color: "rgba(255,255,255,0.7)",
         }}>
-          <span>©Запчасти 2026</span>
-          <span style={{ textDecoration: "underline" }}>Privacy & Policy</span>
+          <span>{t("copyright", locale)}</span>
+          <span style={{ textDecoration: "underline" }}>{t("privacyPolicy", locale)}</span>
         </div>
       </div>
     </footer>

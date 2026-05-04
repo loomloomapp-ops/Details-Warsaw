@@ -109,6 +109,43 @@ const DICT: Dict = {
   thanks:         { ru: "Спасибо! Мы скоро свяжемся.", ua: "Дякуємо! Ми скоро зв'яжемося.", pl: "Dziękujemy! Wkrótce się skontaktujemy." },
   required:       { ru: "Обязательное поле", ua: "Обов'язкове поле", pl: "Pole wymagane" },
   close:          { ru: "Закрыть",       ua: "Закрити",      pl: "Zamknij" },
+  // Footer / company
+  copyright:      { ru: "©Запчасти 2026", ua: "©Запчастини 2026", pl: "©Części 2026" },
+  privacyPolicy:  { ru: "Политика конфиденциальности", ua: "Політика конфіденційності", pl: "Polityka prywatności" },
+  brandTagline:   { ru: "Hybrid Doktor",  ua: "Hybrid Doktor", pl: "Hybrid Doktor" },
+  brandAbout:     {
+    ru: "Мы специализируемся на гибридных автомобилях Toyota и Lexus. Поставляем проверенные запчасти и помогаем сервисам решать сложные задачи — от диагностики до полного восстановления систем. Каждая деталь проходит проверку и отбор, чтобы вы могли быть уверены в результате и не тратить время на эксперименты",
+    ua: "Ми спеціалізуємося на гібридних автомобілях Toyota та Lexus. Постачаємо перевірені запчастини й допомагаємо сервісам вирішувати складні задачі — від діагностики до повного відновлення систем. Кожна деталь проходить перевірку й відбір, щоб ви могли бути впевнені в результаті та не витрачати час на експерименти",
+    pl: "Specjalizujemy się w samochodach hybrydowych Toyota i Lexus. Dostarczamy sprawdzone części i pomagamy serwisom rozwiązywać złożone problemy — od diagnostyki po pełne odbudowanie systemów. Każda część przechodzi kontrolę i selekcję, byś mógł być pewny wyniku i nie tracić czasu na eksperymenty",
+  },
+  brandAboutShort:{
+    ru: "Мы специализируемся на гибридных автомобилях Toyota и Lexus. Поставляем проверенные запчасти и помогаем сервисам решать сложные задачи — от диагностики до полного восстановления систем.",
+    ua: "Ми спеціалізуємося на гібридних автомобілях Toyota та Lexus. Постачаємо перевірені запчастини й допомагаємо сервісам вирішувати складні задачі — від діагностики до повного відновлення систем.",
+    pl: "Specjalizujemy się w samochodach hybrydowych Toyota i Lexus. Dostarczamy sprawdzone części i pomagamy serwisom rozwiązywać złożone problemy — od diagnostyki po pełne odbudowanie systemów.",
+  },
+  // Catalog filter placeholders
+  filterMake:     { ru: "Марка авто",     ua: "Марка авто",   pl: "Marka samochodu" },
+  filterModel:    { ru: "Модель",         ua: "Модель",       pl: "Model" },
+  filterYear:     { ru: "Год",            ua: "Рік",          pl: "Rok" },
+  apply:          { ru: "Применить",      ua: "Застосувати",  pl: "Zastosuj" },
+  // Search no-results / show-all
+  searchNoResults:{ ru: "Ничего не найдено", ua: "Нічого не знайдено", pl: "Nic nie znaleziono" },
+  searchShowAll:  { ru: "Показать все результаты", ua: "Показати всі результати", pl: "Pokaż wszystkie wyniki" },
+  // Product page extras
+  freeShipping:        { ru: "Бесплатная доставка", ua: "Безкоштовна доставка", pl: "Darmowa wysyłka" },
+  freeShippingBody:    { ru: "Любимые товары по выгодным ценам", ua: "Улюблені товари за вигідними цінами", pl: "Ulubione produkty w atrakcyjnych cenach" },
+  flexiblePayment:     { ru: "Гибкая оплата", ua: "Гнучка оплата", pl: "Elastyczna płatność" },
+  flexiblePaymentBody: { ru: "Оплата несколькими картами", ua: "Оплата кількома картками", pl: "Płatność wieloma kartami" },
+  fastDelivery:        { ru: "Быстрая доставка", ua: "Швидка доставка", pl: "Szybka dostawa" },
+  fastDeliveryBody:    { ru: "Радость от быстрой отправки", ua: "Радість від швидкої доставки", pl: "Radość z szybkiej wysyłki" },
+  premiumSupport:      { ru: "Премиум поддержка", ua: "Преміум підтримка", pl: "Wsparcie premium" },
+  premiumSupportBody:  { ru: "Превосходная поддержка клиентов", ua: "Чудова підтримка клієнтів", pl: "Doskonałe wsparcie klienta" },
+  // Meta / preloader
+  siteDescription: {
+    ru: "Marketplace запчастей для гибридных Toyota",
+    ua: "Маркетплейс запчастин для гібридних Toyota",
+    pl: "Marketplace części do hybrydowych Toyot",
+  },
 };
 
 export function t(key: keyof typeof DICT, locale: Locale = DEFAULT_LOCALE): string {

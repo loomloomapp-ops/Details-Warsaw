@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Icons } from "./Icons";
-import { type Locale, pickProductName } from "@/lib/i18n";
+import { type Locale, pickProductName, t } from "@/lib/i18n";
 
 type Item = {
   id: number;
@@ -119,8 +119,7 @@ export default function HeaderSearch({
           )}
           {!loading && items.length === 0 && (
             <div style={{ padding: 14, fontSize: 13, color: "rgba(0,0,0,0.5)" }}>
-              {locale === "ua" ? "Нічого не знайдено" :
-               locale === "pl" ? "Nic nie znaleziono" : "Ничего не найдено"}
+              {t("searchNoResults", locale)}
             </div>
           )}
           {!loading && items.map((it) => {
@@ -169,9 +168,7 @@ export default function HeaderSearch({
                 background: "var(--hd-panel)",
               }}
             >
-              {locale === "ua" ? "Показати всі результати" :
-               locale === "pl" ? "Pokaż wszystkie wyniki" : "Показать все результаты"}{" "}
-              <Icons.ArrowRight size={14} />
+              {t("searchShowAll", locale)} <Icons.ArrowRight size={14} />
             </Link>
           )}
         </div>

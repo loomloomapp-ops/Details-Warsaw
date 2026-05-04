@@ -65,8 +65,12 @@ export default async function CatalogPage({
     models: distinctModels.map((p) => p.model!).filter(Boolean),
     years:  distinctYears.map((p) => p.year!).filter(Boolean),
   };
-  const placeholders = { make: "Марка Авто", model: "Модель", year: "Рік" };
-  const applyLabel = locale === "ua" ? "Застосувати" : locale === "pl" ? "Zastosuj" : "Применить";
+  const placeholders = {
+    make: t("filterMake", locale),
+    model: t("filterModel", locale),
+    year: t("filterYear", locale),
+  };
+  const applyLabel = t("apply", locale);
 
   return (
     <>
