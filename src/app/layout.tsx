@@ -5,20 +5,15 @@ import MobileBottomNav from "@/components/site/MobileBottomNav";
 import { WhatsappFab } from "@/components/site/Blocks";
 import { getLocale } from "@/lib/locale-server";
 
-import { t } from "@/lib/i18n";
-
-export function generateMetadata(): Metadata {
-  const locale = getLocale();
-  return {
-    title: "Hybrid Doktor — Toyota hybrid parts",
-    description: t("siteDescription", locale),
-    icons: {
-      icon: [{ url: "/favicon.png", type: "image/png" }],
-      shortcut: "/favicon.png",
-      apple: "/favicon.png",
-    },
-  };
-}
+export const metadata: Metadata = {
+  title: "Hybrid Doktor — Toyota hybrid parts",
+  description: "Hybrid Doktor — Toyota hybrid parts",
+  icons: {
+    icon: [{ url: "/favicon.png", type: "image/png" }],
+    shortcut: "/favicon.png",
+    apple: "/favicon.png",
+  },
+};
 
 export const viewport = {
   width: "device-width",

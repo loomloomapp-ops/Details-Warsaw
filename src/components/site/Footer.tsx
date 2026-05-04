@@ -1,10 +1,8 @@
 import Link from "next/link";
 import { Icons, Logo } from "./Icons";
-import { type Locale, t } from "@/lib/i18n";
-import { getLocale } from "@/lib/locale-server";
+import { type Locale, t, DEFAULT_LOCALE } from "@/lib/i18n";
 
-export default function Footer({ locale: localeProp }: { locale?: Locale } = {}) {
-  const locale = localeProp ?? getLocale();
+export default function Footer({ locale = DEFAULT_LOCALE }: { locale?: Locale } = {}) {
   return (
     <footer id="footer">
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>

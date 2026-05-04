@@ -177,7 +177,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
           </div>
         </section>
 
-        <Footer />
+        <Footer locale={locale} />
       </div>
 
       {/* MOBILE */}

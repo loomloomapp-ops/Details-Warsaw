@@ -1,20 +1,18 @@
 import Link from "next/link";
 import { Icons } from "./Icons";
-import { type Locale, t } from "@/lib/i18n";
-import { getLocale } from "@/lib/locale-server";
+import { type Locale, t, DEFAULT_LOCALE } from "@/lib/i18n";
 
 export function PartnerCTA({
   heading,
   subheading,
   body,
-  locale: localeProp,
+  locale = DEFAULT_LOCALE,
 }: {
   heading?: string;
   subheading?: string;
   body?: string;
   locale?: Locale;
 }) {
-  const locale = localeProp ?? getLocale();
   return (
     <section id="contacts" style={{
       padding: "100px 70px",
@@ -60,8 +58,7 @@ export function PartnerCTA({
   );
 }
 
-export function FeatureStrip({ locale: localeProp }: { locale?: Locale } = {}) {
-  const locale = localeProp ?? getLocale();
+export function FeatureStrip({ locale = DEFAULT_LOCALE }: { locale?: Locale } = {}) {
   const items = [
     { icon: <Icons.Shield size={28} color="#000" />, title: t("feature1Title", locale), body: t("feature1Body", locale) },
     { icon: <Icons.Wrench size={28} color="#000" />, title: t("feature2Title", locale), body: t("feature2Body", locale) },
@@ -106,7 +103,7 @@ export function ProductCard({
   big?: boolean;
   viewLabel?: string;
 }) {
-  const label = viewLabel ?? t("view", getLocale());
+  const label = viewLabel ?? t("view", DEFAULT_LOCALE);
   return (
     <Link href={href} className="hd-product-card" style={{ display: "flex", flexDirection: "column", gap: 14 }}>
       <div className="hd-product-image" style={{

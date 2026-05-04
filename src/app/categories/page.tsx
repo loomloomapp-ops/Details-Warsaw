@@ -66,7 +66,7 @@ export default async function CategoriesPage() {
           )}
         </section>
 
-        <Footer />
+        <Footer locale={locale} />
       </div>
 
       {/* MOBILE */}

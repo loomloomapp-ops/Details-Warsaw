@@ -189,6 +189,7 @@ export default async function CatalogPage({
                     name={pickProductName(p, locale)}
                     image={p.images[0]?.url ?? null}
                     partNumber={p.partNumber}
+                    viewLabel={t("view", locale)}
                     big
                   />
                 ))}
@@ -197,7 +198,7 @@ export default async function CatalogPage({
           </div>
         </section>
 
-        <Footer />
+        <Footer locale={locale} />
       </div>
 
       {/* MOBILE */}

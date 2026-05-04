@@ -174,13 +174,9 @@ export default async function HomePage() {
           }}>{t("catalog", locale)}</Link>
         </Reveal>
 
-        <PartnerCTA
-          heading={t("partnerHeading", locale)}
-          subheading={t("partnerSub", locale)}
-          body={t("partnerBody", locale)}
-        />
-        <FeatureStrip />
-        <Footer />
+        <PartnerCTA locale={locale} />
+        <FeatureStrip locale={locale} />
+        <Footer locale={locale} />
       </div>
 
       {/* MOBILE */}
