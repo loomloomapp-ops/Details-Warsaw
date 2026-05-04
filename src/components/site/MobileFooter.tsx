@@ -63,8 +63,8 @@ export default function MobileFooter({ locale }: { locale: Locale }) {
           <div>
             <div style={{ fontSize: 15 }}>{t("socialNetworks", locale)}</div>
             <div style={{ marginTop: 14, display: "flex", flexDirection: "column", gap: 10, fontSize: 14, color: "rgba(255,255,255,0.7)" }}>
-              <a href="https://facebook.com" target="_blank" rel="noreferrer noopener" className="hd-footer-link">Facebook</a>
-              <a href="https://instagram.com" target="_blank" rel="noreferrer noopener" className="hd-footer-link">Instagram</a>
+              <a href="https://www.facebook.com/share/1BXYaXFPiT/" target="_blank" rel="noreferrer noopener" className="hd-footer-link">Facebook</a>
+              <a href="https://www.instagram.com/hybrid__doctor" target="_blank" rel="noreferrer noopener" className="hd-footer-link">Instagram</a>
               <a href="https://wa.me/48578923625" target="_blank" rel="noreferrer noopener" className="hd-footer-link">WhatsApp</a>
             </div>
           </div>

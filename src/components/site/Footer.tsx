@@ -90,8 +90,8 @@ export default function Footer({ locale = DEFAULT_LOCALE }: { locale?: Locale } 
             <div>
               <div style={{ fontSize: 16, color: "#fff" }}>{t("socialNetworks", locale)}</div>
               <div style={{ marginTop: 30, display: "flex", flexDirection: "column", gap: 15 }}>
-                <a href="https://facebook.com" target="_blank" rel="noreferrer noopener" className="hd-footer-link" style={{ fontSize: 15, color: "rgba(255,255,255,0.7)" }}>Facebook</a>
-                <a href="https://instagram.com" target="_blank" rel="noreferrer noopener" className="hd-footer-link" style={{ fontSize: 15, color: "rgba(255,255,255,0.7)" }}>Instagram</a>
+                <a href="https://www.facebook.com/share/1BXYaXFPiT/" target="_blank" rel="noreferrer noopener" className="hd-footer-link" style={{ fontSize: 15, color: "rgba(255,255,255,0.7)" }}>Facebook</a>
+                <a href="https://www.instagram.com/hybrid__doctor" target="_blank" rel="noreferrer noopener" className="hd-footer-link" style={{ fontSize: 15, color: "rgba(255,255,255,0.7)" }}>Instagram</a>
                 <a href="https://wa.me/48578923625" target="_blank" rel="noreferrer noopener" className="hd-footer-link" style={{ fontSize: 15, color: "rgba(255,255,255,0.7)" }}>WhatsApp</a>
               </div>
             </div>

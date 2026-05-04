@@ -253,35 +253,39 @@ export default async function HomePage() {
             {(categories.length > 0 ? categories : []).slice(0, 4).map((c) => (
               <Link key={c.id} href={`/catalog?category=${c.slug}`} className="hd-card-mobile" style={{
                 position: "relative",
-                height: 140, borderRadius: 10, overflow: "hidden",
+                height: 160, borderRadius: 12, overflow: "hidden",
                 background: "var(--hd-panel)",
+                border: "1px solid var(--hd-hairline)",
                 display: "flex", flexDirection: "column", justifyContent: "flex-end",
-                color: "#fff",
+                color: "#000",
               }}>
                 <div style={{
                   position: "absolute", inset: 0,
                   backgroundImage: `url(${c.imageUrl || "/design/bumper.png"})`,
-                  backgroundSize: c.imageUrl ? "cover" : "contain",
+                  backgroundSize: "cover",
                   backgroundRepeat: "no-repeat",
                   backgroundPosition: "center",
                 }} />
                 <div style={{
-                  position: "absolute", inset: 0,
-                  background: c.imageUrl
-                    ? "linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(0,0,0,0.7) 100%)"
-                    : "linear-gradient(180deg, rgba(244,249,252,0) 30%, rgba(244,249,252,0.85) 100%)",
-                }} />
-                <div style={{ position: "relative", padding: "12px 14px" }}>
+                  position: "relative",
+                  margin: 8,
+                  padding: "10px 12px",
+                  borderRadius: 10,
+                  background: "rgba(255,255,255,0.92)",
+                  backdropFilter: "blur(6px)",
+                  WebkitBackdropFilter: "blur(6px)",
+                  boxShadow: "0 4px 14px rgba(0,0,0,0.08)",
+                }}>
                   <div style={{
-                    fontSize: 14, fontWeight: 600,
-                    color: c.imageUrl ? "#fff" : "#000",
-                    textShadow: c.imageUrl ? "0 1px 6px rgba(0,0,0,0.4)" : "none",
+                    fontSize: 13, fontWeight: 600, color: "#000",
+                    overflow: "hidden", textOverflow: "ellipsis",
+                    display: "-webkit-box", WebkitLineClamp: 2 as any, WebkitBoxOrient: "vertical" as any,
                   }}>{pickCategoryName(c, locale)}</div>
                   <div style={{
                     marginTop: 4, display: "flex", alignItems: "center", gap: 6, fontSize: 11,
-                    color: c.imageUrl ? "rgba(255,255,255,0.85)" : "rgba(0,0,0,0.7)",
+                    color: "var(--hd-green)", fontWeight: 600,
                   }}>
-                    {t("viewAll", locale)} <Icons.ChevronRight size={12} color={c.imageUrl ? "#fff" : "#000"} />
+                    {t("viewAll", locale)} <Icons.ChevronRight size={12} color="var(--hd-green)" />
                   </div>
                 </div>
               </Link>
