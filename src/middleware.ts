@@ -32,7 +32,14 @@ export async function middleware(req: NextRequest) {
     const stripped = pathname.slice(("/" + seg).length) || "/";
     const url = req.nextUrl.clone();
     url.pathname = stripped;
-    const res = NextResponse.rewrite(url);
+
+    // Inject x-locale into the *request* headers so getLocale() reads the new
+    // locale during this very render (cookie alone would only apply to the
+    // next request, which is why language used to lag by one navigation).
+    const reqHeaders = new Headers(req.headers);
+    reqHeaders.set("x-locale", locale);
+
+    const res = NextResponse.rewrite(url, { request: { headers: reqHeaders } });
     res.cookies.set("locale", locale, {
       path: "/",
       maxAge: 60 * 60 * 24 * 365,
