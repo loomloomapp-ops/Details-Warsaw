@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import Combobox from "./Combobox";
 
 type Category = { id: number; nameRu: string };
 type Image = { id: number; url: string };
@@ -126,12 +127,10 @@ export default function ProductForm({
             <input name="partNumber" defaultValue={initial.partNumber || ""} style={inp} />
           </Field>
           <Field label="Цвет (можно выбрать или ввести новое)">
-            <input name="color" defaultValue={initial.color || ""} style={inp} list="dl-color" autoComplete="off" />
-            <datalist id="dl-color">{knownColors.map((v) => <option key={v} value={v} />)}</datalist>
+            <Combobox name="color" defaultValue={initial.color} options={knownColors} placeholder="напр. чёрный" />
           </Field>
           <Field label="Материал (можно выбрать или ввести новое)">
-            <input name="material" defaultValue={initial.material || ""} style={inp} list="dl-material" autoComplete="off" />
-            <datalist id="dl-material">{knownMaterials.map((v) => <option key={v} value={v} />)}</datalist>
+            <Combobox name="material" defaultValue={initial.material} options={knownMaterials} placeholder="напр. пластик" />
           </Field>
         </div>
       </Card>
@@ -139,37 +138,13 @@ export default function ProductForm({
       <Card title="Совместимость авто (для фильтров каталога)">
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16 }}>
           <Field label="Марка авто (выберите из списка или введите новую)">
-            <input
-              name="make"
-              defaultValue={initial.make || ""}
-              style={inp}
-              placeholder="Toyota"
-              list="dl-make"
-              autoComplete="off"
-            />
-            <datalist id="dl-make">{knownMakes.map((v) => <option key={v} value={v} />)}</datalist>
+            <Combobox name="make" defaultValue={initial.make} options={knownMakes} placeholder="Toyota" />
           </Field>
           <Field label="Модель (выберите из списка или введите новую)">
-            <input
-              name="model"
-              defaultValue={initial.model || ""}
-              style={inp}
-              placeholder="Prius 30"
-              list="dl-model"
-              autoComplete="off"
-            />
-            <datalist id="dl-model">{knownModels.map((v) => <option key={v} value={v} />)}</datalist>
+            <Combobox name="model" defaultValue={initial.model} options={knownModels} placeholder="Prius 30" />
           </Field>
           <Field label="Год (выберите или введите новый диапазон)">
-            <input
-              name="year"
-              defaultValue={initial.year || ""}
-              style={inp}
-              placeholder="2009-2015"
-              list="dl-year"
-              autoComplete="off"
-            />
-            <datalist id="dl-year">{knownYears.map((v) => <option key={v} value={v} />)}</datalist>
+            <Combobox name="year" defaultValue={initial.year} options={knownYears} placeholder="2009-2015" />
           </Field>
         </div>
         <p style={{ marginTop: 4, fontSize: 12, color: "var(--hd-subtle)" }}>
