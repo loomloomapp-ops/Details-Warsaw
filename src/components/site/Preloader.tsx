@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 
 const PROGRESS_DURATION_MS = 2200;   // швидкість симуляції 0→92%
 const MIN_VISIBLE_MS = 2000;          // мінімум часу на екрані
+const HARD_TIMEOUT_MS = 6000;         // максимум часу — після цього прелоадер закриється у будь-якому разі
 const FADE_OUT_MS = 500;
 
 export default function Preloader() {
@@ -41,7 +42,8 @@ export default function Preloader() {
       const eased = 1 - (1 - tProg) * (1 - tProg);
       // Доходимо до 92% за час, далі чекаємо load + min час → 100%
       const minElapsed = elapsed >= MIN_VISIBLE_MS;
-      let target = (pageLoaded && minElapsed) ? 100 : Math.min(eased * 92, 92);
+      const hardElapsed = elapsed >= HARD_TIMEOUT_MS;
+      let target = ((pageLoaded && minElapsed) || hardElapsed) ? 100 : Math.min(eased * 92, 92);
       setProgress((p) => (target > p ? target : p));
 
       if (target >= 100) {

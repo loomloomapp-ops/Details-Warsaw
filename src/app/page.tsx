@@ -32,6 +32,7 @@ export default async function HomePage() {
     prisma.product.findMany({
       where: { model: { not: null } },
       orderBy: { createdAt: "desc" },
+      take: 60,
       include: { images: { take: 1, orderBy: { sortOrder: "asc" } } },
     }),
     prisma.product.findMany({
