@@ -30,26 +30,26 @@ export default async function HomePage() {
       include: { images: { take: 1, orderBy: { sortOrder: "asc" } } },
     }),
     prisma.product.findMany({
-      where: { model: { not: null } },
+      where: { make: { not: null } },
       orderBy: { createdAt: "desc" },
       take: 60,
       include: { images: { take: 1, orderBy: { sortOrder: "asc" } } },
     }),
     prisma.product.findMany({
-      where: { model: { not: null } },
-      select: { model: true },
-      distinct: ["model"],
-      orderBy: { model: "asc" },
+      where: { make: { not: null } },
+      select: { make: true },
+      distinct: ["make"],
+      orderBy: { make: "asc" },
     }),
   ]);
 
-  const homeModels = distinctModels.map((p) => p.model!).filter(Boolean);
+  const homeMakes = distinctModels.map((p) => p.make!).filter(Boolean);
   const homeProducts = modelProducts.map((p) => ({
     id: p.id,
     name: pickProductName(p, locale),
     partNumber: p.partNumber,
     image: p.images[0]?.url ?? null,
-    model: p.model,
+    make: p.make,
   }));
 
   const heroChips = [
@@ -162,7 +162,7 @@ export default async function HomePage() {
           display: "flex", flexDirection: "column", gap: 30, alignItems: "center",
         }}>
           <HomeModelFilter
-            models={homeModels}
+            makes={homeMakes}
             products={homeProducts}
             viewLabel={t("view", locale)}
           />
@@ -300,7 +300,14 @@ export default async function HomePage() {
         </section>
 
         <section style={{ padding: "8px 20px 30px 20px" }}>
-          <div style={{ marginTop: 16, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+          <div style={{ marginTop: 8 }}>
+            <HomeModelFilter
+              makes={homeMakes}
+              products={homeProducts}
+              viewLabel={t("view", locale)}
+            />
+          </div>
+          <div style={{ display: "none" }}>
             {(latestProducts.length > 0 ? latestProducts.slice(0, 4) : []).map((p) => (
               <Link key={p.id} href={`/catalog/${p.id}`} style={{
                 display: "flex", flexDirection: "column", gap: 8,
