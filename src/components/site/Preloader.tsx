@@ -46,6 +46,9 @@ export default function Preloader() {
 
       if (target >= 100) {
         setHidden(true);
+        if (typeof document !== "undefined") {
+          document.body.setAttribute("data-hero-ready", "true");
+        }
         setTimeout(() => setRemoved(true), FADE_OUT_MS);
         return;
       }
