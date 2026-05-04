@@ -135,7 +135,7 @@ export function WhatsappFab() {
       background: "var(--hd-green-btn)",
       display: "grid", placeItems: "center",
       boxShadow: "0 6px 18px rgba(0,188,25,0.35)",
-      zIndex: 900,
+      zIndex: 1100,
     }}>
       <Icons.Whatsapp size={30} color="#fff" />
     </a>

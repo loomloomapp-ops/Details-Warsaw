@@ -6,7 +6,7 @@ import HeaderWrap from "@/components/site/HeaderWrap";
 import Footer from "@/components/site/Footer";
 import MobileFooter from "@/components/site/MobileFooter";
 import { Icons } from "@/components/site/Icons";
-import { PartnerCTA, FeatureStrip, ProductCard, WhatsappFab } from "@/components/site/Blocks";
+import { PartnerCTA, FeatureStrip, ProductCard } from "@/components/site/Blocks";
 import { MobilePartnerCTA, MobileFeatureStrip } from "@/components/site/MobileBlocks";
 import Preloader from "@/components/site/Preloader";
 import Reveal from "@/components/site/Reveal";
@@ -118,7 +118,6 @@ export default async function HomePage() {
               </div>
             ))}
           </div>
-          <WhatsappFab />
         </section>
 
         <Reveal as="section" style={{ padding: "80px 70px" }}>
@@ -336,7 +335,6 @@ export default async function HomePage() {
         <MobilePartnerCTA locale={locale} />
         <MobileFeatureStrip locale={locale} />
         <MobileFooter locale={locale} />
-        <WhatsappFab />
       </div>
     </>
   );
