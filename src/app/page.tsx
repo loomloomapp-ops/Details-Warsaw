@@ -12,7 +12,7 @@ import Preloader from "@/components/site/Preloader";
 import Reveal from "@/components/site/Reveal";
 import HomeModelFilter from "./_home/HomeModelFilter";
 import { getLocale } from "@/lib/locale-server";
-import { t, pickProductName, pickCategoryName } from "@/lib/i18n";
+import { t, pickProductName, pickCategoryName, localeHref } from "@/lib/i18n";
 
 export const dynamic = "force-dynamic";
 
@@ -85,11 +85,11 @@ export default async function HomePage() {
               {t("heroBody", locale)}
             </p>
             <div className="hd-hero-reveal" data-d="4" style={{ marginTop: 38, display: "flex", alignItems: "center", gap: 30 }}>
-              <Link href="/catalog" className="hd-cta-pill" data-variant="white" style={{
+              <Link href={localeHref("/catalog", locale)} className="hd-cta-pill" data-variant="white" style={{
                 display: "inline-flex", alignItems: "center", height: 52, padding: "0 30px",
                 borderRadius: 40, background: "#fff", color: "#000", fontSize: 16, fontWeight: 500,
               }}>{t("catalog", locale)}</Link>
-              <Link href="/categories" className="hd-cta-pill" data-variant="ghost-light" style={{
+              <Link href={localeHref("/categories", locale)} className="hd-cta-pill" data-variant="ghost-light" style={{
                 display: "flex", alignItems: "center", gap: 10, color: "#fff", fontSize: 16,
               }}>{t("categories", locale)} <Icons.ChevronRight size={16} color="#fff" /></Link>
             </div>
@@ -124,7 +124,7 @@ export default async function HomePage() {
         <Reveal as="section" style={{ padding: "80px 70px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
             <h2 style={{ margin: 0, fontSize: 36, lineHeight: "42px", fontWeight: 500 }}>{t("categories", locale)}</h2>
-            <Link href="/categories" className="hd-arrow-link" style={{
+            <Link href={localeHref("/categories", locale)} className="hd-arrow-link" style={{
               fontSize: 13, fontWeight: 600, letterSpacing: 1.5, textTransform: "uppercase",
               display: "flex", alignItems: "center", gap: 8,
             }}>{t("goToCategories", locale)} <Icons.ArrowRight size={16} /></Link>
@@ -134,7 +134,7 @@ export default async function HomePage() {
             {categories.length === 0
               ? [0, 1, 2].map((i) => <div key={i} style={catEmpty} />)
               : categories.slice(0, 3).map((c) => (
-                <Link key={c.id} href={`/catalog?category=${c.slug}`} className="hd-cat-card" style={{
+                <Link key={c.id} href={localeHref(`/catalog?category=${c.slug}`, locale)} className="hd-cat-card" style={{
                   height: 196, borderRadius: 10, background: "var(--hd-panel)",
                   display: "grid", gridTemplateColumns: "196px 1fr", overflow: "hidden",
                 }}>
@@ -167,7 +167,7 @@ export default async function HomePage() {
             viewLabel={t("view", locale)}
           />
 
-          <Link href="/catalog" className="hd-cta-pill" data-variant="green" style={{
+          <Link href={localeHref("/catalog", locale)} className="hd-cta-pill" data-variant="green" style={{
             display: "inline-flex", alignItems: "center", gap: 10,
             height: 52, padding: "0 30px", borderRadius: 40,
             background: "var(--hd-green)", color: "#fff",
@@ -202,12 +202,12 @@ export default async function HomePage() {
               {t("heroBody", locale)}
             </p>
             <div style={{ marginTop: 18, display: "flex", alignItems: "center", gap: 22 }}>
-              <Link href="/catalog" className="hd-cta-pill" data-variant="green" style={{
+              <Link href={localeHref("/catalog", locale)} className="hd-cta-pill" data-variant="green" style={{
                 display: "inline-flex", alignItems: "center",
                 height: 44, padding: "0 24px", borderRadius: 40,
                 background: "var(--hd-green)", color: "#fff", fontSize: 14, fontWeight: 500,
               }}>{t("catalog", locale)}</Link>
-              <Link href="/categories" className="hd-arrow-link" style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 14 }}>
+              <Link href={localeHref("/categories", locale)} className="hd-arrow-link" style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 14 }}>
                 {t("categories", locale)} <Icons.ChevronRight size={14} />
               </Link>
             </div>
@@ -245,14 +245,14 @@ export default async function HomePage() {
         <section style={{ padding: "36px 20px 24px 20px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <h2 style={{ margin: 0, fontSize: 22, fontWeight: 500 }}>{t("categories", locale)}</h2>
-            <Link href="/categories" style={{
+            <Link href={localeHref("/categories", locale)} style={{
               display: "flex", alignItems: "center", gap: 6,
               fontSize: 11, fontWeight: 600, letterSpacing: 1, textTransform: "uppercase",
             }}>{t("showAll", locale)} <Icons.ArrowRight size={13} /></Link>
           </div>
           <div style={{ marginTop: 20, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
             {(categories.length > 0 ? categories : []).slice(0, 4).map((c) => (
-              <Link key={c.id} href={`/catalog?category=${c.slug}`} className="hd-card-mobile" style={{
+              <Link key={c.id} href={localeHref(`/catalog?category=${c.slug}`, locale)} className="hd-card-mobile" style={{
                 position: "relative",
                 height: 160, borderRadius: 12, overflow: "hidden",
                 background: "var(--hd-panel)",
@@ -309,7 +309,7 @@ export default async function HomePage() {
           </div>
           <div style={{ display: "none" }}>
             {(latestProducts.length > 0 ? latestProducts.slice(0, 4) : []).map((p) => (
-              <Link key={p.id} href={`/catalog/${p.id}`} style={{
+              <Link key={p.id} href={localeHref(`/catalog/${p.id}`, locale)} style={{
                 display: "flex", flexDirection: "column", gap: 8,
               }}>
                 <div style={{
@@ -333,7 +333,7 @@ export default async function HomePage() {
               </Link>
             ))}
           </div>
-          <Link href="/catalog" className="hd-cta-pill" data-variant="green" style={{
+          <Link href={localeHref("/catalog", locale)} className="hd-cta-pill" data-variant="green" style={{
             marginTop: 18, display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
             height: 42, width: "100%", borderRadius: 40,
             background: "var(--hd-green)", color: "#fff", fontSize: 14, fontWeight: 500,

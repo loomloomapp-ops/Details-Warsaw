@@ -10,7 +10,7 @@ import { MobilePartnerCTA } from "@/components/site/MobileBlocks";
 import { Icons } from "@/components/site/Icons";
 import ProductGallery from "@/components/site/ProductGallery";
 import { getLocale } from "@/lib/locale-server";
-import { t, pickProductName, pickProductShort, pickProductLong, pickCategoryName } from "@/lib/i18n";
+import { t, pickProductName, pickProductShort, pickProductLong, pickCategoryName, localeHref } from "@/lib/i18n";
 
 export const dynamic = "force-dynamic";
 
@@ -49,7 +49,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
 
         <div style={{ padding: "18px 70px", borderBottom: "1px solid var(--hd-hairline)" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 16 }}>
-            <Link href="/catalog" style={{ opacity: 0.6 }}>{t("catalog", locale)}</Link>
+            <Link href={localeHref("/catalog", locale)} style={{ opacity: 0.6 }}>{t("catalog", locale)}</Link>
             <span style={{ opacity: 0.6 }}>/</span>
             <span>{name}</span>
           </div>
@@ -166,7 +166,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
               <p style={{ marginTop: 14, fontSize: 15, lineHeight: "20px", color: "rgba(0,0,0,0.7)", maxWidth: 620 }}>
                 {t("confirmCompatBody", locale)}
               </p>
-              <Link href="/#contacts" className="hd-cta-pill" data-variant="green" style={{
+              <Link href={localeHref("/#contacts", locale)} className="hd-cta-pill" data-variant="green" style={{
                 marginTop: 24, display: "inline-flex", alignItems: "center", gap: 10,
                 height: 52, padding: "0 30px", borderRadius: 40,
                 background: "var(--hd-green)", color: "#fff", fontSize: 16, fontWeight: 500,

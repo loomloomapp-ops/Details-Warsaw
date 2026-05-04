@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { Icons } from "./Icons";
-import { type Locale, t } from "@/lib/i18n";
+import { type Locale, t, localeHref } from "@/lib/i18n";
 
 export default function MobileBottomNav({ locale }: { locale: Locale }) {
   return (
     <nav className="hd-mobile-bottom-nav" aria-label="Mobile primary">
-      <Link href="/catalog" className="hd-bnb-item hd-bnb-catalog">
+      <Link href={localeHref("/catalog", locale)} className="hd-bnb-item hd-bnb-catalog">
         <BoxIcon />
         {t("catalog", locale)}
       </Link>

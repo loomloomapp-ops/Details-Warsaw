@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Icons, Logo } from "./Icons";
-import { type Locale, t, DEFAULT_LOCALE } from "@/lib/i18n";
+import { type Locale, t, DEFAULT_LOCALE, localeHref } from "@/lib/i18n";
 
 export default function Footer({ locale = DEFAULT_LOCALE }: { locale?: Locale } = {}) {
   return (
@@ -20,7 +20,7 @@ export default function Footer({ locale = DEFAULT_LOCALE }: { locale?: Locale } 
               {t("footerCTOBody", locale)}
             </p>
           </div>
-          <Link href="/#contacts" className="hd-arrow-link" style={{
+          <Link href={localeHref("/#contacts", locale)} className="hd-arrow-link" style={{
             display: "inline-flex", alignItems: "center", gap: 8,
             fontSize: 15, color: "#000", fontWeight: 500,
           }}>
@@ -82,9 +82,9 @@ export default function Footer({ locale = DEFAULT_LOCALE }: { locale?: Locale } 
             <div>
               <div style={{ fontSize: 16, color: "#fff" }}>{t("pages", locale)}</div>
               <div style={{ marginTop: 30, display: "flex", flexDirection: "column", gap: 15 }}>
-                <Link href="/catalog"    className="hd-footer-link" style={{ fontSize: 15, color: "rgba(255,255,255,0.7)" }}>{t("catalog", locale)}</Link>
-                <Link href="/categories" className="hd-footer-link" style={{ fontSize: 15, color: "rgba(255,255,255,0.7)" }}>{t("categories", locale)}</Link>
-                <Link href="/#footer"    className="hd-footer-link" style={{ fontSize: 15, color: "rgba(255,255,255,0.7)" }}>{t("contacts", locale)}</Link>
+                <Link href={localeHref("/catalog", locale)}    className="hd-footer-link" style={{ fontSize: 15, color: "rgba(255,255,255,0.7)" }}>{t("catalog", locale)}</Link>
+                <Link href={localeHref("/categories", locale)} className="hd-footer-link" style={{ fontSize: 15, color: "rgba(255,255,255,0.7)" }}>{t("categories", locale)}</Link>
+                <Link href={localeHref("/#footer", locale)}    className="hd-footer-link" style={{ fontSize: 15, color: "rgba(255,255,255,0.7)" }}>{t("contacts", locale)}</Link>
               </div>
             </div>
             <div>

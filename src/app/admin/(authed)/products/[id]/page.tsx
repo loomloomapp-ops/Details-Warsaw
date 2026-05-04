@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { notFound } from "next/navigation";
 import ProductForm from "../_form/ProductForm";
+import { loadKnownAttributes } from "../_form/loadKnown";
 import { updateProduct, deleteProduct } from "../actions";
 
 export const dynamic = "force-dynamic";
@@ -10,7 +11,7 @@ export default async function EditProductPage({ params }: { params: { id: string
   const id = Number(params.id);
   if (!Number.isFinite(id)) notFound();
 
-  const [product, categories] = await Promise.all([
+  const [product, categories, known] = await Promise.all([
     prisma.product.findUnique({
       where: { id },
       include: {
@@ -22,6 +23,7 @@ export default async function EditProductPage({ params }: { params: { id: string
       orderBy: [{ sortOrder: "asc" }, { nameRu: "asc" }],
       select: { id: true, nameRu: true },
     }),
+    loadKnownAttributes(),
   ]);
 
   if (!product) notFound();
@@ -66,6 +68,7 @@ export default async function EditProductPage({ params }: { params: { id: string
         categories={categories}
         action={update}
         onDelete={remove}
+        {...known}
       />
     </div>
   );

@@ -32,11 +32,21 @@ export default function ProductForm({
   categories,
   action,
   onDelete,
+  knownMakes = [],
+  knownModels = [],
+  knownYears = [],
+  knownColors = [],
+  knownMaterials = [],
 }: {
   initial: Initial;
   categories: Category[];
   action: (form: FormData) => void | Promise<void>;
   onDelete?: () => void | Promise<void>;
+  knownMakes?: string[];
+  knownModels?: string[];
+  knownYears?: string[];
+  knownColors?: string[];
+  knownMaterials?: string[];
 }) {
   const [tab, setTab] = useState<"ru" | "ua" | "pl">("ru");
   const [removeImageIds, setRemoveImageIds] = useState<number[]>([]);
@@ -115,29 +125,55 @@ export default function ProductForm({
           <Field label="Номер детали">
             <input name="partNumber" defaultValue={initial.partNumber || ""} style={inp} />
           </Field>
-          <Field label="Цвет">
-            <input name="color" defaultValue={initial.color || ""} style={inp} />
+          <Field label="Цвет (можно выбрать или ввести новое)">
+            <input name="color" defaultValue={initial.color || ""} style={inp} list="dl-color" autoComplete="off" />
+            <datalist id="dl-color">{knownColors.map((v) => <option key={v} value={v} />)}</datalist>
           </Field>
-          <Field label="Материал">
-            <input name="material" defaultValue={initial.material || ""} style={inp} />
+          <Field label="Материал (можно выбрать или ввести новое)">
+            <input name="material" defaultValue={initial.material || ""} style={inp} list="dl-material" autoComplete="off" />
+            <datalist id="dl-material">{knownMaterials.map((v) => <option key={v} value={v} />)}</datalist>
           </Field>
         </div>
       </Card>
 
       <Card title="Совместимость авто (для фильтров каталога)">
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16 }}>
-          <Field label="Марка авто">
-            <input name="make" defaultValue={initial.make || ""} style={inp} placeholder="Toyota" />
+          <Field label="Марка авто (выберите из списка или введите новую)">
+            <input
+              name="make"
+              defaultValue={initial.make || ""}
+              style={inp}
+              placeholder="Toyota"
+              list="dl-make"
+              autoComplete="off"
+            />
+            <datalist id="dl-make">{knownMakes.map((v) => <option key={v} value={v} />)}</datalist>
           </Field>
-          <Field label="Модель">
-            <input name="model" defaultValue={initial.model || ""} style={inp} placeholder="Prius 30" />
+          <Field label="Модель (выберите из списка или введите новую)">
+            <input
+              name="model"
+              defaultValue={initial.model || ""}
+              style={inp}
+              placeholder="Prius 30"
+              list="dl-model"
+              autoComplete="off"
+            />
+            <datalist id="dl-model">{knownModels.map((v) => <option key={v} value={v} />)}</datalist>
           </Field>
-          <Field label="Год">
-            <input name="year" defaultValue={initial.year || ""} style={inp} placeholder="2009-2015" />
+          <Field label="Год (выберите или введите новый диапазон)">
+            <input
+              name="year"
+              defaultValue={initial.year || ""}
+              style={inp}
+              placeholder="2009-2015"
+              list="dl-year"
+              autoComplete="off"
+            />
+            <datalist id="dl-year">{knownYears.map((v) => <option key={v} value={v} />)}</datalist>
           </Field>
         </div>
         <p style={{ marginTop: 4, fontSize: 12, color: "var(--hd-subtle)" }}>
-          По этим полям работают выпадающие фильтры в каталоге. Если оставить пустыми — деталь не попадёт под фильтры по марке/модели/году.
+          По этим полям работают выпадающие фильтры в каталоге. Можно выбрать ранее использованное значение из списка или ввести новое — оно сразу появится в подсказках для следующих товаров.
         </p>
       </Card>
 

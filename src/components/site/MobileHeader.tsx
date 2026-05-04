@@ -4,7 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { Icons, Logo } from "./Icons";
 import HeaderSearch from "./HeaderSearch";
-import { type Locale, t } from "@/lib/i18n";
+import LocaleSwitcherClient from "./LocaleSwitcher";
+import { type Locale, t, localeHref } from "@/lib/i18n";
 
 export default function MobileHeader({ locale }: { locale: Locale }) {
   const [open, setOpen] = useState(false);
@@ -17,7 +18,7 @@ export default function MobileHeader({ locale }: { locale: Locale }) {
       borderBottom: "1px solid var(--hd-hairline)", background: "#fff",
       position: "relative", zIndex: 5,
     }}>
-      <Link href="/" style={{ display: "flex" }}><Logo /></Link>
+      <Link href={localeHref("/", locale)} style={{ display: "flex" }}><Logo /></Link>
       <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
         <button
           aria-label="Search"
@@ -66,10 +67,10 @@ export default function MobileHeader({ locale }: { locale: Locale }) {
           display: "flex", flexDirection: "column", gap: 4,
         }}>
           {[
-            { label: t("home", locale),       href: "/" },
-            { label: t("catalog", locale),    href: "/catalog" },
-            { label: t("categories", locale), href: "/categories" },
-            { label: t("contacts", locale),   href: "/#footer" },
+            { label: t("home", locale),       href: localeHref("/", locale) },
+            { label: t("catalog", locale),    href: localeHref("/catalog", locale) },
+            { label: t("categories", locale), href: localeHref("/categories", locale) },
+            { label: t("contacts", locale),   href: localeHref("/#footer", locale) },
           ].map((n) => (
             <Link key={n.label} href={n.href} style={{
               padding: "10px 12px", fontSize: 15, borderRadius: 8,
@@ -79,17 +80,7 @@ export default function MobileHeader({ locale }: { locale: Locale }) {
             marginTop: 6, paddingTop: 10, borderTop: "1px solid var(--hd-hairline)",
             display: "flex", justifyContent: "space-around",
           }}>
-            {(["ru", "ua", "pl"] as const).map((l) => (
-              <a
-                key={l}
-                href={`/api/locale?l=${l}`}
-                style={{
-                  fontSize: 13, fontWeight: l === locale ? 700 : 500,
-                  color: l === locale ? "#000" : "rgba(0,0,0,0.5)",
-                  padding: "4px 8px",
-                }}
-              >{l.toUpperCase()}</a>
-            ))}
+            <LocaleSwitcherClient locale={locale} />
           </div>
         </div>
       )}

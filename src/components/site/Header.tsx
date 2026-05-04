@@ -1,15 +1,16 @@
 import Link from "next/link";
 import { Logo } from "./Icons";
 import HeaderSearch from "./HeaderSearch";
-import { type Locale, t } from "@/lib/i18n";
+import LocaleSwitcherClient from "./LocaleSwitcher";
+import { type Locale, t, localeHref } from "@/lib/i18n";
 
 type Current = "home" | "catalog" | "categories" | "contacts";
 
 export default function Header({ current = "home", locale }: { current?: Current; locale: Locale }) {
   const nav: { id: Current; label: string; href: string }[] = [
-    { id: "catalog",    label: t("catalog", locale),    href: "/catalog" },
-    { id: "categories", label: t("categories", locale), href: "/categories" },
-    { id: "contacts",   label: t("contacts", locale),   href: "/#footer" },
+    { id: "catalog",    label: t("catalog", locale),    href: localeHref("/catalog", locale) },
+    { id: "categories", label: t("categories", locale), href: localeHref("/categories", locale) },
+    { id: "contacts",   label: t("contacts", locale),   href: localeHref("/#footer", locale) },
   ];
   return (
     <header className="hd-desktop" style={{
@@ -19,7 +20,7 @@ export default function Header({ current = "home", locale }: { current?: Current
       position: "relative", zIndex: 5,
     }}>
       <div style={{ display: "flex", alignItems: "center", gap: 70 }}>
-        <Link href="/" style={{ display: "flex" }}><Logo /></Link>
+        <Link href={localeHref("/", locale)} style={{ display: "flex" }}><Logo /></Link>
         <nav style={{ display: "flex", gap: 32 }}>
           {nav.map((n) => (
             <Link key={n.id} href={n.href} style={{
@@ -29,13 +30,14 @@ export default function Header({ current = "home", locale }: { current?: Current
         </nav>
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: 30 }}>
-        <LocaleSwitcher locale={locale} />
+        <LocaleSwitcherClient locale={locale} />
         <HeaderSearch locale={locale} placeholder={t("searchPlaceholder", locale)} />
       </div>
     </header>
   );
 }
 
+// Legacy server-only switcher kept for compatibility (unused by main Header now).
 export function LocaleSwitcher({ locale, dark = false }: { locale: Locale; dark?: boolean }) {
   const muted = dark ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.7)";
   const active = dark ? "#fff" : "#000";

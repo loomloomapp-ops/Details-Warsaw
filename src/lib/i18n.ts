@@ -182,6 +182,31 @@ export function pickCategoryName(c: CategoryLike, locale: Locale): string {
   return c.nameRu;
 }
 
+// Build a locale-prefixed href. Default locale (ru) has no prefix.
+// External, hash-only and api links pass through unchanged.
+export function localeHref(href: string, locale: Locale): string {
+  if (!href) return href;
+  if (href.startsWith("http://") || href.startsWith("https://")) return href;
+  if (href.startsWith("mailto:") || href.startsWith("tel:")) return href;
+  if (href.startsWith("#")) return href;
+  if (href.startsWith("/api/")) return href;
+  if (href.startsWith("/admin")) return href;
+  if (locale === DEFAULT_LOCALE) return href;
+  if (href === "/") return `/${locale}`;
+  // hash-only suffix on root: keep as /<locale>#hash
+  if (href.startsWith("/#")) return `/${locale}${href.slice(1)}`;
+  return `/${locale}${href}`;
+}
+
+// Strip a locale prefix from a pathname (used by LocaleSwitcher to compute target URL)
+export function stripLocalePrefix(pathname: string): string {
+  const seg = pathname.split("/")[1];
+  if ((LOCALES as readonly string[]).includes(seg)) {
+    return pathname.slice(("/" + seg).length) || "/";
+  }
+  return pathname || "/";
+}
+
 export function slugify(input: string): string {
   const map: Record<string, string> = {
     а:"a",б:"b",в:"v",г:"g",ґ:"g",д:"d",е:"e",ё:"e",є:"ie",ж:"zh",з:"z",и:"y",

@@ -3,6 +3,7 @@ import "./globals.css";
 import Providers from "./providers";
 import MobileBottomNav from "@/components/site/MobileBottomNav";
 import { WhatsappFab } from "@/components/site/Blocks";
+import PublicOnly from "@/components/site/PublicOnly";
 import { getLocale } from "@/lib/locale-server";
 
 export const metadata: Metadata = {
@@ -36,8 +37,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <Providers>{children}</Providers>
-        <WhatsappFab />
-        <MobileBottomNav locale={locale} />
+        <PublicOnly>
+          <WhatsappFab />
+          <MobileBottomNav locale={locale} />
+        </PublicOnly>
       </body>
     </html>
   );

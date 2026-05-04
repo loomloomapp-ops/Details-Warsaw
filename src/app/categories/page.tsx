@@ -7,7 +7,7 @@ import Footer from "@/components/site/Footer";
 import MobileFooter from "@/components/site/MobileFooter";
 import { Icons } from "@/components/site/Icons";
 import { getLocale } from "@/lib/locale-server";
-import { t, pickCategoryName } from "@/lib/i18n";
+import { t, pickCategoryName, localeHref } from "@/lib/i18n";
 
 export const dynamic = "force-dynamic";
 
@@ -28,7 +28,7 @@ export default async function CategoriesPage() {
           borderBottom: "1px solid var(--hd-hairline)",
         }}>
           <div style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 18, color: "#000" }}>
-            <Link href="/" style={{ opacity: 0.6 }}>{t("home", locale)}</Link>
+            <Link href={localeHref("/", locale)} style={{ opacity: 0.6 }}>{t("home", locale)}</Link>
             <span style={{ opacity: 0.6 }}>/</span>
             <span>{t("categories", locale)}</span>
           </div>
@@ -46,7 +46,7 @@ export default async function CategoriesPage() {
               gap: 30, rowGap: 55, justifyContent: "space-between",
             }}>
               {categories.map((c) => (
-                <Link key={c.id} href={`/catalog?category=${c.slug}`} style={{
+                <Link key={c.id} href={localeHref(`/catalog?category=${c.slug}`, locale)} style={{
                   width: 250, display: "flex", flexDirection: "column", gap: 15,
                 }}>
                   <div className="hd-cat-tile" style={{
@@ -77,7 +77,7 @@ export default async function CategoriesPage() {
           <h1 style={{ margin: 0, fontSize: 20, fontWeight: 500 }}>{t("categories", locale)}</h1>
           <div style={{ marginTop: 18, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, rowGap: 20 }}>
             {categories.map((c) => (
-              <Link key={c.id} href={`/catalog?category=${c.slug}`} style={{
+              <Link key={c.id} href={localeHref(`/catalog?category=${c.slug}`, locale)} style={{
                 display: "flex", flexDirection: "column", gap: 8,
               }}>
                 <div style={{

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Icons, Logo } from "./Icons";
-import { type Locale, t } from "@/lib/i18n";
+import { type Locale, t, localeHref } from "@/lib/i18n";
 
 export default function MobileFooter({ locale }: { locale: Locale }) {
   return (
@@ -12,7 +12,7 @@ export default function MobileFooter({ locale }: { locale: Locale }) {
         <p style={{ marginTop: 14, marginBottom: 24, fontSize: 13, lineHeight: "18px", color: "rgba(0,0,0,0.6)" }}>
           {t("footerCTOBody", locale)}
         </p>
-        <Link href="/#contacts" style={{
+        <Link href={localeHref("/#contacts", locale)} style={{
           display: "inline-flex", alignItems: "center", gap: 8, fontWeight: 500, fontSize: 14, color: "#000",
         }}>
           {t("writeToUs", locale)} <Icons.ArrowRight size={16} />
@@ -55,9 +55,9 @@ export default function MobileFooter({ locale }: { locale: Locale }) {
           <div>
             <div style={{ fontSize: 15 }}>{t("pages", locale)}</div>
             <div style={{ marginTop: 14, display: "flex", flexDirection: "column", gap: 10, fontSize: 14, color: "rgba(255,255,255,0.7)" }}>
-              <Link href="/catalog" className="hd-footer-link">{t("catalog", locale)}</Link>
-              <Link href="/categories" className="hd-footer-link">{t("categories", locale)}</Link>
-              <Link href="/#footer" className="hd-footer-link">{t("contacts", locale)}</Link>
+              <Link href={localeHref("/catalog", locale)} className="hd-footer-link">{t("catalog", locale)}</Link>
+              <Link href={localeHref("/categories", locale)} className="hd-footer-link">{t("categories", locale)}</Link>
+              <Link href={localeHref("/#footer", locale)} className="hd-footer-link">{t("contacts", locale)}</Link>
             </div>
           </div>
           <div>

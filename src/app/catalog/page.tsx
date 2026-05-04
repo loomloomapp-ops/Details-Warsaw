@@ -8,7 +8,7 @@ import MobileFooter from "@/components/site/MobileFooter";
 import { Icons } from "@/components/site/Icons";
 import { ProductCard } from "@/components/site/Blocks";
 import { getLocale } from "@/lib/locale-server";
-import { t, pickProductName, pickCategoryName } from "@/lib/i18n";
+import { t, pickProductName, pickCategoryName, localeHref } from "@/lib/i18n";
 import CatalogFilters from "./_filters/CatalogFilters";
 import CategoryNav from "./_filters/CategoryNav";
 import ContactCTA from "@/components/site/ContactCTA";
@@ -85,7 +85,7 @@ export default async function CatalogPage({
           alignItems: "center", gap: 30,
         }}>
           <div style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 16 }}>
-            <Link href="/" className="hd-link-hover" style={{ opacity: 0.6 }}>{t("home", locale)}</Link>
+            <Link href={localeHref("/", locale)} className="hd-link-hover" style={{ opacity: 0.6 }}>{t("home", locale)}</Link>
             <span style={{ opacity: 0.6 }}>/</span>
             <span>{t("catalog", locale)}</span>
             {categoryName && (<>
@@ -185,7 +185,7 @@ export default async function CatalogPage({
                 {products.map((p) => (
                   <ProductCard
                     key={p.id}
-                    href={`/catalog/${p.id}`}
+                    href={localeHref(`/catalog/${p.id}`, locale)}
                     name={pickProductName(p, locale)}
                     image={p.images[0]?.url ?? null}
                     partNumber={p.partNumber}
@@ -231,9 +231,9 @@ export default async function CatalogPage({
           </form>
 
           <div style={{ marginTop: 12, display: "flex", gap: 8, overflowX: "auto", paddingBottom: 4 }}>
-            <Link href="/catalog" style={chip(!categorySlug)}>{t("allItems", locale)}</Link>
+            <Link href={localeHref("/catalog", locale)} style={chip(!categorySlug)}>{t("allItems", locale)}</Link>
             {allCategories.map((c) => (
-              <Link key={c.id} href={`/catalog?category=${c.slug}`} style={chip(c.slug === categorySlug)}>
+              <Link key={c.id} href={localeHref(`/catalog?category=${c.slug}`, locale)} style={chip(c.slug === categorySlug)}>
                 {pickCategoryName(c, locale)}
               </Link>
             ))}
@@ -262,7 +262,7 @@ export default async function CatalogPage({
             display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, rowGap: 26,
           }}>
             {products.map((p) => (
-              <Link key={p.id} href={`/catalog/${p.id}`} className="hd-card-mobile" style={{
+              <Link key={p.id} href={localeHref(`/catalog/${p.id}`, locale)} className="hd-card-mobile" style={{
                 display: "flex", flexDirection: "column", gap: 8,
               }}>
                 <div style={{
