@@ -150,3 +150,23 @@ export async function deleteProduct(id: number) {
   revalidatePath("/catalog");
   redirect("/admin/products");
 }
+
+export async function deleteProductInline(id: number) {
+  await requireAuth();
+  const images = await prisma.productImage.findMany({ where: { productId: id } });
+  await prisma.product.delete({ where: { id } });
+  for (const img of images) await deleteImage(img.url);
+  revalidatePath("/admin/products");
+  revalidatePath("/catalog");
+}
+
+export async function deleteProducts(ids: number[]) {
+  await requireAuth();
+  const safeIds = ids.map((n) => Number(n)).filter((n) => Number.isFinite(n));
+  if (safeIds.length === 0) return;
+  const images = await prisma.productImage.findMany({ where: { productId: { in: safeIds } } });
+  await prisma.product.deleteMany({ where: { id: { in: safeIds } } });
+  for (const img of images) await deleteImage(img.url);
+  revalidatePath("/admin/products");
+  revalidatePath("/catalog");
+}

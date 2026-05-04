@@ -4,7 +4,7 @@ import { type Locale, t } from "@/lib/i18n";
 
 export default function MobileFooter({ locale }: { locale: Locale }) {
   return (
-    <footer className="hd-mobile">
+    <footer id="footer" className="hd-mobile">
       <div style={{ background: "var(--hd-panel)", padding: "40px 20px 48px 20px" }}>
         <h3 style={{ margin: 0, fontSize: 18, lineHeight: "22px", fontWeight: 500 }}>
           {t("footerCTOTitle", locale)}
@@ -35,15 +35,20 @@ export default function MobileFooter({ locale }: { locale: Locale }) {
 
         <div style={{ marginTop: 28 }}>
           <div style={{ fontSize: 15 }}>{t("ourContacts", locale)}</div>
-          <div style={{ marginTop: 16, fontSize: 17 }}>+48 578 923 625</div>
-          <div style={{ marginTop: 14, fontSize: 13, lineHeight: "18px", color: "rgba(255,255,255,0.7)" }}>
+          <a href="tel:+48578923625" className="hd-footer-link" style={{ marginTop: 16, fontSize: 17, display: "block", color: "#fff" }}>+48 578 923 625</a>
+          <a
+            href="https://maps.google.com/?q=Wolska+44+Stanis%C5%82aw%C3%B3w+drugi+05-119+Polska"
+            target="_blank" rel="noreferrer noopener"
+            className="hd-footer-link"
+            style={{ marginTop: 14, fontSize: 13, lineHeight: "18px", color: "rgba(255,255,255,0.7)", display: "block" }}
+          >
             Wolska 44<br />
             Stanisławów drugi 05-119<br />
             Polska
-          </div>
-          <div style={{ marginTop: 18, fontSize: 14, textDecoration: "underline" }}>
+          </a>
+          <a href="mailto:hybrid.repair.company@gmail.com" className="hd-footer-link" style={{ marginTop: 18, fontSize: 14, textDecoration: "underline", display: "inline-block", color: "#fff" }}>
             hybrid.repair.company@gmail.com
-          </div>
+          </a>
         </div>
 
         <div style={{
@@ -52,26 +57,33 @@ export default function MobileFooter({ locale }: { locale: Locale }) {
           <div>
             <div style={{ fontSize: 15 }}>{t("pages", locale)}</div>
             <div style={{ marginTop: 14, display: "flex", flexDirection: "column", gap: 10, fontSize: 14, color: "rgba(255,255,255,0.7)" }}>
-              <Link href="/catalog">{t("catalog", locale)}</Link>
-              <Link href="/categories">{t("categories", locale)}</Link>
-              <Link href="/#contacts">{t("contacts", locale)}</Link>
+              <Link href="/catalog" className="hd-footer-link">{t("catalog", locale)}</Link>
+              <Link href="/categories" className="hd-footer-link">{t("categories", locale)}</Link>
+              <Link href="/#footer" className="hd-footer-link">{t("contacts", locale)}</Link>
             </div>
           </div>
           <div>
             <div style={{ fontSize: 15 }}>{t("socialNetworks", locale)}</div>
             <div style={{ marginTop: 14, display: "flex", flexDirection: "column", gap: 10, fontSize: 14, color: "rgba(255,255,255,0.7)" }}>
-              <span>Facebook</span>
-              <span>Instagram</span>
-              <span>WhatsApp</span>
+              <a href="https://facebook.com" target="_blank" rel="noreferrer noopener" className="hd-footer-link">Facebook</a>
+              <a href="https://instagram.com" target="_blank" rel="noreferrer noopener" className="hd-footer-link">Instagram</a>
+              <a href="https://wa.me/48578923625" target="_blank" rel="noreferrer noopener" className="hd-footer-link">WhatsApp</a>
             </div>
           </div>
         </div>
 
-        <div style={{
-          marginTop: 26, height: 180, borderRadius: 10, overflow: "hidden",
-          backgroundImage: "url(/design/footer-map.png)",
-          backgroundSize: "cover", backgroundPosition: "center",
-        }} />
+        <a
+          href="https://maps.google.com/?q=Wolska+44+Stanis%C5%82aw%C3%B3w+drugi+05-119+Polska"
+          target="_blank" rel="noreferrer noopener"
+          className="hd-footer-link"
+          aria-label="Open map"
+          style={{
+            marginTop: 26, height: 180, borderRadius: 10, overflow: "hidden",
+            backgroundImage: "url(/design/footer-map.png)",
+            backgroundSize: "cover", backgroundPosition: "center",
+            display: "block",
+          }}
+        />
 
         <div style={{
           marginTop: 24, paddingTop: 18,

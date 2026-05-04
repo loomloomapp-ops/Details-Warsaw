@@ -3,7 +3,7 @@ import { Icons, Logo } from "./Icons";
 
 export default function Footer() {
   return (
-    <footer>
+    <footer id="footer">
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
         <div style={{
           background: "var(--hd-panel)",
@@ -21,7 +21,7 @@ export default function Footer() {
               условия для оптовых поставок и постоянного сотрудничества
             </p>
           </div>
-          <Link href="/#contacts" style={{
+          <Link href="/#contacts" className="hd-arrow-link" style={{
             display: "inline-flex", alignItems: "center", gap: 8,
             fontSize: 15, color: "#000", fontWeight: 500,
           }}>
@@ -63,15 +63,24 @@ export default function Footer() {
           <div>
             <div style={{ fontSize: 16, color: "#fff" }}>Наши контакты</div>
             <div style={{ marginTop: 30 }}>
-              <div style={{ fontSize: 18, color: "#fff" }}>+48 578 923 625</div>
-              <div style={{ marginTop: 20, fontSize: 14, lineHeight: "20px", color: "rgba(255,255,255,0.7)" }}>
+              <a href="tel:+48578923625" className="hd-footer-link" style={{ fontSize: 18, color: "#fff", display: "inline-block" }}>+48 578 923 625</a>
+              <a
+                href="https://maps.google.com/?q=Wolska+44+Stanis%C5%82aw%C3%B3w+drugi+05-119+Polska"
+                target="_blank" rel="noreferrer noopener"
+                className="hd-footer-link"
+                style={{ marginTop: 20, fontSize: 14, lineHeight: "20px", color: "rgba(255,255,255,0.7)", display: "block" }}
+              >
                 Wolska 44<br />
                 Stanisławów drugi 05-119<br />
                 Polska
-              </div>
-              <div style={{ marginTop: 32, fontSize: 15, color: "#fff", textDecoration: "underline" }}>
+              </a>
+              <a
+                href="mailto:hybrid.repair.company@gmail.com"
+                className="hd-footer-link"
+                style={{ marginTop: 32, fontSize: 15, color: "#fff", textDecoration: "underline", display: "inline-block" }}
+              >
                 hybrid.repair.company@gmail.com
-              </div>
+              </a>
             </div>
           </div>
 
@@ -79,26 +88,33 @@ export default function Footer() {
             <div>
               <div style={{ fontSize: 16, color: "#fff" }}>Страницы</div>
               <div style={{ marginTop: 30, display: "flex", flexDirection: "column", gap: 15 }}>
-                <Link href="/catalog"    style={{ fontSize: 15, color: "rgba(255,255,255,0.7)" }}>Каталог</Link>
-                <Link href="/categories" style={{ fontSize: 15, color: "rgba(255,255,255,0.7)" }}>Категории</Link>
-                <Link href="/#contacts"  style={{ fontSize: 15, color: "rgba(255,255,255,0.7)" }}>Контакты</Link>
+                <Link href="/catalog"    className="hd-footer-link" style={{ fontSize: 15, color: "rgba(255,255,255,0.7)" }}>Каталог</Link>
+                <Link href="/categories" className="hd-footer-link" style={{ fontSize: 15, color: "rgba(255,255,255,0.7)" }}>Категории</Link>
+                <Link href="/#footer"    className="hd-footer-link" style={{ fontSize: 15, color: "rgba(255,255,255,0.7)" }}>Контакты</Link>
               </div>
             </div>
             <div>
               <div style={{ fontSize: 16, color: "#fff" }}>Социальные сети</div>
               <div style={{ marginTop: 30, display: "flex", flexDirection: "column", gap: 15 }}>
-                <span style={{ fontSize: 15, color: "rgba(255,255,255,0.7)" }}>Facebook</span>
-                <span style={{ fontSize: 15, color: "rgba(255,255,255,0.7)" }}>Instagram</span>
-                <span style={{ fontSize: 15, color: "rgba(255,255,255,0.7)" }}>WhatsApp</span>
+                <a href="https://facebook.com" target="_blank" rel="noreferrer noopener" className="hd-footer-link" style={{ fontSize: 15, color: "rgba(255,255,255,0.7)" }}>Facebook</a>
+                <a href="https://instagram.com" target="_blank" rel="noreferrer noopener" className="hd-footer-link" style={{ fontSize: 15, color: "rgba(255,255,255,0.7)" }}>Instagram</a>
+                <a href="https://wa.me/48578923625" target="_blank" rel="noreferrer noopener" className="hd-footer-link" style={{ fontSize: 15, color: "rgba(255,255,255,0.7)" }}>WhatsApp</a>
               </div>
             </div>
           </div>
 
-          <div style={{
-            width: 240, height: 234, borderRadius: 10, overflow: "hidden",
-            backgroundImage: "url(/design/footer-map.png)",
-            backgroundSize: "cover", backgroundPosition: "center",
-          }} />
+          <a
+            href="https://maps.google.com/?q=Wolska+44+Stanis%C5%82aw%C3%B3w+drugi+05-119+Polska"
+            target="_blank" rel="noreferrer noopener"
+            className="hd-footer-link"
+            style={{
+              width: 240, height: 234, borderRadius: 10, overflow: "hidden",
+              backgroundImage: "url(/design/footer-map.png)",
+              backgroundSize: "cover", backgroundPosition: "center",
+              display: "block",
+            }}
+            aria-label="Open map"
+          />
         </div>
 
         <div style={{

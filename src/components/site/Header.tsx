@@ -9,7 +9,7 @@ export default function Header({ current = "home", locale }: { current?: Current
   const nav: { id: Current; label: string; href: string }[] = [
     { id: "catalog",    label: t("catalog", locale),    href: "/catalog" },
     { id: "categories", label: t("categories", locale), href: "/categories" },
-    { id: "contacts",   label: t("contacts", locale),   href: "/#contacts" },
+    { id: "contacts",   label: t("contacts", locale),   href: "/#footer" },
   ];
   return (
     <header className="hd-desktop" style={{

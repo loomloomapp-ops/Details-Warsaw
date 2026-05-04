@@ -69,7 +69,7 @@ export default function MobileHeader({ locale }: { locale: Locale }) {
             { label: t("home", locale),       href: "/" },
             { label: t("catalog", locale),    href: "/catalog" },
             { label: t("categories", locale), href: "/categories" },
-            { label: t("contacts", locale),   href: "/#contacts" },
+            { label: t("contacts", locale),   href: "/#footer" },
           ].map((n) => (
             <Link key={n.label} href={n.href} style={{
               padding: "10px 12px", fontSize: 15, borderRadius: 8,

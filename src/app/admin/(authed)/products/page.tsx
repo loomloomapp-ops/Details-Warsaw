@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/db";
+import ProductsTable from "./_list/ProductsTable";
 
 export const dynamic = "force-dynamic";
 
@@ -60,53 +61,17 @@ export default async function ProductsListPage({
           {q ? "Ничего не найдено" : "Товаров пока нет"}
         </div>
       ) : (
-        <div style={{ background: "#fff", borderRadius: 12, overflow: "hidden" }}>
-          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 14 }}>
-            <thead>
-              <tr style={{ background: "var(--hd-panel)", textAlign: "left" }}>
-                <th style={th}>Фото</th>
-                <th style={th}>Название</th>
-                <th style={th}>Артикул</th>
-                <th style={th}>№ детали</th>
-                <th style={th}>Категории</th>
-                <th style={th}></th>
-              </tr>
-            </thead>
-            <tbody>
-              {products.map((p) => (
-                <tr key={p.id} style={{ borderTop: "1px solid var(--hd-hairline)" }}>
-                  <td style={td}>
-                    {p.images[0] ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={p.images[0].url} alt="" style={{ width: 48, height: 48, objectFit: "cover", borderRadius: 6 }} />
-                    ) : (
-                      <div style={{ width: 48, height: 48, background: "var(--hd-panel)", borderRadius: 6 }} />
-                    )}
-                  </td>
-                  <td style={td}>
-                    <Link href={`/admin/products/${p.id}`} style={{ fontWeight: 600 }}>
-                      {p.nameRu}
-                    </Link>
-                  </td>
-                  <td style={{ ...td, color: "var(--hd-muted)" }}>{p.article || "—"}</td>
-                  <td style={{ ...td, color: "var(--hd-muted)" }}>{p.partNumber || "—"}</td>
-                  <td style={{ ...td, color: "var(--hd-muted)" }}>
-                    {p.categories.map((pc) => pc.category.nameRu).join(", ") || "—"}
-                  </td>
-                  <td style={{ ...td, textAlign: "right" }}>
-                    <Link href={`/admin/products/${p.id}`} style={{ color: "var(--hd-green)", fontWeight: 600 }}>
-                      Открыть
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <ProductsTable
+          rows={products.map((p) => ({
+            id: p.id,
+            nameRu: p.nameRu,
+            article: p.article,
+            partNumber: p.partNumber,
+            imageUrl: p.images[0]?.url ?? null,
+            categories: p.categories.map((pc) => pc.category.nameRu).join(", "),
+          }))}
+        />
       )}
     </div>
   );
 }
-
-const th: React.CSSProperties = { padding: "12px 16px", fontWeight: 600, fontSize: 12, color: "var(--hd-muted)", textTransform: "uppercase" };
-const td: React.CSSProperties = { padding: "12px 16px", verticalAlign: "middle" };

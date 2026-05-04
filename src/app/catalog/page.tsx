@@ -10,6 +10,8 @@ import { ProductCard } from "@/components/site/Blocks";
 import { getLocale } from "@/lib/locale-server";
 import { t, pickProductName, pickCategoryName } from "@/lib/i18n";
 import CatalogFilters from "./_filters/CatalogFilters";
+import CategoryNav from "./_filters/CategoryNav";
+import ContactCTA from "@/components/site/ContactCTA";
 
 export const dynamic = "force-dynamic";
 
@@ -135,25 +137,21 @@ export default async function CatalogPage({
               />
             </div>
 
-            <div style={{ marginTop: 36, display: "flex", flexDirection: "column", gap: 6 }}>
-              <div style={{ fontSize: 12, fontWeight: 700, color: "var(--hd-muted)", textTransform: "uppercase", letterSpacing: 0.6, marginBottom: 6 }}>
+            <div style={{ marginTop: 36 }}>
+              <div style={{ fontSize: 12, fontWeight: 700, color: "var(--hd-muted)", textTransform: "uppercase", letterSpacing: 0.6, marginBottom: 12 }}>
                 {t("categories", locale)}
               </div>
-              <Link href="/catalog" className="hd-nav-pill" style={navLink(!categorySlug)}>{t("allItems", locale)}</Link>
-              {allCategories.map((c) => {
-                const active = c.slug === categorySlug;
-                return (
-                  <Link
-                    key={c.id}
-                    href={`/catalog?category=${c.slug}`}
-                    className="hd-nav-pill"
-                    style={{ ...navLink(active), display: "flex", justifyContent: "space-between", alignItems: "center" }}
-                  >
-                    <span>{pickCategoryName(c, locale)}</span>
-                    <span style={{ fontSize: 12, opacity: active ? 0.7 : 0.5 }}>{c._count.products}</span>
-                  </Link>
-                );
-              })}
+              <CategoryNav
+                items={allCategories.map((c) => ({
+                  id: c.id, slug: c.slug,
+                  name: pickCategoryName(c, locale),
+                  count: c._count.products,
+                }))}
+                activeSlug={categorySlug}
+                allLabel={t("allItems", locale)}
+                showMoreLabel={t("showMore", locale)}
+                showLessLabel={t("showLess", locale)}
+              />
             </div>
 
             <div style={{
@@ -164,11 +162,9 @@ export default async function CatalogPage({
               <p style={{ marginTop: 8, fontSize: 13, lineHeight: "18px", color: "rgba(0,0,0,0.6)" }}>
                 {t("cantFindBody", locale)}
               </p>
-              <Link href="/#contacts" className="hd-link-hover" style={{
-                marginTop: 14, display: "inline-flex", alignItems: "center", gap: 8, fontSize: 13, fontWeight: 600,
-              }}>
-                {t("contactUs", locale)} <Icons.ArrowRight size={14} />
-              </Link>
+              <div style={{ marginTop: 14 }}>
+                <ContactCTA label={t("contactUs", locale)} locale={locale} />
+              </div>
             </div>
           </aside>
 
@@ -293,15 +289,6 @@ export default async function CatalogPage({
   );
 }
 
-function navLink(active: boolean): React.CSSProperties {
-  return {
-    padding: "10px 14px", borderRadius: 8,
-    fontSize: 14, fontWeight: active ? 600 : 500,
-    background: active ? "#000" : "transparent",
-    color: active ? "#fff" : "#000",
-    transition: "background .25s ease, color .25s ease, transform .15s ease",
-  };
-}
 function chip(active: boolean): React.CSSProperties {
   return {
     padding: "6px 14px", borderRadius: 999, fontSize: 12,

@@ -100,6 +100,15 @@ const DICT: Dict = {
   socialNetworks: { ru: "Социальные сети", ua: "Соціальні мережі", pl: "Sieci społecznościowe" },
   homeAria:       { ru: "Главная",      ua: "Головна",      pl: "Strona główna" },
   productPage:    { ru: "Страница товара", ua: "Сторінка товару", pl: "Strona produktu" },
+  showMore:       { ru: "Показать все",  ua: "Показати всі", pl: "Pokaż wszystkie" },
+  showLess:       { ru: "Свернуть",      ua: "Згорнути",     pl: "Zwiń" },
+  // Contact popup form
+  popupTitle:     { ru: "Свяжитесь с нами", ua: "Зв'яжіться з нами", pl: "Skontaktuj się z nami" },
+  popupSub:       { ru: "Оставьте контакты — менеджер свяжется с вами и поможет подобрать деталь.", ua: "Залиште контакти — менеджер зв'яжеться з вами та допоможе підібрати деталь.", pl: "Zostaw kontakt — menedżer skontaktuje się i pomoże dobrać część." },
+  additionalComment: { ru: "Дополнительный комментарий", ua: "Додатковий коментар", pl: "Dodatkowy komentarz" },
+  thanks:         { ru: "Спасибо! Мы скоро свяжемся.", ua: "Дякуємо! Ми скоро зв'яжемося.", pl: "Dziękujemy! Wkrótce się skontaktujemy." },
+  required:       { ru: "Обязательное поле", ua: "Обов'язкове поле", pl: "Pole wymagane" },
+  close:          { ru: "Закрыть",       ua: "Закрити",      pl: "Zamknij" },
 };
 
 export function t(key: keyof typeof DICT, locale: Locale = DEFAULT_LOCALE): string {

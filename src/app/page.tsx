@@ -18,7 +18,7 @@ export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const locale = getLocale();
-  const [categories, latestProducts] = await Promise.all([
+  const [categories, latestProducts, modelProducts, distinctModels] = await Promise.all([
     prisma.category.findMany({
       orderBy: [{ sortOrder: "asc" }, { nameRu: "asc" }],
       take: 4,
@@ -29,7 +29,27 @@ export default async function HomePage() {
       take: 4,
       include: { images: { take: 1, orderBy: { sortOrder: "asc" } } },
     }),
+    prisma.product.findMany({
+      where: { model: { not: null } },
+      orderBy: { createdAt: "desc" },
+      include: { images: { take: 1, orderBy: { sortOrder: "asc" } } },
+    }),
+    prisma.product.findMany({
+      where: { model: { not: null } },
+      select: { model: true },
+      distinct: ["model"],
+      orderBy: { model: "asc" },
+    }),
   ]);
+
+  const homeModels = distinctModels.map((p) => p.model!).filter(Boolean);
+  const homeProducts = modelProducts.map((p) => ({
+    id: p.id,
+    name: pickProductName(p, locale),
+    partNumber: p.partNumber,
+    image: p.images[0]?.url ?? null,
+    model: p.model,
+  }));
 
   const heroChips = [
     { icon: <Icons.Shield size={22} color="#fff" />, label: t("abs", locale) },
@@ -44,31 +64,26 @@ export default async function HomePage() {
       <div className="hd-desktop" style={{ background: "#fff", minWidth: 1440 }}>
         <HeaderWrap><Header current="home" locale={locale} /></HeaderWrap>
 
-        <section style={{
-          position: "relative", height: 827, overflow: "hidden",
-          backgroundImage: "url(/design/hero-engine-bg.png)",
-          backgroundSize: "cover", backgroundPosition: "center",
-        }}>
-          <div style={{
-            position: "absolute", inset: 0,
-            background: "linear-gradient(180deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 60%, rgba(0,0,0,0) 100%)",
-          }} />
+        <section className="hd-hero" style={{ height: 827 }}>
+          <div className="hd-hero-bg" style={{ backgroundImage: "url(/design/hero-engine-bg.png)" }} />
+          <div className="hd-hero-overlay" />
 
-          <div style={{ position: "absolute", left: 70, top: 125, width: 730, color: "#fff" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 15 }}>
+          <div className="hd-hero-content" style={{ position: "absolute", left: 70, top: 125, width: 730, color: "#fff" }}>
+            <div className="hd-hero-reveal" data-d="1" style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 15 }}>
               <span>{t("heroTagline", locale)}</span>
               <span style={{ width: 30, height: 1, background: "#fff" }} />
             </div>
-            <h1 style={{
+            <h1 className="hd-hero-reveal" data-d="2" style={{
               margin: "42px 0 0 0", fontSize: 62, lineHeight: "62px",
               fontWeight: 700, letterSpacing: "-0.02em",
+              textShadow: "0 4px 28px rgba(0,0,0,0.35)",
             }}>
               {t("heroTitle1", locale)}<br />{t("heroTitle2", locale)}
             </h1>
-            <p style={{ marginTop: 24, maxWidth: 620, fontSize: 16, lineHeight: "22px", color: "rgba(255,255,255,0.9)" }}>
+            <p className="hd-hero-reveal" data-d="3" style={{ marginTop: 24, maxWidth: 620, fontSize: 16, lineHeight: "22px", color: "rgba(255,255,255,0.92)" }}>
               {t("heroBody", locale)}
             </p>
-            <div style={{ marginTop: 38, display: "flex", alignItems: "center", gap: 30 }}>
+            <div className="hd-hero-reveal" data-d="4" style={{ marginTop: 38, display: "flex", alignItems: "center", gap: 30 }}>
               <Link href="/catalog" className="hd-cta-pill" data-variant="white" style={{
                 display: "inline-flex", alignItems: "center", height: 52, padding: "0 30px",
                 borderRadius: 40, background: "#fff", color: "#000", fontSize: 16, fontWeight: 500,
@@ -79,7 +94,7 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <div style={{
+          <div className="hd-hero-content hd-hero-reveal" data-d="5" style={{
             position: "absolute", left: 70, bottom: 42,
             padding: "18px 22px", borderRadius: 20,
             background: "rgba(255,255,255,0.14)",
@@ -146,21 +161,11 @@ export default async function HomePage() {
           padding: "20px 70px 80px 70px",
           display: "flex", flexDirection: "column", gap: 30, alignItems: "center",
         }}>
-          <HomeModelFilter />
-
-          <div style={{ width: "100%", display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 24 }}>
-            {latestProducts.length === 0
-              ? Array.from({ length: 4 }).map((_, i) => <div key={i} style={cardEmpty} />)
-              : latestProducts.map((p) => (
-                <ProductCard
-                  key={p.id}
-                  href={`/catalog/${p.id}`}
-                  name={pickProductName(p, locale)}
-                  image={p.images[0]?.url ?? null}
-                  partNumber={p.partNumber}
-                />
-              ))}
-          </div>
+          <HomeModelFilter
+            models={homeModels}
+            products={homeProducts}
+            viewLabel={t("view", locale)}
+          />
 
           <Link href="/catalog" className="hd-cta-pill" data-variant="green" style={{
             display: "inline-flex", alignItems: "center", gap: 10,
@@ -251,17 +256,38 @@ export default async function HomePage() {
           </div>
           <div style={{ marginTop: 20, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
             {(categories.length > 0 ? categories : []).slice(0, 4).map((c) => (
-              <Link key={c.id} href={`/catalog?category=${c.slug}`} style={{
-                height: 110, padding: "12px 14px", borderRadius: 10,
-                background: c.imageUrl
-                  ? `linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.85)), url(${c.imageUrl})`
-                  : "var(--hd-panel)",
-                backgroundSize: "cover", backgroundPosition: "center",
-                display: "flex", flexDirection: "column", justifyContent: "space-between",
+              <Link key={c.id} href={`/catalog?category=${c.slug}`} className="hd-card-mobile" style={{
+                position: "relative",
+                height: 140, borderRadius: 10, overflow: "hidden",
+                background: "var(--hd-panel)",
+                display: "flex", flexDirection: "column", justifyContent: "flex-end",
+                color: "#fff",
               }}>
-                <div style={{ fontSize: 14, fontWeight: 500 }}>{pickCategoryName(c, locale)}</div>
-                <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 11, color: "rgba(0,0,0,0.7)" }}>
-                  {t("viewAll", locale)} <Icons.ChevronRight size={12} />
+                <div style={{
+                  position: "absolute", inset: 0,
+                  backgroundImage: `url(${c.imageUrl || "/design/bumper.png"})`,
+                  backgroundSize: c.imageUrl ? "cover" : "contain",
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "center",
+                }} />
+                <div style={{
+                  position: "absolute", inset: 0,
+                  background: c.imageUrl
+                    ? "linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(0,0,0,0.7) 100%)"
+                    : "linear-gradient(180deg, rgba(244,249,252,0) 30%, rgba(244,249,252,0.85) 100%)",
+                }} />
+                <div style={{ position: "relative", padding: "12px 14px" }}>
+                  <div style={{
+                    fontSize: 14, fontWeight: 600,
+                    color: c.imageUrl ? "#fff" : "#000",
+                    textShadow: c.imageUrl ? "0 1px 6px rgba(0,0,0,0.4)" : "none",
+                  }}>{pickCategoryName(c, locale)}</div>
+                  <div style={{
+                    marginTop: 4, display: "flex", alignItems: "center", gap: 6, fontSize: 11,
+                    color: c.imageUrl ? "rgba(255,255,255,0.85)" : "rgba(0,0,0,0.7)",
+                  }}>
+                    {t("viewAll", locale)} <Icons.ChevronRight size={12} color={c.imageUrl ? "#fff" : "#000"} />
+                  </div>
                 </div>
               </Link>
             ))}

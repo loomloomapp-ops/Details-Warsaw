@@ -80,32 +80,28 @@ export default function ProductForm({
             </button>
           ))}
         </div>
-        {tab === "ua" && (
-          <>
-            <Field label="Назва (UA)">
-              <input name="nameUa" defaultValue={initial.nameUa || ""} style={inp} />
-            </Field>
-            <Field label="Короткий опис (UA)">
-              <textarea name="shortDescUa" rows={2} defaultValue={initial.shortDescUa || ""} style={ta} />
-            </Field>
-            <Field label="Детальний опис (UA)">
-              <textarea name="longDescUa" rows={6} defaultValue={initial.longDescUa || ""} style={ta} />
-            </Field>
-          </>
-        )}
-        {tab === "pl" && (
-          <>
-            <Field label="Nazwa (PL)">
-              <input name="namePl" defaultValue={initial.namePl || ""} style={inp} />
-            </Field>
-            <Field label="Krótki opis (PL)">
-              <textarea name="shortDescPl" rows={2} defaultValue={initial.shortDescPl || ""} style={ta} />
-            </Field>
-            <Field label="Szczegółowy opis (PL)">
-              <textarea name="longDescPl" rows={6} defaultValue={initial.longDescPl || ""} style={ta} />
-            </Field>
-          </>
-        )}
+        <div style={{ display: tab === "ua" ? "block" : "none" }}>
+          <Field label="Назва (UA)">
+            <input name="nameUa" defaultValue={initial.nameUa || ""} style={inp} />
+          </Field>
+          <Field label="Короткий опис (UA)">
+            <textarea name="shortDescUa" rows={2} defaultValue={initial.shortDescUa || ""} style={ta} />
+          </Field>
+          <Field label="Детальний опис (UA)">
+            <textarea name="longDescUa" rows={6} defaultValue={initial.longDescUa || ""} style={ta} />
+          </Field>
+        </div>
+        <div style={{ display: tab === "pl" ? "block" : "none" }}>
+          <Field label="Nazwa (PL)">
+            <input name="namePl" defaultValue={initial.namePl || ""} style={inp} />
+          </Field>
+          <Field label="Krótki opis (PL)">
+            <textarea name="shortDescPl" rows={2} defaultValue={initial.shortDescPl || ""} style={ta} />
+          </Field>
+          <Field label="Szczegółowy opis (PL)">
+            <textarea name="longDescPl" rows={6} defaultValue={initial.longDescPl || ""} style={ta} />
+          </Field>
+        </div>
         <p style={{ marginTop: 8, fontSize: 12, color: "var(--hd-subtle)" }}>
           Если перевод не заполнен — на сайте будет показан русский вариант.
         </p>
