@@ -60,6 +60,10 @@ const DICT: Dict = {
   contactUs:      { ru: "Связаться",    ua: "Зв'язатися",   pl: "Skontaktuj się" },
   sortBy:         { ru: "Сортировка по:", ua: "Сортування за:", pl: "Sortuj według:" },
   byPopularity:   { ru: "По Популярности", ua: "За популярністю", pl: "Według popularności" },
+  sortNewest:     { ru: "Сначала новые", ua: "Спочатку нові", pl: "Najpierw nowe" },
+  sortOldest:     { ru: "Сначала старые", ua: "Спочатку старі", pl: "Najpierw stare" },
+  sortNameAsc:    { ru: "Название: А–Я", ua: "Назва: А–Я", pl: "Nazwa: A–Z" },
+  sortNameDesc:   { ru: "Название: Я–А", ua: "Назва: Я–А", pl: "Nazwa: Z–A" },
   filters:        { ru: "Фильтры",      ua: "Фільтри",      pl: "Filtry"       },
   // Product card
   view:           { ru: "Переглянути",  ua: "Переглянути",  pl: "Zobacz"       },

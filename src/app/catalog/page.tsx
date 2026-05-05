@@ -11,6 +11,7 @@ import { getLocale } from "@/lib/locale-server";
 import { t, pickProductName, pickCategoryName, localeHref } from "@/lib/i18n";
 import CatalogFilters from "./_filters/CatalogFilters";
 import CategoryNav from "./_filters/CategoryNav";
+import SortDropdown, { type SortKey } from "./_filters/SortDropdown";
 import ContactCTA from "@/components/site/ContactCTA";
 
 export const dynamic = "force-dynamic";
@@ -18,7 +19,7 @@ export const dynamic = "force-dynamic";
 export default async function CatalogPage({
   searchParams,
 }: {
-  searchParams: { q?: string; category?: string; make?: string; model?: string; year?: string };
+  searchParams: { q?: string; category?: string; make?: string; model?: string; year?: string; sort?: string };
 }) {
   const locale = getLocale();
   const q = (searchParams.q || "").trim();
@@ -26,6 +27,16 @@ export default async function CatalogPage({
   const make = (searchParams.make || "").trim();
   const model = (searchParams.model || "").trim();
   const year = (searchParams.year || "").trim();
+  const allowedSorts: SortKey[] = ["popular", "newest", "oldest", "name_asc", "name_desc"];
+  const sortRaw = (searchParams.sort || "").trim() as SortKey;
+  const sort: SortKey = allowedSorts.includes(sortRaw) ? sortRaw : "popular";
+  const nameField = locale === "ua" ? "nameUa" : locale === "pl" ? "namePl" : "nameRu";
+  const orderBy =
+    sort === "newest"   ? { createdAt: "desc" as const } :
+    sort === "oldest"   ? { createdAt: "asc"  as const } :
+    sort === "name_asc" ? { [nameField]: "asc"  as const } :
+    sort === "name_desc"? { [nameField]: "desc" as const } :
+    { createdAt: "desc" as const };
 
   const [category, allCategories, distinctMakes, distinctModels, distinctYears] = await Promise.all([
     categorySlug ? prisma.category.findUnique({ where: { slug: categorySlug } }) : Promise.resolve(null),
@@ -56,8 +67,16 @@ export default async function CatalogPage({
   const products = await prisma.product.findMany({
     where: Object.keys(where).length ? where : undefined,
     include: { images: { take: 1, orderBy: { sortOrder: "asc" } } },
-    orderBy: { createdAt: "desc" },
+    orderBy,
   });
+
+  const sortLabels: Record<SortKey, string> = {
+    popular:   t("byPopularity", locale),
+    newest:    t("sortNewest", locale),
+    oldest:    t("sortOldest", locale),
+    name_asc:  t("sortNameAsc", locale),
+    name_desc: t("sortNameDesc", locale),
+  };
 
   const categoryName = category ? pickCategoryName(category, locale) : null;
   const filterOptions = {
@@ -93,30 +112,25 @@ export default async function CatalogPage({
               <span>{categoryName}</span>
             </>)}
           </div>
-          <form action="/catalog" method="get" style={{
+          <form action={localeHref("/catalog", locale)} method="get" style={{
             height: 38, padding: "0 15px",
             borderRadius: 10, background: "var(--hd-panel)",
             border: "1px solid var(--hd-border)",
             display: "flex", alignItems: "center", gap: 10,
           }}>
             {category && <input type="hidden" name="category" value={category.slug} />}
+            {make  && <input type="hidden" name="make"  value={make}  />}
+            {model && <input type="hidden" name="model" value={model} />}
+            {year  && <input type="hidden" name="year"  value={year}  />}
+            {sort !== "popular" && <input type="hidden" name="sort" value={sort} />}
             <Icons.Search size={14} color="rgba(0,0,0,0.8)" />
             <input
               name="q" defaultValue={q} placeholder={t("searchPlaceholder", locale)}
               style={{ border: 0, outline: 0, background: "transparent", fontSize: 14, color: "#000", flex: 1, fontFamily: "inherit" }}
             />
           </form>
-          <div style={{
-            display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 16, fontSize: 15,
-          }}>
-            <span style={{ color: "rgba(0,0,0,0.6)" }}>{t("sortBy", locale)}</span>
-            <button type="button" style={{
-              height: 38, padding: "0 14px",
-              border: "1px solid var(--hd-hairline)", borderRadius: 8, background: "#fff",
-              display: "flex", alignItems: "center", gap: 10, fontSize: 14, fontWeight: 500,
-            }}>
-              {t("byPopularity", locale)} <Icons.ChevronDown size={16} />
-            </button>
+          <div style={{ justifySelf: "end" }}>
+            <SortDropdown current={sort} labels={sortLabels} sortByLabel={t("sortBy", locale)} />
           </div>
         </div>
 
@@ -216,13 +230,17 @@ export default async function CatalogPage({
               {t("found", locale)}: <span style={{ color: "#000" }}>{products.length}</span>
             </span>
           </div>
-          <form action="/catalog" method="get" style={{
+          <form action={localeHref("/catalog", locale)} method="get" style={{
             marginTop: 12,
             height: 38, padding: "0 12px", borderRadius: 8,
             background: "var(--hd-panel)", border: "1px solid var(--hd-border)",
             display: "flex", alignItems: "center", gap: 8,
           }}>
             {category && <input type="hidden" name="category" value={category.slug} />}
+            {make  && <input type="hidden" name="make"  value={make}  />}
+            {model && <input type="hidden" name="model" value={model} />}
+            {year  && <input type="hidden" name="year"  value={year}  />}
+            {sort !== "popular" && <input type="hidden" name="sort" value={sort} />}
             <Icons.Search size={14} color="rgba(0,0,0,0.6)" />
             <input
               name="q" defaultValue={q} placeholder={t("searchPlaceholder", locale)}
