@@ -211,18 +211,15 @@ export default async function HomePage() {
             <div style={{
               marginTop: 22, padding: "12px 14px", borderRadius: 14,
               background: "var(--hd-panel)",
-              display: "flex", justifyContent: "space-around", alignItems: "center",
+              display: "grid", gridTemplateColumns: "repeat(3, 1fr)", alignItems: "center",
             }}>
-              {heroChips.map((c, i) => (
-                <div key={c.label} style={{ display: "flex", alignItems: "center", gap: 0 }}>
-                  {i > 0 && <div style={{ width: 1, height: 40, background: "rgba(0,0,0,0.1)", marginRight: 8 }} />}
-                  <div style={{
-                    display: "flex", flexDirection: "column", alignItems: "center", gap: 6,
-                    fontSize: 11, fontWeight: 500, textTransform: "uppercase", letterSpacing: 0.3,
-                  }}>
-                    <img src={c.src} alt="" width={32} height={32} style={{ display: "block", filter: "invert(1)" }} />
-                    {c.label}
-                  </div>
+              {heroChips.map((c) => (
+                <div key={c.label} style={{
+                  display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 6,
+                  fontSize: 11, fontWeight: 500, textTransform: "uppercase", letterSpacing: 0.3, textAlign: "center",
+                }}>
+                  <img src={c.src} alt="" width={32} height={32} style={{ display: "block", filter: "invert(1)" }} />
+                  {c.label}
                 </div>
               ))}
             </div>
