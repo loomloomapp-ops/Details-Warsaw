@@ -7,6 +7,7 @@ import HeaderWrap from "@/components/site/HeaderWrap";
 import Footer from "@/components/site/Footer";
 import MobileFooter from "@/components/site/MobileFooter";
 import { MobilePartnerCTA } from "@/components/site/MobileBlocks";
+import { PartnerCTA } from "@/components/site/Blocks";
 import { Icons } from "@/components/site/Icons";
 import ProductGallery from "@/components/site/ProductGallery";
 import { getLocale } from "@/lib/locale-server";
@@ -146,36 +147,12 @@ export default async function ProductPage({ params }: { params: { id: string } }
           </div>
         </section>
 
-        <section style={{ padding: "40px 70px 100px 70px" }}>
-          <h2 style={{ margin: 0, fontSize: 48, fontWeight: 500, lineHeight: "52px", letterSpacing: "-0.01em" }}>
-            {t("readyToOrder", locale)}
-          </h2>
-
-          <div style={{
-            marginTop: 40, display: "grid", gridTemplateColumns: "440px 1fr", gap: 60, alignItems: "start",
-          }}>
-            <div style={{
-              width: 440, height: 330, borderRadius: 10, overflow: "hidden",
-              backgroundImage: "url(/design/partner-men.jpg)",
-              backgroundSize: "cover", backgroundPosition: "center",
-            }} />
-            <div>
-              <h3 style={{ margin: 0, fontSize: 28, fontWeight: 500, lineHeight: "34px" }}>
-                {t("confirmCompat", locale)}
-              </h3>
-              <p style={{ marginTop: 14, fontSize: 15, lineHeight: "20px", color: "rgba(0,0,0,0.7)", maxWidth: 620 }}>
-                {t("confirmCompatBody", locale)}
-              </p>
-              <Link href={localeHref("/#contacts", locale)} className="hd-cta-pill" data-variant="green" style={{
-                marginTop: 24, display: "inline-flex", alignItems: "center", gap: 10,
-                height: 52, padding: "0 30px", borderRadius: 40,
-                background: "var(--hd-green)", color: "#fff", fontSize: 16, fontWeight: 500,
-              }}>
-                {t("goToForm", locale)} <Icons.ArrowRight size={18} color="#fff" />
-              </Link>
-            </div>
-          </div>
-        </section>
+        <PartnerCTA
+          locale={locale}
+          heading={t("readyToOrder", locale)}
+          subheading={t("confirmCompat", locale)}
+          body={t("confirmCompatBody", locale)}
+        />
 
         <Footer locale={locale} />
       </div>

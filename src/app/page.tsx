@@ -30,32 +30,32 @@ export default async function HomePage() {
       include: { images: { take: 1, orderBy: { sortOrder: "asc" } } },
     }),
     prisma.product.findMany({
-      where: { make: { not: null } },
+      where: { model: { not: null } },
       orderBy: { createdAt: "desc" },
       take: 60,
       include: { images: { take: 1, orderBy: { sortOrder: "asc" } } },
     }),
     prisma.product.findMany({
-      where: { make: { not: null } },
-      select: { make: true },
-      distinct: ["make"],
-      orderBy: { make: "asc" },
+      where: { model: { not: null } },
+      select: { model: true },
+      distinct: ["model"],
+      orderBy: { model: "asc" },
     }),
   ]);
 
-  const homeMakes = distinctModels.map((p) => p.make!).filter(Boolean);
+  const homeMakes = distinctModels.map((p) => p.model!).filter(Boolean);
   const homeProducts = modelProducts.map((p) => ({
     id: p.id,
     name: pickProductName(p, locale),
     partNumber: p.partNumber,
     image: p.images[0]?.url ?? null,
-    make: p.make,
+    make: p.model,
   }));
 
   const heroChips = [
-    { icon: <Icons.Shield size={22} color="#fff" />, label: t("abs", locale) },
-    { icon: <Icons.Engine size={22} color="#fff" />, label: t("engine", locale) },
-    { icon: <Icons.Battery size={22} color="#fff" />, label: t("batteries", locale) },
+    { src: "/abs.svg", label: t("abs", locale) },
+    { src: "/engine.svg", label: t("engine", locale) },
+    { src: "/battery.svg", label: t("batteries", locale) },
   ];
 
   return (
@@ -97,23 +97,19 @@ export default async function HomePage() {
 
           <div className="hd-hero-content hd-hero-reveal" data-d="5" style={{
             position: "absolute", left: 70, bottom: 42,
-            padding: "18px 22px", borderRadius: 20,
+            padding: "20px 26px", borderRadius: 20,
             background: "rgba(255,255,255,0.14)",
             backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)",
-            display: "flex", gap: 30, alignItems: "center",
+            display: "flex", gap: 36, alignItems: "center",
           }}>
             {heroChips.map((c, i) => (
-              <div key={c.label} style={{ display: "flex", alignItems: "center", gap: 30 }}>
-                {i > 0 && <span style={{ width: 1, height: 22, background: "rgba(255,255,255,0.3)" }} />}
+              <div key={c.label} style={{ display: "flex", alignItems: "center", gap: 36 }}>
+                {i > 0 && <span style={{ width: 1, height: 56, background: "rgba(255,255,255,0.3)" }} />}
                 <div style={{
-                  display: "flex", alignItems: "center", gap: 10, color: "#fff",
-                  fontSize: 14, fontWeight: 500, textTransform: "uppercase", letterSpacing: 0.5,
+                  display: "flex", flexDirection: "column", alignItems: "center", gap: 8, color: "#fff",
+                  fontSize: 13, fontWeight: 500, textTransform: "uppercase", letterSpacing: 0.5,
                 }}>
-                  <div style={{
-                    width: 36, height: 36, borderRadius: "50%",
-                    background: "rgba(255,255,255,0.15)",
-                    display: "grid", placeItems: "center",
-                  }}>{c.icon}</div>
+                  <img src={c.src} alt="" width={40} height={40} style={{ display: "block" }} />
                   {c.label}
                 </div>
               </div>
@@ -219,21 +215,12 @@ export default async function HomePage() {
             }}>
               {heroChips.map((c, i) => (
                 <div key={c.label} style={{ display: "flex", alignItems: "center", gap: 0 }}>
-                  {i > 0 && <div style={{ width: 1, height: 24, background: "rgba(0,0,0,0.1)", marginRight: 8 }} />}
+                  {i > 0 && <div style={{ width: 1, height: 40, background: "rgba(0,0,0,0.1)", marginRight: 8 }} />}
                   <div style={{
-                    display: "flex", flexDirection: "column", alignItems: "center", gap: 4,
+                    display: "flex", flexDirection: "column", alignItems: "center", gap: 6,
                     fontSize: 11, fontWeight: 500, textTransform: "uppercase", letterSpacing: 0.3,
                   }}>
-                    <div style={{
-                      width: 28, height: 28, borderRadius: "50%",
-                      background: "#fff", border: "1px solid var(--hd-hairline)",
-                      display: "grid", placeItems: "center", color: "#000",
-                    }}>
-                      {/* render dark variants for mobile */}
-                      {i === 0 && <Icons.Shield size={18} color="#000" />}
-                      {i === 1 && <Icons.Engine size={18} color="#000" />}
-                      {i === 2 && <Icons.Battery size={18} color="#000" />}
-                    </div>
+                    <img src={c.src} alt="" width={32} height={32} style={{ display: "block", filter: "invert(1)" }} />
                     {c.label}
                   </div>
                 </div>
