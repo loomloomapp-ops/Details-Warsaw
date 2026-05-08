@@ -40,7 +40,7 @@ export default function MobileHeader({ locale }: { locale: Locale }) {
       borderBottom: "1px solid var(--hd-hairline)", background: "#fff",
       position: "relative", zIndex: 5,
     }}>
-      <Link href={localeHref("/", locale)} style={{ display: "flex" }}><Logo /></Link>
+      <Link href={localeHref("/", locale)} style={{ display: "flex" }}><Logo compact /></Link>
       <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
         <button
           aria-label="Search"
