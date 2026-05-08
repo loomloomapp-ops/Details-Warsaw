@@ -139,7 +139,7 @@ export default function Preloader() {
           <div style={{
             fontFamily: "Manrope, sans-serif", fontWeight: 800,
             fontSize: 18, color: "#fff", letterSpacing: 4,
-          }}>HYBRID DOKTOR</div>
+          }}>HYBRID DOCTOR</div>
           <div style={{
             marginTop: 8, fontFamily: "Manrope, sans-serif", fontWeight: 500,
             fontSize: 9, letterSpacing: 3,
