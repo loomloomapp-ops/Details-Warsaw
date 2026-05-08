@@ -30,7 +30,7 @@ export default async function CatalogPage({
   const allowedSorts: SortKey[] = ["popular", "newest", "oldest", "name_asc", "name_desc"];
   const sortRaw = (searchParams.sort || "").trim() as SortKey;
   const sort: SortKey = allowedSorts.includes(sortRaw) ? sortRaw : "popular";
-  const nameField = locale === "ua" ? "nameUa" : locale === "pl" ? "namePl" : "nameRu";
+  const nameField = locale === "en" ? "nameUa" : locale === "pl" ? "namePl" : "nameRu";
   const orderBy =
     sort === "newest"   ? { createdAt: "desc" as const } :
     sort === "oldest"   ? { createdAt: "asc"  as const } :

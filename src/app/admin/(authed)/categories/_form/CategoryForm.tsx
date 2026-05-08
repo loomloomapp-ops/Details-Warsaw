@@ -38,7 +38,7 @@ export default function CategoryForm({
         <Field label="Название (RU) *">
           <input name="nameRu" required defaultValue={initial.nameRu || ""} style={inp} />
         </Field>
-        <Field label="Назва (UA)">
+        <Field label="Name (EN)">
           <input name="nameUa" defaultValue={initial.nameUa || ""} style={inp} />
         </Field>
         <Field label="Nazwa (PL)">

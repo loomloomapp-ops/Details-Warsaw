@@ -95,56 +95,10 @@ export default function Preloader() {
         position: "relative", display: "flex", flexDirection: "column",
         alignItems: "center", gap: 32, padding: 24,
       }}>
-        {/* logo with scanning light sweep */}
-        <div style={{ position: "relative", width: 140, height: 140 }}>
-          <svg
-            viewBox="0 0 140 140"
-            style={{ width: "100%", height: "100%", display: "block" }}
-          >
-            <defs>
-              <linearGradient id="hd-sweep" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%"  stopColor="#447A44" stopOpacity="0" />
-                <stop offset="50%" stopColor="#7fff7f" stopOpacity="0.8" />
-                <stop offset="100%" stopColor="#447A44" stopOpacity="0" />
-              </linearGradient>
-              <clipPath id="hd-hex">
-                <polygon points="70,10 124,40 124,100 70,130 16,100 16,40" />
-              </clipPath>
-            </defs>
-
-            <polygon
-              points="70,10 124,40 124,100 70,130 16,100 16,40"
-              fill="none" stroke="#447A44" strokeWidth="2.4" strokeLinejoin="round"
-            />
-            <polygon
-              points="70,22 113,46 113,94 70,118 27,94 27,46"
-              fill="none" stroke="#447A44" strokeWidth="1.2" strokeLinejoin="round" opacity="0.5"
-            />
-
-            <text
-              x="70" y="80" textAnchor="middle"
-              fontFamily="Manrope, sans-serif" fontWeight={800}
-              fontSize="36" fill="#447A44" letterSpacing="2"
-            >HD</text>
-
-            {/* scanning sweep — clipped to hexagon */}
-            <g clipPath="url(#hd-hex)">
-              <rect className="hd-sweep" x="-50" y="0" width="50" height="140" fill="url(#hd-sweep)" />
-            </g>
-          </svg>
-        </div>
-
-        {/* Brand name + tagline */}
-        <div style={{ textAlign: "center", lineHeight: 1.1 }}>
-          <div style={{
-            fontFamily: "Manrope, sans-serif", fontWeight: 800,
-            fontSize: 18, color: "#fff", letterSpacing: 4,
-          }}>HYBRID DOKTOR</div>
-          <div style={{
-            marginTop: 8, fontFamily: "Manrope, sans-serif", fontWeight: 500,
-            fontSize: 9, letterSpacing: 3,
-            color: "rgba(255,255,255,0.45)",
-          }}>TOYOTA HYBRID SPECIALISTS</div>
+        {/* logo */}
+        <div style={{ position: "relative", width: 220, height: 220, background: "#fff", borderRadius: 16, padding: 12, display: "grid", placeItems: "center" }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo.svg" alt="Hybrid Doktor" style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }} />
         </div>
 
         {/* Progress: tachometer-style scale */}

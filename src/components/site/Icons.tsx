@@ -111,22 +111,12 @@ export const Icons = {
 };
 
 export const Logo = ({ compact = false, onDark = false }: { compact?: boolean; onDark?: boolean }) => {
-  const stroke = onDark ? "#fff" : "#447A44";
-  const text = onDark ? "#fff" : "#000";
+  const src = onDark ? "/logo-dark.svg" : "/logo.svg";
+  const height = compact ? 40 : 56;
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-      <svg width="46" height="46" viewBox="0 0 46 46" fill="none" aria-hidden>
-        <polygon points="23,3 41,13 41,33 23,43 5,33 5,13" fill="none" stroke={stroke} strokeWidth="2.2" strokeLinejoin="round" />
-        <polygon points="23,8 36.5,15.5 36.5,30.5 23,38 9.5,30.5 9.5,15.5" fill="none" stroke={stroke} strokeWidth="1.1" strokeLinejoin="round" opacity="0.55" />
-        <text x="23" y="27.4" textAnchor="middle" fontFamily="Manrope, sans-serif" fontWeight="800" fontSize="13" fill={stroke} letterSpacing="0.5">HD</text>
-      </svg>
-      {!compact && (
-        <div style={{ lineHeight: 1 }}>
-          <div style={{ fontFamily: "Manrope", fontWeight: 800, fontSize: 17, letterSpacing: 0.5, color: text }}>HYBRID</div>
-          <div style={{ fontFamily: "Manrope", fontWeight: 800, fontSize: 17, letterSpacing: 0.5, color: text }}>DOKTOR</div>
-          <div style={{ marginTop: 3, fontFamily: "Manrope", fontWeight: 500, fontSize: 6, letterSpacing: 1.6, color: onDark ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.6)" }}>TOYOTA HYBRID SPECIALISTS</div>
-        </div>
-      )}
+    <div style={{ display: "flex", alignItems: "center" }}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={src} alt="Hybrid Doktor" style={{ height, width: "auto", display: "block" }} />
     </div>
   );
 };

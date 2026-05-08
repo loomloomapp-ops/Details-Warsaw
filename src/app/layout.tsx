@@ -26,7 +26,7 @@ export const viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const locale = getLocale();
   return (
-    <html lang={locale === "ua" ? "uk" : locale === "pl" ? "pl" : "ru"}>
+    <html lang={locale === "en" ? "en" : locale === "pl" ? "pl" : "ru"}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />

@@ -49,7 +49,7 @@ export default function ProductForm({
   knownColors?: string[];
   knownMaterials?: string[];
 }) {
-  const [tab, setTab] = useState<"ru" | "ua" | "pl">("ru");
+  const [tab, setTab] = useState<"ru" | "en" | "pl">("ru");
   const [removeImageIds, setRemoveImageIds] = useState<number[]>([]);
   const [pending, start] = useTransition();
   const [delPending, startDel] = useTransition();
@@ -74,7 +74,7 @@ export default function ProductForm({
 
       <Card title="Переводы">
         <div style={{ display: "flex", gap: 6, marginBottom: 12 }}>
-          {(["ua", "pl"] as const).map((l) => (
+          {(["en", "pl"] as const).map((l) => (
             <button
               type="button"
               key={l}
@@ -91,14 +91,14 @@ export default function ProductForm({
             </button>
           ))}
         </div>
-        <div style={{ display: tab === "ua" ? "block" : "none" }}>
-          <Field label="Назва (UA)">
+        <div style={{ display: tab === "en" ? "block" : "none" }}>
+          <Field label="Name (EN)">
             <input name="nameUa" defaultValue={initial.nameUa || ""} style={inp} />
           </Field>
-          <Field label="Короткий опис (UA)">
+          <Field label="Short description (EN)">
             <textarea name="shortDescUa" rows={2} defaultValue={initial.shortDescUa || ""} style={ta} />
           </Field>
-          <Field label="Детальний опис (UA)">
+          <Field label="Long description (EN)">
             <textarea name="longDescUa" rows={6} defaultValue={initial.longDescUa || ""} style={ta} />
           </Field>
         </div>

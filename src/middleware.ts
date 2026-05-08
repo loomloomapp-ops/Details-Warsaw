@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 
-const LOCALES = ["ru", "ua", "pl"] as const;
+const LOCALES = ["ru", "en", "pl"] as const;
 type Loc = (typeof LOCALES)[number];
 
 function isAdminProtected(pathname: string) {
@@ -25,7 +25,7 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  // 2) Locale URL prefix — /ua/... and /pl/... rewrite to /... + set cookie.
+  // 2) Locale URL prefix — /en/... and /pl/... rewrite to /... + set cookie.
   const seg = pathname.split("/")[1];
   if ((LOCALES as readonly string[]).includes(seg)) {
     const locale = seg as Loc;

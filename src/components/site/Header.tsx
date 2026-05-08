@@ -42,7 +42,7 @@ export function LocaleSwitcher({ locale, dark = false }: { locale: Locale; dark?
   const muted = dark ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.7)";
   const active = dark ? "#fff" : "#000";
   const sep = dark ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.3)";
-  const list: Locale[] = ["ru", "ua", "pl"];
+  const list: Locale[] = ["ru", "en", "pl"];
   return (
     <div style={{ display: "flex", gap: 10, fontSize: 14, color: muted }}>
       {list.map((l, i) => (
