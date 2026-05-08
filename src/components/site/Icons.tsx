@@ -112,7 +112,7 @@ export const Icons = {
 
 export const Logo = ({ compact = false, onDark = false }: { compact?: boolean; onDark?: boolean }) => {
   const src = onDark ? "/logo-dark.svg" : "/logo.svg";
-  const height = compact ? 40 : 56;
+  const height = compact ? 22 : 56;
   return (
     <div style={{ display: "flex", alignItems: "center" }}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
